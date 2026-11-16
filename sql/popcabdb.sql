@@ -24,7 +24,8 @@ CREATE DATABASE popcabdb;
 
 USE popcabdb;
 -- --------------------------------------------------------
-
+CREATE DATABASE popcabdb;
+USE popcabdb;
 --
 -- Table structure for table `carts`
 --
