@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2026 at 05:53 PM
+-- Generation Time: Nov 16, 2026 at 06:32 PM
 -- Server version: 10.11.16-MariaDB
 -- PHP Version: 8.3.36
 
@@ -20,7 +20,9 @@ SET time_zone = "+00:00";
 --
 -- Database: `popcabdb`
 --
+CREATE DATABASE popcabdb;
 
+USE popcabdb;
 -- --------------------------------------------------------
 
 --
@@ -79,7 +81,14 @@ INSERT INTO `categories` (`category_id`, `category_name`, `slug`, `description`)
 (5, 'Yu-Gi-Oh!', 'yu-gi-oh', ''),
 (6, 'Frieren', 'frieren', ''),
 (7, 'Marvel', 'marvel', ''),
-(8, 'Minecraft', 'minecraft', '');
+(8, 'Minecraft', 'minecraft', ''),
+(9, 'League of Legends', 'league of legends', ''),
+(10, 'Fortnite', 'fortnite', ''),
+(11, 'My Hero Academia', 'my hero academia', ''),
+(12, 'Harry Potter', 'harry potter', ''),
+(13, 'Destiny', 'destiny', ''),
+(14, 'Fallout 4', 'fallout 4', ''),
+(15, 'Dragon Ball Super', 'dragon ball super', '');
 
 -- --------------------------------------------------------
 
@@ -188,7 +197,33 @@ INSERT INTO `products` (`product_id`, `category_id`, `name`, `slug`, `descriptio
 (2, 5, 'Slifer The Sky Dragon', 'slifer-the-sky-dragon', 'Slifer The Sky Dragon from Yu-Gi-Oh! Is a popular character known by most fans due to its intimidating looks!', 4499.00, 1, NULL, 0, 0, 'uploads/products/pop-ec738c1480585b2d.jpg', '2026-11-16 18:00:44', '2026-11-16 10:00:44', 'Regular'),
 (3, 6, 'Himmel', 'himmel', '', 499.00, 1, NULL, 0, 0, 'uploads/products/pop-c9a2dfec3abf90a3.jpg', '2026-11-16 18:03:14', '2026-11-16 10:03:14', 'Regular'),
 (4, 7, 'Spiderman(Homemade Suit)', 'spiderman-homemade-suit', '\"With Great Power Comes Great Responsibility\". Spiderman is one of the most popular characters of the Marvel Franchise!', 300.00, 2, NULL, 0, 0, 'uploads/products/pop-ae3f8284adfc6444.jpg', '2026-11-16 18:06:22', '2026-11-16 10:06:22', 'Regular'),
-(5, 8, 'Alex In Diamond Armor', 'alex-in-diamond-armor', 'Alex', 300.00, 1, NULL, 0, 0, 'uploads/products/pop-5c5a854bf008a50e.jpg', '2026-11-16 18:23:13', '2026-11-16 10:23:13', 'Regular');
+(5, 8, 'Alex In Diamond Armor', 'alex-in-diamond-armor', 'Alex', 300.00, 1, NULL, 0, 0, 'uploads/products/pop-5c5a854bf008a50e.jpg', '2026-11-16 18:23:13', '2026-11-16 10:23:13', 'Regular'),
+(6, 9, 'Braum', 'braum', '', 1299.00, 1, NULL, 0, 0, 'uploads/products/pop-fa7d85771124d23c.jpg', '2026-11-17 01:02:31', '2026-11-16 17:02:31', 'Regular'),
+(7, 10, 'Dark Voyager', 'dark-voyager', '', 199.00, 2, NULL, 0, 0, 'uploads/products/pop-049867db3d06ca38.jpg', '2026-11-17 01:03:36', '2026-11-16 17:03:36', 'Regular'),
+(8, 11, 'Deku', 'deku', '', 349.00, 2, NULL, 0, 0, 'uploads/products/pop-25588e8572767e19.jpg', '2026-11-17 01:05:15', '2026-11-16 17:05:15', 'Regular'),
+(9, 12, 'Dobby', 'dobby', '', 799.00, 2, NULL, 0, 0, 'uploads/products/pop-39b77cd24f7a823d.jpg', '2026-11-17 01:06:34', '2026-11-16 17:06:34', 'Regular'),
+(10, 7, 'Doctor Strange', 'doctor-strange', '', 499.00, 2, NULL, 0, 0, 'uploads/products/pop-f0e10a22d361b0cd.jpg', '2026-11-17 01:07:46', '2026-11-16 17:07:46', 'Regular'),
+(11, 6, 'Fern', 'fern', '', 699.00, 2, NULL, 0, 0, 'uploads/products/pop-f1ad5a669cf075d5.jpg', '2026-11-17 01:08:20', '2026-11-16 17:08:20', 'Regular'),
+(12, 12, 'Fleur Delacour', 'fleur-delacour', '', 1799.00, 1, NULL, 0, 0, 'uploads/products/pop-d89e6846965f2952.jpg', '2026-11-17 01:10:38', '2026-11-16 17:10:38', 'Regular'),
+(13, 6, 'Frieren', 'frieren', '', 699.00, 2, NULL, 0, 0, 'uploads/products/pop-1cbf28885d366fe7.jpg', '2026-11-17 01:11:40', '2026-11-16 17:11:40', 'Regular'),
+(14, 14, 'Hancock', 'hancock', '', 999.00, 2, NULL, 0, 0, 'uploads/products/pop-a3bd21f5db2c4b2c.jpg', '2026-11-17 01:13:19', '2026-11-16 17:13:19', 'Regular'),
+(15, 12, 'Harry Potter', 'harry-potter', '', 749.00, 1, NULL, 0, 0, 'uploads/products/pop-be80a1a038599e58.jpg', '2026-11-17 01:14:27', '2026-11-16 17:14:27', 'Regular'),
+(16, 11, 'Hawks', 'hawks', '', 449.00, 1, NULL, 0, 0, 'uploads/products/pop-824e96269649a405.jpg', '2026-11-17 01:15:35', '2026-11-16 17:15:35', 'Regular'),
+(17, 9, 'Jinx (Arcane)', 'jinx-arcane', '', 599.00, 2, NULL, 0, 0, 'uploads/products/pop-678a542913f285f2.jpg', '2026-11-17 01:16:41', '2026-11-16 17:16:41', 'Regular'),
+(18, 12, 'Minerva McGonagall', 'minerva-mcgonagall', '', 848.00, 2, NULL, 0, 0, 'uploads/products/pop-205cf23db1c6f0c8.jpg', '2026-11-17 01:18:37', '2026-11-16 17:18:37', 'Regular'),
+(19, 13, 'Osiris', 'osiris', '', 899.00, 3, NULL, 0, 0, 'uploads/products/pop-7be37422664856c1.jpg', '2026-11-17 01:19:22', '2026-11-16 17:19:22', 'Regular'),
+(20, 10, 'Red-Nosed Raider', 'red-nosed-raider', '', 399.00, 4, NULL, 0, 0, 'uploads/products/pop-f4a8c1fa4266860e.jpg', '2026-11-17 01:20:00', '2026-11-16 17:20:00', 'Regular'),
+(21, 12, 'Rita Skeeter', 'rita-skeeter', '', 1199.00, 3, NULL, 0, 0, 'uploads/products/pop-2d2a4f90c8e6631a.jpg', '2026-11-17 01:20:49', '2026-11-16 17:20:49', 'Regular'),
+(22, 15, 'Super Saiyan Caulifla', 'super-saiyan-caulifla', '', 299.00, 4, NULL, 0, 0, 'uploads/products/pop-0bdf08d29ab8a2c5.jpg', '2026-11-17 01:22:35', '2026-11-16 17:22:35', 'Regular'),
+(23, 15, 'Super Saiyan Kefla', 'super-saiyan-kefla', '', 349.00, 2, NULL, 0, 0, 'uploads/products/pop-548803c6ff4dc1b1.jpg', '2026-11-17 01:23:25', '2026-11-16 17:23:25', 'Regular'),
+(24, 13, 'Sweeper Bot', 'sweeper-bot', '', 499.00, 2, NULL, 0, 0, 'uploads/products/pop-936f0c052249009c.jpg', '2026-11-17 01:24:17', '2026-11-16 17:24:17', 'Regular'),
+(25, 7, 'T\'Challa', 't-challa', '', 300.00, 4, NULL, 0, 0, 'uploads/products/pop-2faf773fa6b6df0d.jpg', '2026-11-17 01:25:25', '2026-11-16 17:25:25', 'Regular'),
+(26, 7, 'Thanos', 'thanos', '', 300.00, 9, NULL, 0, 0, 'uploads/products/pop-2c12eccc55f5d1c3.jpg', '2026-11-17 01:26:28', '2026-11-16 17:26:28', 'Regular'),
+(27, 7, 'Thor (Ragnarok)', 'thor-ragnarok', '', 300.00, 5, NULL, 0, 0, 'uploads/products/pop-38995e36ce6bf9ef.jpg', '2026-11-17 01:27:51', '2026-11-16 17:27:51', 'Regular'),
+(28, 11, 'Todoroki', 'todoroki', '', 399.00, 4, NULL, 0, 0, 'uploads/products/pop-1da066a839035752.jpg', '2026-11-17 01:28:40', '2026-11-16 17:28:40', 'Regular'),
+(29, 11, 'Tomura Shigaraki', 'tomura-shigaraki', '', 349.00, 5, NULL, 0, 0, 'uploads/products/pop-c967fe87c7303c56.jpg', '2026-11-17 01:29:59', '2026-11-16 17:29:59', 'Regular'),
+(30, 9, 'Vi', 'vi', '', 499.00, 3, NULL, 0, 0, 'uploads/products/pop-7b70945921fdfafe.jpg', '2026-11-17 01:30:56', '2026-11-16 17:30:56', 'Regular'),
+(31, 9, 'Vi (Arcane)', 'vi-arcane', '', 3499.00, 1, NULL, 0, 0, 'uploads/products/pop-4baf8eb7777008aa.jpg', '2026-11-17 01:31:47', '2026-11-16 17:31:47', 'Regular');
 
 -- --------------------------------------------------------
 
@@ -209,7 +244,33 @@ INSERT INTO `product_collections` (`product_id`, `collection_id`) VALUES
 (2, 2),
 (3, 2),
 (4, 1),
-(5, 4);
+(5, 4),
+(6, 4),
+(7, 4),
+(8, 2),
+(9, 1),
+(10, 1),
+(11, 2),
+(12, 1),
+(13, 2),
+(14, 4),
+(15, 1),
+(16, 2),
+(17, 4),
+(18, 1),
+(19, 4),
+(20, 4),
+(21, 1),
+(22, 2),
+(23, 2),
+(24, 4),
+(25, 1),
+(26, 1),
+(27, 1),
+(28, 2),
+(29, 2),
+(30, 4),
+(31, 4);
 
 -- --------------------------------------------------------
 
@@ -358,7 +419,7 @@ ALTER TABLE `cart_items`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=9;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
 
 --
 -- AUTO_INCREMENT for table `collections`
@@ -388,7 +449,7 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=32;
 
 --
 -- AUTO_INCREMENT for table `reviews`
