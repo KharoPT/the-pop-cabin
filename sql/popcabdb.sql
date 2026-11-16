@@ -3,9 +3,9 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Oct 27, 2026 at 02:21 PM
+-- Generation Time: Nov 16, 2026 at 05:22 PM
 -- Server version: 10.4.32-MariaDB
--- PHP Version: 8.2.12
+-- PHP Version: 8.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -20,7 +20,8 @@ SET time_zone = "+00:00";
 --
 -- Database: `popcabdb`
 --
-
+CREATE DATABASE popcabdb;
+USE popcabdb;
 -- --------------------------------------------------------
 
 --
@@ -33,6 +34,16 @@ CREATE TABLE `carts` (
   `session_id` varchar(64) NOT NULL,
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `carts`
+--
+
+INSERT INTO `carts` (`cart_id`, `user_id`, `session_id`, `created_at`) VALUES
+(1, 0, '6d0ff865c0c1cbb4a497629b6426d0bd', '2026-10-31 05:27:23'),
+(2, 0, '8fc8c49ea51a226f0699e4fd74b809c9', '2026-11-15 11:49:48'),
+(3, 1, '42fd920a831749822e79084fe62cd0da', '2026-11-16 09:07:59'),
+(5, 0, '80f7464ae2ec1922a22b893942668905', '2026-11-16 09:48:41');
 
 -- --------------------------------------------------------
 
@@ -61,6 +72,62 @@ CREATE TABLE `categories` (
   `description` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `categories`
+--
+
+INSERT INTO `categories` (`category_id`, `category_name`, `slug`, `description`) VALUES
+(5, 'Yu-Gi-Oh!', 'yu-gi-oh', ''),
+(6, 'Frieren', 'frieren', ''),
+(7, 'Marvel', 'marvel', ''),
+(8, 'Minecraft', 'minecraft', ''),
+(9, 'My Hero Academia', 'my hero academia', ''),
+(10, 'League of Legends', 'league of legends', ''),
+(11, 'Fortnite', 'fortnite', ''),
+(12, 'Harry Potter', 'harry potter', ''),
+(13, 'Fallout 4', 'fallout 4', ''),
+(14, 'Destiny', 'destiny', ''),
+(15, 'Dragon Ball Super', 'dragon ball super', '');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `collections`
+--
+
+CREATE TABLE `collections` (
+  `collection_id` int(11) NOT NULL,
+  `collection_name` varchar(100) NOT NULL,
+  `slug` varchar(100) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `collections`
+--
+
+INSERT INTO `collections` (`collection_id`, `collection_name`, `slug`) VALUES
+(1, 'Movies', 'movies'),
+(2, 'Anime', 'anime'),
+(4, 'Games', 'games');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `inquiries`
+--
+
+CREATE TABLE `inquiries` (
+  `inquiry_id` int(11) NOT NULL,
+  `user_id` int(11) DEFAULT NULL,
+  `first_name` varchar(100) NOT NULL,
+  `last_name` varchar(100) NOT NULL,
+  `email` varchar(255) NOT NULL,
+  `message` text NOT NULL,
+  `attachment_path` varchar(255) DEFAULT NULL,
+  `attachment_name` varchar(255) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
 -- --------------------------------------------------------
 
 --
@@ -79,7 +146,8 @@ CREATE TABLE `orders` (
   `shipping_address` varchar(255) NOT NULL,
   `shipping_city` varchar(100) NOT NULL,
   `shipping_postal_code` varchar(20) NOT NULL,
-  `shipping_country` varchar(100) NOT NULL
+  `shipping_country` varchar(100) NOT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -116,7 +184,55 @@ CREATE TABLE `products` (
   `is_featured` tinyint(1) NOT NULL,
   `image_url` varchar(500) NOT NULL,
   `created_at` datetime DEFAULT current_timestamp(),
-  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp()
+  `updated_at` timestamp NOT NULL DEFAULT current_timestamp() ON UPDATE current_timestamp(),
+  `edition` varchar(50) NOT NULL DEFAULT 'Regular'
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `products`
+--
+
+INSERT INTO `products` (`product_id`, `category_id`, `name`, `slug`, `description`, `price`, `stock_quantity`, `condition_grade`, `is_authenticated`, `is_featured`, `image_url`, `created_at`, `updated_at`, `edition`) VALUES
+(2, 5, 'Slifer The Sky Dragon', 'slifer-the-sky-dragon', 'Slifer The Sky Dragon from Yu-Gi-Oh! Is a popular character known by most fans due to its intimidating looks!', 4499.00, 1, NULL, 0, 0, 'uploads/products/pop-ec738c1480585b2d.jpg', '2026-11-16 18:00:44', '2026-11-16 10:00:44', 'Regular'),
+(3, 6, 'Himmel', 'himmel', '', 499.00, 1, NULL, 0, 0, 'uploads/products/pop-c9a2dfec3abf90a3.jpg', '2026-11-16 18:03:14', '2026-11-16 10:03:14', 'Regular'),
+(4, 7, 'Spiderman(Homemade Suit)', 'spiderman-homemade-suit', '\"With Great Power Comes Great Responsibility\". Spiderman is one of the most popular characters of the Marvel Franchise!', 300.00, 2, NULL, 0, 0, 'uploads/products/pop-ae3f8284adfc6444.jpg', '2026-11-16 18:06:22', '2026-11-16 10:06:22', 'Regular'),
+(5, 8, 'Alex In Diamond Armor', 'alex-in-diamond-armor', 'Alex', 300.00, 1, NULL, 0, 0, 'uploads/products/pop-5c5a854bf008a50e.jpg', '2026-11-16 18:23:13', '2026-11-16 10:23:13', 'Regular');
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `product_collections`
+--
+
+CREATE TABLE `product_collections` (
+  `product_id` int(11) NOT NULL,
+  `collection_id` int(11) NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `product_collections`
+--
+
+INSERT INTO `product_collections` (`product_id`, `collection_id`) VALUES
+(2, 2),
+(3, 2),
+(4, 1),
+(5, 4);
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `reviews`
+--
+
+CREATE TABLE `reviews` (
+  `review_id` int(11) NOT NULL,
+  `product_id` int(11) NOT NULL,
+  `user_id` int(11) NOT NULL,
+  `rating` tinyint(4) NOT NULL,
+  `comment` text NOT NULL,
+  `is_anonymous` tinyint(1) NOT NULL DEFAULT 0,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 -- --------------------------------------------------------
@@ -135,8 +251,16 @@ CREATE TABLE `users` (
   `address` varchar(255) NOT NULL,
   `city` varchar(100) NOT NULL,
   `postal_code` varchar(20) NOT NULL,
-  `country` varchar(100) NOT NULL
+  `country` varchar(100) NOT NULL,
+  `user_role` enum('customer','admin') NOT NULL DEFAULT 'customer'
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `users`
+--
+
+INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `full_name`, `phone`, `address`, `city`, `postal_code`, `country`, `user_role`) VALUES
+(1, 'admin', 'admin@gmail.com', '$2y$12$ZhW5uyDqbvpYwvtE1OqL7eGLucYlS7jt1pFDjvBL7.vQxRhZXzVl2', 'Admin 1', '', '', '', '', '', 'admin');
 
 --
 -- Indexes for dumped tables
@@ -165,6 +289,19 @@ ALTER TABLE `categories`
   ADD UNIQUE KEY `slug` (`slug`);
 
 --
+-- Indexes for table `collections`
+--
+ALTER TABLE `collections`
+  ADD PRIMARY KEY (`collection_id`),
+  ADD UNIQUE KEY `uq_collection_slug` (`slug`);
+
+--
+-- Indexes for table `inquiries`
+--
+ALTER TABLE `inquiries`
+  ADD PRIMARY KEY (`inquiry_id`);
+
+--
 -- Indexes for table `orders`
 --
 ALTER TABLE `orders`
@@ -187,6 +324,21 @@ ALTER TABLE `products`
   ADD KEY `category_id` (`category_id`);
 
 --
+-- Indexes for table `product_collections`
+--
+ALTER TABLE `product_collections`
+  ADD PRIMARY KEY (`product_id`,`collection_id`),
+  ADD KEY `idx_pc_collection` (`collection_id`);
+
+--
+-- Indexes for table `reviews`
+--
+ALTER TABLE `reviews`
+  ADD PRIMARY KEY (`review_id`),
+  ADD UNIQUE KEY `uq_review_once` (`product_id`,`user_id`),
+  ADD KEY `idx_review_created` (`created_at`);
+
+--
 -- Indexes for table `users`
 --
 ALTER TABLE `users`
@@ -202,7 +354,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
@@ -214,7 +366,19 @@ ALTER TABLE `cart_items`
 -- AUTO_INCREMENT for table `categories`
 --
 ALTER TABLE `categories`
-  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `category_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=16;
+
+--
+-- AUTO_INCREMENT for table `collections`
+--
+ALTER TABLE `collections`
+  MODIFY `collection_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+
+--
+-- AUTO_INCREMENT for table `inquiries`
+--
+ALTER TABLE `inquiries`
+  MODIFY `inquiry_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `orders`
@@ -232,13 +396,19 @@ ALTER TABLE `order_items`
 -- AUTO_INCREMENT for table `products`
 --
 ALTER TABLE `products`
-  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `product_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=6;
+
+--
+-- AUTO_INCREMENT for table `reviews`
+--
+ALTER TABLE `reviews`
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- Constraints for dumped tables
