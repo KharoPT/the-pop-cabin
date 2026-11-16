@@ -16,7 +16,7 @@ define('DB_PASS', '');
 // Base URL of the project, no trailing slash. Examples:
 //   PHP built-in server (from the project root): php -S localhost:8000   -> http://localhost:8000
 //   XAMPP / MAMP, project copied into htdocs/popcabdb-frontend/popcab    -> http://localhost/popcabdb-frontend/popcab
-define('SITE_URL', 'http://localhost/popcab');
+define('SITE_URL', 'http://localhost/the-pop-cabin');
 define('SITE_NAME', 'The Pop Cabin');
 define('SITE_CURRENCY_SYMBOL', '₱');
 define('FREE_SHIPPING_THRESHOLD', 100);
