@@ -1,0 +1,16 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 100 100" role="img" aria-label="The Pop Cabin">
+  <title>The Pop Cabin</title>
+  <circle cx="50" cy="50" r="48" fill="#3b2a1f"/>
+  <circle cx="50" cy="50" r="44" fill="none" stroke="#c9a56f" stroke-width="1.5" opacity=".7"/>
+  <!-- chimney -->
+  <rect x="62" y="24" width="8" height="16" fill="#e9d8b8"/>
+  <!-- roof -->
+  <path d="M20 52 L50 24 L80 52 L74 52 L50 30 L26 52 Z" fill="#e9d8b8"/>
+  <!-- walls: stacked logs -->
+  <rect x="28" y="52" width="44" height="22" rx="2" fill="#d3b98c"/>
+  <path d="M28 59.5h44M28 67h44" stroke="#8b5e3c" stroke-width="1.6"/>
+  <!-- door + window -->
+  <rect x="44" y="60" width="12" height="14" rx="1.5" fill="#3b2a1f"/>
+  <rect x="32" y="58" width="8" height="7" fill="#3b2a1f" opacity=".85"/>
+  <rect x="60" y="58" width="8" height="7" fill="#3b2a1f" opacity=".85"/>
+</svg>

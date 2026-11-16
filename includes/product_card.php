@@ -1,24 +1,30 @@
 <?php
-
-$badge  = !empty($product['is_featured']) ? 'Featured' : null;
-$imgSrc = $product['image_url'] ?: 'https://placehold.co/600x600/1e1b24/c8a355?text=' . urlencode($product['name']);
+/**
+ * One pop card (shop grid, "you may also like", ...). Expects $card = a product row
+ * that includes category_name.
+ */
+$cardUrl   = SITE_URL . '/product.php?slug=' . urlencode($card['slug']);
+$cardImg   = imgSrc($card['image_url'] ?? '');
+$cardSold  = (int) $card['stock_quantity'] <= 0;
 ?>
-<article class="product-card">
-    <a href="<?php echo SITE_URL; ?>/product.php?slug=<?php echo e($product['slug']); ?>" class="product-card-image">
-        <img src="<?php echo e($imgSrc); ?>" alt="<?php echo e($product['name']); ?>" loading="lazy">
-        <?php if ((int) $product['stock_quantity'] <= 0): ?>
-            <span class="product-badge product-badge-sold">Sold Out</span>
-        <?php elseif ($badge): ?>
-            <span class="product-badge"><?php echo e($badge); ?></span>
-        <?php endif; ?>
-    </a>
-    <div class="product-card-body">
-        <h3 class="product-name">
-            <a href="<?php echo SITE_URL; ?>/product.php?slug=<?php echo e($product['slug']); ?>"><?php echo e($product['name']); ?></a>
-        </h3>
-        <div class="product-card-footer">
-            <span class="product-price"><?php echo formatPrice($product['price']); ?></span>
-            <a href="<?php echo SITE_URL; ?>/product.php?slug=<?php echo e($product['slug']); ?>" class="btn btn-small">View</a>
-        </div>
+<article class="pop-card" data-product-id="<?php echo (int) $card['product_id']; ?>">
+    <div class="pop-card-media">
+        <a href="<?php echo e($cardUrl); ?>" class="pop-card-link" tabindex="-1" aria-hidden="true">
+            <?php if ($cardImg): ?>
+                <img src="<?php echo e($cardImg); ?>" alt="" loading="lazy">
+            <?php else: ?>
+                <span class="img-ph" role="img" aria-label="No photo yet"></span>
+            <?php endif; ?>
+        </a>
+        <button type="button" class="fav-btn" data-fav="<?php echo (int) $card['product_id']; ?>" aria-pressed="false"
+                aria-label="Add <?php echo e($card['name']); ?> to favorites">
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true"><path d="M12 21s-7.5-4.6-9.6-9.2C.9 8.4 2.7 4.5 6.3 4.5c2 0 3.5 1.1 4.2 2.4h3c.7-1.3 2.2-2.4 4.2-2.4 3.6 0 5.4 3.9 3.9 7.3C19.5 16.4 12 21 12 21z" transform="translate(0 .2)"/></svg>
+        </button>
+        <?php if ($cardSold): ?><span class="pop-card-ribbon">Out of stock</span><?php endif; ?>
+    </div>
+    <div class="pop-card-body">
+        <h3 class="pop-name"><a href="<?php echo e($cardUrl); ?>"><?php echo e($card['name']); ?></a></h3>
+        <?php if (!empty($card['category_name'])): ?><p class="pop-cat"><?php echo e($card['category_name']); ?></p><?php endif; ?>
+        <p class="pop-price"><?php echo formatPrice($card['price']); ?></p>
     </div>
 </article>

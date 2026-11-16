@@ -1,126 +1,141 @@
 <?php
-require_once __DIR__ . '/../config/database.php';
+require_once __DIR__ . '/BaseModel.php';
 
-class Cart
+/**
+ * A cart is always stored in the database (carts / cart_items), never in the session itself.
+ *
+ * Both carts.user_id and carts.session_id are NOT NULL, so every cart row stores both:
+ *   - session_id : a random token kept in $_SESSION['guest_cart_session'] (identifies this browser)
+ *   - user_id    : 0 while the shopper is a guest, their real user_id once they are logged in
+ *
+ * When a guest logs in, their cart is simply "claimed" (user_id set to their id). If they already
+ * had a cart from an earlier visit, the guest items are merged into it and the guest cart is removed.
+ */
+class Cart extends BaseModel
 {
-    private PDO $db;
     private int $cartId;
+
+    protected function table(): string
+    {
+        return 'carts';
+    }
 
     public function __construct()
     {
-        $this->db = Database::getInstance()->getConnection();
+        parent::__construct();
         $this->cartId = $this->getOrCreateCart();
     }
 
-    private function getOrCreateCart()
+    private function sessionToken(): string
     {
-        if (isLoggedIn()) {
-            $userId = currentUserId();
-            $stmt = $this->db->prepare('SELECT id FROM carts WHERE user_id = ? LIMIT 1');
-            $stmt->execute([$userId]);
-            $cart = $stmt->fetch();
-
-            if ($cart) {
-                $this->mergeGuestCart((int) $cart['id']);
-                return (int) $cart['id'];
-            }
-
-            $stmt = $this->db->prepare('INSERT INTO carts (user_id) VALUES (?)');
-            $stmt->execute([$userId]);
-            $newCartId = (int) $this->db->lastInsertId();
-            $this->mergeGuestCart($newCartId);
-            return $newCartId;
-        }
-
         if (empty($_SESSION['guest_cart_session'])) {
             $_SESSION['guest_cart_session'] = bin2hex(random_bytes(16));
         }
-        $sessionId = $_SESSION['guest_cart_session'];
+        return $_SESSION['guest_cart_session'];
+    }
 
-        $stmt = $this->db->prepare('SELECT id FROM carts WHERE session_id = ? AND user_id IS NULL LIMIT 1');
-        $stmt->execute([$sessionId]);
-        $cart = $stmt->fetch();
-        if ($cart) {
-            return (int) $cart['id'];
+    private function getOrCreateCart(): int
+    {
+        $token = $this->sessionToken();
+
+        // The cart this browser started as a guest (user_id = 0), if any.
+        $stmt = $this->db->prepare('SELECT cart_id FROM carts WHERE session_id = ? AND user_id = 0 LIMIT 1');
+        $stmt->execute([$token]);
+        $guestCartId = $stmt->fetchColumn();
+
+        if (!isLoggedIn()) {
+            if ($guestCartId) {
+                return (int) $guestCartId;
+            }
+            $stmt = $this->db->prepare('INSERT INTO carts (user_id, session_id) VALUES (0, ?)');
+            $stmt->execute([$token]);
+            return (int) $this->db->lastInsertId();
         }
 
-        $stmt = $this->db->prepare('INSERT INTO carts (session_id) VALUES (?)');
-        $stmt->execute([$sessionId]);
+        $userId = currentUserId();
+        $stmt = $this->db->prepare('SELECT cart_id FROM carts WHERE user_id = ? LIMIT 1');
+        $stmt->execute([$userId]);
+        $userCartId = $stmt->fetchColumn();
+
+        if ($userCartId) {
+            if ($guestCartId) {
+                $this->mergeInto((int) $guestCartId, (int) $userCartId);
+            }
+            return (int) $userCartId;
+        }
+
+        if ($guestCartId) {
+            // First time this user has a cart: they simply take over the guest cart.
+            $stmt = $this->db->prepare('UPDATE carts SET user_id = ? WHERE cart_id = ?');
+            $stmt->execute([$userId, $guestCartId]);
+            return (int) $guestCartId;
+        }
+
+        $stmt = $this->db->prepare('INSERT INTO carts (user_id, session_id) VALUES (?, ?)');
+        $stmt->execute([$userId, $token]);
         return (int) $this->db->lastInsertId();
     }
 
-    private function mergeGuestCart(int $userCartId)
+    /** Move every item from one cart into another (adding quantities), then delete the emptied cart. */
+    private function mergeInto(int $fromCartId, int $toCartId): void
     {
-        if (empty($_SESSION['guest_cart_session'])) {
-            return;
-        }
-        $sessionId = $_SESSION['guest_cart_session'];
-
-        $stmt = $this->db->prepare('SELECT id FROM carts WHERE session_id = ? AND user_id IS NULL LIMIT 1');
-        $stmt->execute([$sessionId]);
-        $guestCart = $stmt->fetch();
-        if (!$guestCart) {
-            unset($_SESSION['guest_cart_session']);
-            return;
-        }
-
         $stmt = $this->db->prepare('SELECT product_id, quantity FROM cart_items WHERE cart_id = ?');
-        $stmt->execute([$guestCart['id']]);
+        $stmt->execute([$fromCartId]);
         foreach ($stmt->fetchAll() as $item) {
-            $this->addItem((int) $item['product_id'], (int) $item['quantity'], $userCartId);
+            $this->addItem((int) $item['product_id'], (int) $item['quantity'], $toCartId);
         }
 
-        $this->db->prepare('DELETE FROM carts WHERE id = ?')->execute([$guestCart['id']]);
-        unset($_SESSION['guest_cart_session']);
+        $this->db->prepare('DELETE FROM cart_items WHERE cart_id = ?')->execute([$fromCartId]);
+        $this->db->prepare('DELETE FROM carts WHERE cart_id = ?')->execute([$fromCartId]);
     }
 
-    public function addItem(int $productId, int $quantity = 1, ?int $cartId = null)
+    public function addItem(int $productId, int $quantity = 1, ?int $cartId = null): bool
     {
         $cartId = $cartId ?? $this->cartId;
 
-        $stmt = $this->db->prepare('SELECT id, quantity FROM cart_items WHERE cart_id = ? AND product_id = ?');
+        $stmt = $this->db->prepare('SELECT cart_item_id, quantity FROM cart_items WHERE cart_id = ? AND product_id = ?');
         $stmt->execute([$cartId, $productId]);
         $existing = $stmt->fetch();
 
         if ($existing) {
-            $stmt = $this->db->prepare('UPDATE cart_items SET quantity = ? WHERE id = ?');
-            return $stmt->execute([$existing['quantity'] + $quantity, $existing['id']]);
+            $stmt = $this->db->prepare('UPDATE cart_items SET quantity = ? WHERE cart_item_id = ?');
+            return $stmt->execute([$existing['quantity'] + $quantity, $existing['cart_item_id']]);
         }
 
         $stmt = $this->db->prepare('INSERT INTO cart_items (cart_id, product_id, quantity) VALUES (?, ?, ?)');
         return $stmt->execute([$cartId, $productId, $quantity]);
     }
 
-    public function updateItem(int $cartItemId, int $quantity)
+    public function updateItem(int $cartItemId, int $quantity): bool
     {
         if ($quantity <= 0) {
             return $this->removeItem($cartItemId);
         }
-        $stmt = $this->db->prepare('UPDATE cart_items SET quantity = ? WHERE id = ? AND cart_id = ?');
+        $stmt = $this->db->prepare('UPDATE cart_items SET quantity = ? WHERE cart_item_id = ? AND cart_id = ?');
         return $stmt->execute([$quantity, $cartItemId, $this->cartId]);
     }
 
-    public function removeItem(int $cartItemId)
+    public function removeItem(int $cartItemId): bool
     {
-        $stmt = $this->db->prepare('DELETE FROM cart_items WHERE id = ? AND cart_id = ?');
+        $stmt = $this->db->prepare('DELETE FROM cart_items WHERE cart_item_id = ? AND cart_id = ?');
         return $stmt->execute([$cartItemId, $this->cartId]);
     }
 
-    public function getItems()
+    public function getItems(): array
     {
         $stmt = $this->db->prepare(
-            'SELECT ci.id AS cart_item_id, ci.quantity,
-                    p.id AS product_id, p.name, p.slug, p.price, p.image_url, p.stock_quantity
+            'SELECT ci.cart_item_id, ci.quantity,
+                    p.product_id, p.name, p.slug, p.price, p.image_url, p.stock_quantity
              FROM cart_items ci
-             JOIN products p ON ci.product_id = p.id
+             JOIN products p ON ci.product_id = p.product_id
              WHERE ci.cart_id = ?
-             ORDER BY ci.added_at DESC'
+             ORDER BY ci.added_at DESC, ci.cart_item_id DESC'
         );
         $stmt->execute([$this->cartId]);
         return $stmt->fetchAll();
     }
 
-    public function getTotal()
+    public function getTotal(): float
     {
         $total = 0.0;
         foreach ($this->getItems() as $item) {
@@ -129,20 +144,20 @@ class Cart
         return $total;
     }
 
-    public function getItemCount()
+    public function getItemCount(): int
     {
         $stmt = $this->db->prepare('SELECT SUM(quantity) AS cnt FROM cart_items WHERE cart_id = ?');
         $stmt->execute([$this->cartId]);
         return (int) ($stmt->fetch()['cnt'] ?? 0);
     }
 
-    public function clear()
+    public function clear(): bool
     {
         $stmt = $this->db->prepare('DELETE FROM cart_items WHERE cart_id = ?');
         return $stmt->execute([$this->cartId]);
     }
 
-    public function getCartId()
+    public function getCartId(): int
     {
         return $this->cartId;
     }

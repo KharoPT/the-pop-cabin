@@ -1,11 +1,23 @@
 <?php
+/**
+ * Public site header. Pages may set before including this file:
+ *   $pageTitle, $metaDescription, $bodyClass, $pageBanner (true = title banner under the header)
+ */
 if (!isset($cartCountForHeader)) {
     require_once __DIR__ . '/../classes/Cart.php';
     $cartCountForHeader = (new Cart())->getItemCount();
 }
-$currentPage    = basename($_SERVER['PHP_SELF']);
-$flashMessages  = getFlashMessages();
-$navCategories  = getAllCategories();
+$currentPage   = basename($_SERVER['PHP_SELF']);
+$flashMessages = getFlashMessages();
+$metaDescription = $metaDescription ?? 'The Pop Cabin: Funko Pop collectibles.';
+
+$menuLinks = [
+    ['index.php',     'Home'],
+    ['shop.php',      'Shop Collections'],
+    ['mechanics.php', 'System Mechanics'],
+    ['about.php',     'About us'],
+    ['contact.php',   'Contact Us'],
+];
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -13,78 +25,75 @@ $navCategories  = getAllCategories();
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo e($pageTitle ?? SITE_NAME); ?></title>
-<meta name="description" content="The Pop Cabin — shop Funko Pop vinyl figures for fans and collectors.">
+<meta name="description" content="<?php echo e($metaDescription); ?>">
+<link rel="icon" type="image/svg+xml" href="<?php echo SITE_URL; ?>/assets/img/logo.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,500;9..144,600;9..144,700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
 </head>
-<body>
+<body class="<?php echo e($bodyClass ?? ''); ?>">
 <script>
   window.CSRF_TOKEN = <?php echo json_encode(generateCsrfToken()); ?>;
   window.SITE_URL = <?php echo json_encode(SITE_URL); ?>;
 </script>
+<a class="skip-link" href="#main">Skip to content</a>
 
-<header class="site-header">
-    <div class="container header-inner">
-        <a href="<?php echo SITE_URL; ?>/index.php" class="logo">
-            <span class="logo-mark">PC</span>
-            <span class="logo-text"><?php echo e(SITE_NAME); ?></span>
-        </a>
-
-        <button type="button" class="nav-toggle" aria-label="Toggle navigation" aria-expanded="false">
+<header class="site-header" id="top">
+    <div class="header-bar">
+        <button type="button" class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
             <span></span><span></span><span></span>
         </button>
 
-        <nav class="main-nav">
-            <a href="<?php echo SITE_URL; ?>/index.php" class="<?php echo $currentPage === 'index.php' ? 'active' : ''; ?>">Home</a>
-            <a href="<?php echo SITE_URL; ?>/shop.php" class="<?php echo $currentPage === 'shop.php' ? 'active' : ''; ?>">Shop All</a>
-            <div class="nav-dropdown">
-                <button type="button" class="nav-dropdown-trigger">Categories</button>
-                <div class="nav-dropdown-menu">
-                    <?php foreach ($navCategories as $navCat): ?>
-                        <a href="<?php echo SITE_URL; ?>/shop.php?category=<?php echo e($navCat['slug']); ?>"><?php echo e($navCat['category_name']); ?></a>
-                    <?php endforeach; ?>
-                </div>
-            </div>
+        <a href="<?php echo SITE_URL; ?>/index.php" class="logo-link" aria-label="<?php echo e(SITE_NAME); ?> home">
+            <img src="<?php echo SITE_URL; ?>/assets/img/logo.svg" alt="" width="46" height="46">
+        </a>
 
-            <form class="header-search" action="<?php echo SITE_URL; ?>/shop.php" method="get">
-                <input type="text" name="search" placeholder="Search Funko Pops" value="<?php echo e($_GET['search'] ?? ''); ?>">
-                <button type="submit" aria-label="Search">
-                    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="11" cy="11" r="7"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-                </button>
-            </form>
+        <form class="search-form" role="search" action="<?php echo SITE_URL; ?>/shop.php" method="get">
+            <label class="sr-only" for="site-search">Search pops</label>
+            <input type="search" id="site-search" name="search" placeholder="Search" value="<?php echo e(is_string($_GET['search'] ?? null) ? $_GET['search'] : ''); ?>">
+            <button type="submit" class="sr-only">Search</button>
+        </form>
 
-            <?php if (isLoggedIn()): ?>
-                <div class="nav-dropdown account-dropdown">
-                    <button type="button" class="nav-dropdown-trigger">Hi, <?php echo e(explode(' ', $_SESSION['full_name'] ?? 'there')[0]); ?></button>
-                    <div class="nav-dropdown-menu">
-                        <a href="<?php echo SITE_URL; ?>/account.php">My Account</a>
-                        <?php if (isAdmin()): ?>
-                            <a href="<?php echo SITE_URL; ?>/admin/index.php">Admin Panel</a>
-                        <?php endif; ?>
-                        <a href="<?php echo SITE_URL; ?>/logout.php">Sign Out</a>
-                    </div>
-                </div>
-            <?php else: ?>
-                <a href="<?php echo SITE_URL; ?>/login.php" class="header-link <?php echo $currentPage === 'login.php' ? 'active' : ''; ?>">Sign In</a>
-            <?php endif; ?>
-
-            <a href="<?php echo SITE_URL; ?>/cart.php" class="cart-link <?php echo $currentPage === 'cart.php' ? 'active' : ''; ?>">
-                <svg width="19" height="19" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 8h12l-1 12H7L6 8z"/><path d="M9 8V6a3 3 0 0 1 6 0v2"/></svg>
-                Cart
-                <span class="cart-badge" style="<?php echo $cartCountForHeader > 0 ? '' : 'display:none;'; ?>"><?php echo (int) $cartCountForHeader; ?></span>
-            </a>
-        </nav>
+        <?php if (isLoggedIn()): ?>
+            <a href="<?php echo SITE_URL; ?>/account.php" class="login-btn">Account</a>
+        <?php else: ?>
+            <a href="<?php echo SITE_URL; ?>/login.php" class="login-btn">Login</a>
+        <?php endif; ?>
     </div>
+
+    <nav class="site-menu" id="site-menu" aria-label="Main menu" hidden>
+        <ul>
+            <?php foreach ($menuLinks as [$file, $label]): ?>
+                <li><a href="<?php echo SITE_URL . '/' . $file; ?>" <?php echo $currentPage === $file ? 'aria-current="page"' : ''; ?>><?php echo e($label); ?></a></li>
+            <?php endforeach; ?>
+        </ul>
+        <ul class="site-menu-account">
+            <li>
+                <a href="<?php echo SITE_URL; ?>/cart.php" <?php echo $currentPage === 'cart.php' ? 'aria-current="page"' : ''; ?>>Cart
+                    <span class="cart-badge" style="<?php echo $cartCountForHeader > 0 ? '' : 'display:none;'; ?>"><?php echo (int) $cartCountForHeader; ?></span>
+                </a>
+            </li>
+            <?php if (isLoggedIn()): ?>
+                <li><a href="<?php echo SITE_URL; ?>/account.php">My Account</a></li>
+                <?php if (isAdmin()): ?>
+                    <li><a href="<?php echo SITE_URL; ?>/admin/index.php">Admin Panel</a></li>
+                <?php endif; ?>
+                <li><a href="<?php echo SITE_URL; ?>/logout.php">Log out</a></li>
+            <?php else: ?>
+                <li><a href="<?php echo SITE_URL; ?>/login.php">Login</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/register.php">Sign Up</a></li>
+            <?php endif; ?>
+        </ul>
+    </nav>
 </header>
 
 <?php if (!empty($flashMessages)): ?>
-    <div class="flash-wrap container">
+    <div class="flash-wrap">
         <?php foreach ($flashMessages as $type => $message): ?>
-            <div class="flash-message flash-<?php echo e($type); ?>"><?php echo e($message); ?></div>
+            <div class="flash-message flash-<?php echo e($type); ?>" role="status"><?php echo e($message); ?></div>
         <?php endforeach; ?>
     </div>
 <?php endif; ?>
 
-<main>
+<main id="main">

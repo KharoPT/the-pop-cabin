@@ -1,4 +1,8 @@
 <?php
+/**
+ * The Pop Cabin — Database connection
+ * A tiny singleton wrapper around PDO so every class shares one connection.
+ */
 
 class Database
 {
@@ -17,7 +21,7 @@ class Database
         } catch (PDOException $e) {
             die(
                 'Database connection failed. Check DB_HOST / DB_NAME / DB_USER / DB_PASS in config/config.php, ' .
-                'then make sure a database named "' . DB_NAME . '" exists with our tables imported. (' . $e->getMessage() . ')'
+                'and make sure a database named "' . DB_NAME . '" exists with your tables imported. (' . $e->getMessage() . ')'
             );
         }
     }

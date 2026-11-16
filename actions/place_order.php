@@ -28,7 +28,6 @@ foreach ($required as $field) {
     }
     $shipping[$field] = $value;
 }
-$shipping['payment_method'] = sanitizeInput($_POST['payment_method'] ?? 'Cash on Delivery');
 
 $result = (new Order())->create(currentUserId(), $items, $shipping);
 
