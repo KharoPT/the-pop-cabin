@@ -1,0 +1,63 @@
+/* ==========================================================================
+   Component: site footer
+   One footer for every public page (admin has its own). Markup lives in
+   includes/footer.php; this file is its only styling.
+   ========================================================================== */
+.site-footer {
+  position: relative; width: calc(100% - 32px); max-width: 1200px;
+  margin: 48px auto 0; padding: 67px 32px 32px;
+  color: var(--color-text-on-dark); background: var(--color-bg-footer); background-image: none;
+  border-radius: 12px 12px 0 0;
+}
+.footer-notch {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 226px; height: 27px; min-width: 0; max-width: none; border-radius: 0; box-shadow: none;
+  background: var(--color-bg-page) url("../img/footer-notch.svg") no-repeat center / 226px 27px;
+}
+.footer-inner { max-width: var(--container-max); margin: 0 auto; padding: 0; }
+.footer-brand { display: block; }
+.footer-logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+.footer-logo img { width: 32px; height: 32px; border-radius: 0; box-shadow: none; }
+.footer-wordmark { display: flex; flex-direction: column; line-height: 12px; }
+.footer-wordmark span { color: var(--color-text-highlight-on-dark); font: 600 12px/12px var(--font-family-heading); }
+.footer-wordmark strong {
+  color: var(--color-text-on-dark); font: 600 18px/1 var(--font-family-heading);
+  background: linear-gradient(180deg, #FBF7EE 33%, #96684D 81%);
+  -webkit-background-clip: text; background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.socials { display: flex; gap: 19px; margin: 20px 0 0; }
+.social-link { color: var(--color-text-on-dark); display: grid; place-items: center; }
+.social-link svg { width: 20px; height: 20px; }
+a.social-link:hover { color: var(--color-text-highlight-on-dark); }
+.footer-cols { display: flex; flex-direction: column; gap: 32px; margin-top: 32px; grid-area: auto; }
+.footer-col { margin: 0; }
+.footer-col h2 {
+  color: var(--color-text-on-dark); margin: 0 0 12px;
+  font: 500 22px/28px var(--font-family-heading);
+}
+.footer-col a { display: block; color: var(--color-text-on-dark); text-decoration: none; padding: 0; font: 400 14px/20px var(--font-family-body); }
+.footer-col a + a { margin-top: 4px; }
+.footer-col a:hover { color: var(--color-text-highlight-on-dark); }
+.footer-legal { margin-top: 16px; color: var(--color-text-on-dark); font: 400 10px/20px var(--font-family-body); }
+.footer-legal p { margin: 0; }
+.ph-flag { display: none; }
+
+@media (min-width: 700px) {
+  .site-footer { width: calc(100% - 64px); padding: 67px 48px 40px; }
+  .footer-inner { display: grid; grid-template-columns: 1fr 2.4fr; grid-template-areas: "brand cols" "legal legal"; column-gap: 3rem; }
+  .footer-brand { grid-area: brand; }
+  .footer-cols { grid-area: cols; flex-direction: row; gap: 32px; margin-top: 0; }
+  .footer-col { flex: 1 1 0; }
+  .footer-legal { grid-area: legal; margin-top: 1.5rem; }
+  .footer-wordmark span { font-size: 14px; line-height: 14px; }
+  .footer-wordmark strong { font-size: 24px; }
+  .footer-logo img { width: 44px; height: 44px; }
+}
+
+@media (min-width: 1000px) {
+  .site-footer { width: calc(100% - 80px); max-width: 1120px; padding: 80px 64px 48px; border-radius: 16px 16px 0 0; }
+  .footer-col h2 { font-size: 26px; line-height: 32px; }
+  .footer-col a { font-size: 16px; line-height: 24px; }
+  .social-link svg { width: 24px; height: 24px; }
+}
