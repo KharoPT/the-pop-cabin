@@ -5,6 +5,11 @@
    ========================================================================== */
 .page-auth { background: var(--color-bg-page); background-image: none; }
 
+/* Short pages keep the footer at the bottom of the viewport */
+.page-auth { min-height: 100vh; display: flex; flex-direction: column; }
+.page-auth main { flex: 1 0 auto; }
+.page-auth .site-footer { flex: none; }
+
 .page-auth main {
   position: relative;
   margin-top: calc(-1 * var(--site-header-h, 72px)); /* header floats on the photo */
