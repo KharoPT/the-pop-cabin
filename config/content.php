@@ -12,15 +12,15 @@ return [
     'cta_text' => 'Browse the collection and pick your Pop.',
 
     // ---- Social links (footer + home). Empty = icon shows but is not clickable yet ----
-    'facebook_url'  => '',
-    'tiktok_url'    => '',
-    'instagram_url' => '',
+    'facebook_url'  => 'https://www.facebook.com/thepopcabin12',
+    'tiktok_url'    => 'https://www.tiktok.com/@thepopcabin',
+    'instagram_url' => 'https://www.instagram.com/thepopcabin12/',
 
     // ---- Footer ----
     'trademark_line' => '',   // optional second line under the copyright, e.g. a trademark notice
 
     // ---- Home: "Meet the team" (4 cards). 'photo' = image URL or path under the site root ----
-    'team_caption' => 'Students from UDD that made it possible',
+    'team_caption' => 'Students from UDD SITE that made it possible',
     'team' => [
         ['name' => 'Team member', 'role' => 'Role', 'photo' => ''],
         ['name' => 'Team member', 'role' => 'Role', 'photo' => ''],

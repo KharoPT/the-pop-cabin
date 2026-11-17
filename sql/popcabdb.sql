@@ -1,11 +1,11 @@
 -- phpMyAdmin SQL Dump
--- version 5.2.3
+-- version 5.2.1
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 16, 2026 at 06:32 PM
--- Server version: 10.11.16-MariaDB
--- PHP Version: 8.3.36
+-- Generation Time: Nov 18, 2026 at 12:14 AM
+-- Server version: 10.4.32-MariaDB
+-- PHP Version: 8.5.12
 
 SET SQL_MODE = "NO_AUTO_VALUE_ON_ZERO";
 START TRANSACTION;
@@ -21,9 +21,9 @@ SET time_zone = "+00:00";
 -- Database: `popcabdb`
 --
 CREATE DATABASE popcabdb;
-
 USE popcabdb;
 -- --------------------------------------------------------
+
 --
 -- Table structure for table `carts`
 --
@@ -43,7 +43,9 @@ INSERT INTO `carts` (`cart_id`, `user_id`, `session_id`, `created_at`) VALUES
 (1, 0, '6d0ff865c0c1cbb4a497629b6426d0bd', '2026-10-31 05:27:23'),
 (2, 0, '8fc8c49ea51a226f0699e4fd74b809c9', '2026-11-15 11:49:48'),
 (3, 1, '42fd920a831749822e79084fe62cd0da', '2026-11-16 09:07:59'),
-(5, 0, '80f7464ae2ec1922a22b893942668905', '2026-11-16 09:48:41');
+(5, 0, '80f7464ae2ec1922a22b893942668905', '2026-11-16 09:48:41'),
+(8, 0, '44b54f1de8c41ba4fe244666194559a8', '2026-11-17 22:53:45'),
+(11, 2, '171aeee427ca9c1c4e626f25b79d1ef4', '2026-11-17 23:11:55');
 
 -- --------------------------------------------------------
 
@@ -193,36 +195,36 @@ CREATE TABLE `products` (
 --
 
 INSERT INTO `products` (`product_id`, `category_id`, `name`, `slug`, `description`, `price`, `stock_quantity`, `condition_grade`, `is_authenticated`, `is_featured`, `image_url`, `created_at`, `updated_at`, `edition`) VALUES
-(2, 5, 'Slifer The Sky Dragon', 'slifer-the-sky-dragon', 'Slifer The Sky Dragon from Yu-Gi-Oh! Is a popular character known by most fans due to its intimidating looks!', 4499.00, 1, NULL, 0, 0, 'uploads/products/pop-ec738c1480585b2d.jpg', '2026-11-16 18:00:44', '2026-11-16 10:00:44', 'Regular'),
-(3, 6, 'Himmel', 'himmel', '', 499.00, 1, NULL, 0, 0, 'uploads/products/pop-c9a2dfec3abf90a3.jpg', '2026-11-16 18:03:14', '2026-11-16 10:03:14', 'Regular'),
-(4, 7, 'Spiderman(Homemade Suit)', 'spiderman-homemade-suit', '\"With Great Power Comes Great Responsibility\". Spiderman is one of the most popular characters of the Marvel Franchise!', 300.00, 2, NULL, 0, 0, 'uploads/products/pop-ae3f8284adfc6444.jpg', '2026-11-16 18:06:22', '2026-11-16 10:06:22', 'Regular'),
-(5, 8, 'Alex In Diamond Armor', 'alex-in-diamond-armor', 'Alex', 300.00, 1, NULL, 0, 0, 'uploads/products/pop-5c5a854bf008a50e.jpg', '2026-11-16 18:23:13', '2026-11-16 10:23:13', 'Regular'),
-(6, 9, 'Braum', 'braum', '', 1299.00, 1, NULL, 0, 0, 'uploads/products/pop-fa7d85771124d23c.jpg', '2026-11-17 01:02:31', '2026-11-16 17:02:31', 'Regular'),
-(7, 10, 'Dark Voyager', 'dark-voyager', '', 199.00, 2, NULL, 0, 0, 'uploads/products/pop-049867db3d06ca38.jpg', '2026-11-17 01:03:36', '2026-11-16 17:03:36', 'Regular'),
-(8, 11, 'Deku', 'deku', '', 349.00, 2, NULL, 0, 0, 'uploads/products/pop-25588e8572767e19.jpg', '2026-11-17 01:05:15', '2026-11-16 17:05:15', 'Regular'),
-(9, 12, 'Dobby', 'dobby', '', 799.00, 2, NULL, 0, 0, 'uploads/products/pop-39b77cd24f7a823d.jpg', '2026-11-17 01:06:34', '2026-11-16 17:06:34', 'Regular'),
-(10, 7, 'Doctor Strange', 'doctor-strange', '', 499.00, 2, NULL, 0, 0, 'uploads/products/pop-f0e10a22d361b0cd.jpg', '2026-11-17 01:07:46', '2026-11-16 17:07:46', 'Regular'),
-(11, 6, 'Fern', 'fern', '', 699.00, 2, NULL, 0, 0, 'uploads/products/pop-f1ad5a669cf075d5.jpg', '2026-11-17 01:08:20', '2026-11-16 17:08:20', 'Regular'),
-(12, 12, 'Fleur Delacour', 'fleur-delacour', '', 1799.00, 1, NULL, 0, 0, 'uploads/products/pop-d89e6846965f2952.jpg', '2026-11-17 01:10:38', '2026-11-16 17:10:38', 'Regular'),
-(13, 6, 'Frieren', 'frieren', '', 699.00, 2, NULL, 0, 0, 'uploads/products/pop-1cbf28885d366fe7.jpg', '2026-11-17 01:11:40', '2026-11-16 17:11:40', 'Regular'),
-(14, 14, 'Hancock', 'hancock', '', 999.00, 2, NULL, 0, 0, 'uploads/products/pop-a3bd21f5db2c4b2c.jpg', '2026-11-17 01:13:19', '2026-11-16 17:13:19', 'Regular'),
-(15, 12, 'Harry Potter', 'harry-potter', '', 749.00, 1, NULL, 0, 0, 'uploads/products/pop-be80a1a038599e58.jpg', '2026-11-17 01:14:27', '2026-11-16 17:14:27', 'Regular'),
-(16, 11, 'Hawks', 'hawks', '', 449.00, 1, NULL, 0, 0, 'uploads/products/pop-824e96269649a405.jpg', '2026-11-17 01:15:35', '2026-11-16 17:15:35', 'Regular'),
-(17, 9, 'Jinx (Arcane)', 'jinx-arcane', '', 599.00, 2, NULL, 0, 0, 'uploads/products/pop-678a542913f285f2.jpg', '2026-11-17 01:16:41', '2026-11-16 17:16:41', 'Regular'),
-(18, 12, 'Minerva McGonagall', 'minerva-mcgonagall', '', 848.00, 2, NULL, 0, 0, 'uploads/products/pop-205cf23db1c6f0c8.jpg', '2026-11-17 01:18:37', '2026-11-16 17:18:37', 'Regular'),
-(19, 13, 'Osiris', 'osiris', '', 899.00, 3, NULL, 0, 0, 'uploads/products/pop-7be37422664856c1.jpg', '2026-11-17 01:19:22', '2026-11-16 17:19:22', 'Regular'),
-(20, 10, 'Red-Nosed Raider', 'red-nosed-raider', '', 399.00, 4, NULL, 0, 0, 'uploads/products/pop-f4a8c1fa4266860e.jpg', '2026-11-17 01:20:00', '2026-11-16 17:20:00', 'Regular'),
-(21, 12, 'Rita Skeeter', 'rita-skeeter', '', 1199.00, 3, NULL, 0, 0, 'uploads/products/pop-2d2a4f90c8e6631a.jpg', '2026-11-17 01:20:49', '2026-11-16 17:20:49', 'Regular'),
-(22, 15, 'Super Saiyan Caulifla', 'super-saiyan-caulifla', '', 299.00, 4, NULL, 0, 0, 'uploads/products/pop-0bdf08d29ab8a2c5.jpg', '2026-11-17 01:22:35', '2026-11-16 17:22:35', 'Regular'),
-(23, 15, 'Super Saiyan Kefla', 'super-saiyan-kefla', '', 349.00, 2, NULL, 0, 0, 'uploads/products/pop-548803c6ff4dc1b1.jpg', '2026-11-17 01:23:25', '2026-11-16 17:23:25', 'Regular'),
-(24, 13, 'Sweeper Bot', 'sweeper-bot', '', 499.00, 2, NULL, 0, 0, 'uploads/products/pop-936f0c052249009c.jpg', '2026-11-17 01:24:17', '2026-11-16 17:24:17', 'Regular'),
-(25, 7, 'T\'Challa', 't-challa', '', 300.00, 4, NULL, 0, 0, 'uploads/products/pop-2faf773fa6b6df0d.jpg', '2026-11-17 01:25:25', '2026-11-16 17:25:25', 'Regular'),
-(26, 7, 'Thanos', 'thanos', '', 300.00, 9, NULL, 0, 0, 'uploads/products/pop-2c12eccc55f5d1c3.jpg', '2026-11-17 01:26:28', '2026-11-16 17:26:28', 'Regular'),
-(27, 7, 'Thor (Ragnarok)', 'thor-ragnarok', '', 300.00, 5, NULL, 0, 0, 'uploads/products/pop-38995e36ce6bf9ef.jpg', '2026-11-17 01:27:51', '2026-11-16 17:27:51', 'Regular'),
-(28, 11, 'Todoroki', 'todoroki', '', 399.00, 4, NULL, 0, 0, 'uploads/products/pop-1da066a839035752.jpg', '2026-11-17 01:28:40', '2026-11-16 17:28:40', 'Regular'),
-(29, 11, 'Tomura Shigaraki', 'tomura-shigaraki', '', 349.00, 5, NULL, 0, 0, 'uploads/products/pop-c967fe87c7303c56.jpg', '2026-11-17 01:29:59', '2026-11-16 17:29:59', 'Regular'),
-(30, 9, 'Vi', 'vi', '', 499.00, 3, NULL, 0, 0, 'uploads/products/pop-7b70945921fdfafe.jpg', '2026-11-17 01:30:56', '2026-11-16 17:30:56', 'Regular'),
-(31, 9, 'Vi (Arcane)', 'vi-arcane', '', 3499.00, 1, NULL, 0, 0, 'uploads/products/pop-4baf8eb7777008aa.jpg', '2026-11-17 01:31:47', '2026-11-16 17:31:47', 'Regular');
+(2, 5, 'Slifer The Sky Dragon', 'slifer-the-sky-dragon', 'Summon an Egyptian God Card to your display with this oversized 6-inch Yu-Gi-Oh! Slifer the Sky Dragon #756 Funko Pop!. Sculpted with its crimson coils, massive wings, and signature double jaws, this super-sized vinyl figure is an imposing centerpiece for any Duelist\'s shelf.', 4499.00, 1, NULL, 0, 0, 'uploads/products/pop-ec738c1480585b2d.jpg', '2026-11-16 18:00:44', '2026-11-17 23:09:59', 'Regular'),
+(3, 6, 'Himmel', 'himmel', 'Complete your Hero Party display with this Frieren: Beyond Journey\'s End Himmel Funko Pop!. Sculpted in his white hero cape with his sword at his side, this stylized vinyl figure pairs right alongside Frieren and Fern.', 499.00, 1, NULL, 0, 0, 'uploads/products/pop-c9a2dfec3abf90a3.jpg', '2026-11-16 18:03:14', '2026-11-17 23:09:52', 'Regular'),
+(4, 7, 'Spiderman(Homemade Suit)', 'spiderman-homemade-suit', 'Swing into your Marvel lineup with this Spider-Man: Homecoming Spider-Man (Homemade Suit) Funko Pop!. Featuring Peter Parker in his red-and-blue hoodie suit with homemade web-shooters, this stylized vinyl bobblehead is a fun addition to any Spider-Verse shelf.', 300.00, 2, NULL, 0, 0, 'uploads/products/pop-ae3f8284adfc6444.jpg', '2026-11-16 18:06:22', '2026-11-17 23:09:46', 'Regular'),
+(5, 8, 'Alex In Diamond Armor', 'alex-in-diamond-armor', 'Gear up your gaming shelf with this Minecraft Alex in Diamond Armor Funko Pop!. Sculpted in classic blocky voxel style with blue diamond armor and matching sword, this vinyl figure comes in a window display box ready for any Minecraft fan.', 300.00, 1, NULL, 0, 0, 'uploads/products/pop-5c5a854bf008a50e.jpg', '2026-11-16 18:23:13', '2026-11-17 23:09:40', 'Regular'),
+(6, 9, 'Braum', 'braum', 'Stand behind the Heart of the Freljord with this League of Legends Braum #04 Funko Pop!. Sculpted with his signature mustache, ram-horned shield, and Poro companion, this vinyl figure is a standout piece for any League of Legends lineup.', 1299.00, 1, NULL, 0, 0, 'uploads/products/pop-fa7d85771124d23c.jpg', '2026-11-17 01:02:31', '2026-11-17 23:08:52', 'Regular'),
+(7, 10, 'Dark Voyager', 'dark-voyager', 'Drop into your gaming display with this Fortnite Dark Voyager #435 Funko Pop!. Dressed in his sleek black-and-orange astronaut spacesuit, this stylized vinyl figure comes in a window display box ready for your collection.', 199.00, 2, NULL, 0, 0, 'uploads/products/pop-049867db3d06ca38.jpg', '2026-11-17 01:03:36', '2026-11-17 23:08:45', 'Regular'),
+(8, 11, 'Deku', 'deku', 'Power up your anime collection with this My Hero Academia Deku #247 Funko Pop!. Featuring Izuku Midoriya in his green hero costume and mask, this stylized vinyl figure is a staple for any My Hero Academia shelf.', 349.00, 2, NULL, 0, 0, 'uploads/products/pop-25588e8572767e19.jpg', '2026-11-17 01:05:15', '2026-11-17 23:08:36', 'Regular'),
+(9, 12, 'Dobby', 'dobby', 'Bring the beloved house-elf to your Wizarding World lineup with this Harry Potter Dobby #17 Funko Pop!. Sculpted in his classic pillowcase tunic with big expressive eyes, this vinyl figure is a charming pickup for any Harry Potter fan.', 799.00, 2, NULL, 0, 0, 'uploads/products/pop-39b77cd24f7a823d.jpg', '2026-11-17 01:06:34', '2026-11-17 23:08:26', 'Regular'),
+(10, 7, 'Doctor Strange', 'doctor-strange', 'Add the Master of the Mystic Arts to your Marvel shelf with this Doctor Strange in the Multiverse of Madness Doctor Strange #1000 Funko Pop!. Featuring his Cloak of Levitation and mystical spell runes, this vinyl bobblehead comes in window-box packaging ready for display.', 499.00, 2, NULL, 0, 0, 'uploads/products/pop-f0e10a22d361b0cd.jpg', '2026-11-17 01:07:46', '2026-11-17 23:08:17', 'Regular'),
+(11, 6, 'Fern', 'fern', 'Expand your anime display with this Frieren: Beyond Journey\'s End Fern #1987 Funko Pop!. Sculpted in her dark mage robe and holding her staff, this stylized vinyl figure pairs nicely with Frieren on any shelf.', 699.00, 2, NULL, 0, 0, 'uploads/products/pop-f1ad5a669cf075d5.jpg', '2026-11-17 01:08:20', '2026-11-17 23:08:06', 'Regular'),
+(12, 12, 'Fleur Delacour', 'fleur-delacour', 'Celebrate the Yule Ball in your Wizarding World display with this Harry Potter Fleur Delacour #88 Funko Pop!. Sculpted in her elegant silver-gray Beauxbatons gown, this vinyl figure comes in a window display box ready for any Harry Potter collection.', 1799.00, 1, NULL, 0, 0, 'uploads/products/pop-d89e6846965f2952.jpg', '2026-11-17 01:10:38', '2026-11-17 23:07:36', 'Regular'),
+(13, 6, 'Frieren', 'frieren', 'Bring the elven mage to your display with this Frieren: Beyond Journey\'s End Frieren #1986 Funko Pop!. Featuring her white twin-tails, mage outfit, and staff, this stylized vinyl figure comes in window-box packaging ready for any anime shelf.', 699.00, 2, NULL, 0, 0, 'uploads/products/pop-1cbf28885d366fe7.jpg', '2026-11-17 01:11:40', '2026-11-17 23:07:30', 'Regular'),
+(14, 14, 'Hancock', 'hancock', 'Add Goodneighbor\'s charismatic ghoul mayor to your gaming shelf with this Fallout 4 Hancock Funko Pop!. Dressed in his signature red tricorn hat and colonial coat, this stylized vinyl figure comes in a window display box ready for any Wasteland collection.', 999.00, 2, NULL, 0, 0, 'uploads/products/pop-a3bd21f5db2c4b2c.jpg', '2026-11-17 01:13:19', '2026-11-17 23:07:24', 'Regular'),
+(15, 12, 'Harry Potter', 'harry-potter', 'Start or expand your Wizarding World lineup with the classic Harry Potter #01 Funko Pop!. Featuring Harry in his Gryffindor robes with his round glasses, lightning scar, and wand, this stylized vinyl figure is an essential staple for any Harry Potter collection.', 749.00, 1, NULL, 0, 0, 'uploads/products/pop-be80a1a038599e58.jpg', '2026-11-17 01:14:27', '2026-11-17 23:07:13', 'Regular'),
+(16, 11, 'Hawks', 'hawks', 'Bring the high-flying Pro Hero to your anime shelf with this My Hero Academia Hawks Funko Pop!. Sculpted with his signature crimson wings, visor, and hero jacket, this stylized vinyl figure comes in window-box packaging ready for display.', 449.00, 1, NULL, 0, 0, 'uploads/products/pop-824e96269649a405.jpg', '2026-11-17 01:15:35', '2026-11-17 23:07:07', 'Regular'),
+(17, 9, 'Jinx (Arcane)', 'jinx-arcane', 'Bring Zaun-level chaos to your display with this Arcane: League of Legends Jinx #1602 Funko Pop!. Featuring her signature long blue braids and wild expression from the hit animated series, this vinyl figure pairs perfectly with Vi on any shelf.   \r\nimage_0e05c7.png\r\n+ 1', 599.00, 2, NULL, 0, 0, 'uploads/products/pop-678a542913f285f2.jpg', '2026-11-17 01:16:41', '2026-11-17 23:06:40', 'Regular'),
+(18, 12, 'Minerva McGonagall', 'minerva-mcgonagall', 'Celebrate Hogwarts\' beloved Transfiguration professor in her Animagus form with this Harry Potter Minerva McGonagall (Cat) Funko Pop!. Sculpted with her signature tabby markings and square spectacle markings around her eyes, this vinyl figure is a charming pickup for any Wizarding World fan.', 848.00, 2, NULL, 0, 0, 'uploads/products/pop-205cf23db1c6f0c8.jpg', '2026-11-17 01:18:37', '2026-11-17 23:06:31', 'Regular'),
+(19, 13, 'Osiris', 'osiris', 'Bring the legendary Warlock exile to your gaming shelf with this Destiny Osiris #339 Funko Pop!. Sculpted in his iconic golden feathered armor and Sunbracers, this vinyl figure is an essential centerpiece for any Guardian\'s collection.', 899.00, 3, NULL, 0, 0, 'uploads/products/pop-7be37422664856c1.jpg', '2026-11-17 01:19:22', '2026-11-17 23:06:26', 'Regular'),
+(20, 10, 'Red-Nosed Raider', 'red-nosed-raider', 'Drop into the holiday spirit with this Fortnite Red-Nosed Raider #437 Funko Pop!. Featuring her festive reindeer antlers and tactical winter outfit, this stylized vinyl figure comes in a window display box ready for your gaming lineup.', 399.00, 4, NULL, 0, 0, 'uploads/products/pop-f4a8c1fa4266860e.jpg', '2026-11-17 01:20:00', '2026-11-17 23:06:17', 'Regular'),
+(21, 12, 'Rita Skeeter', 'rita-skeeter', 'Get the exclusive scoop for your Wizarding World shelf with this 2019 Summer Convention exclusive Rita Skeeter #101 Funko Pop!. Complete with her signature green outfit, jeweled spectacles, and Quick-Quotes Quill, this vinyl figure is a standout addition to any Harry Potter collection', 1199.00, 3, NULL, 0, 0, 'uploads/products/pop-2d2a4f90c8e6631a.jpg', '2026-11-17 01:20:49', '2026-11-17 23:06:10', 'Regular'),
+(22, 15, 'Super Saiyan Caulifla', 'super-saiyan-caulifla', 'Add Universe 6\'s fiercest Saiyan to your shelf with this Dragon Ball Super Super Saiyan Caulifla #826 Funko Pop!. Featuring her golden Super Saiyan hair and classic outfit, this vinyl figure comes in window-box packaging ready for display.', 299.00, 4, NULL, 0, 0, 'uploads/products/pop-0bdf08d29ab8a2c5.jpg', '2026-11-17 01:22:35', '2026-11-17 23:03:08', 'Regular'),
+(23, 15, 'Super Saiyan Kefla', 'super-saiyan-kefla', 'Power up your anime display with this Dragon Ball Super Super Saiyan Kefla Funko Pop!. Sculpted with her spiky green hair and Potara earrings, this Universe 6 fusion warrior is ready to stand out in any Dragon Ball collection.', 349.00, 2, NULL, 0, 0, 'uploads/products/pop-548803c6ff4dc1b1.jpg', '2026-11-17 01:23:25', '2026-11-17 23:02:59', 'Regular'),
+(24, 13, 'Sweeper Bot', 'sweeper-bot', 'Tidy up your gaming shelf with this San Diego Comic-Con exclusive Sweeper Bot #342 Funko Pop! from Destiny. Complete with its signature broom and Summer Convention Exclusive sticker, this vinyl figure is a fun pickup for any Guardian.', 499.00, 2, NULL, 0, 0, 'uploads/products/pop-936f0c052249009c.jpg', '2026-11-17 01:24:17', '2026-11-17 23:02:52', 'Regular'),
+(25, 7, 'T\'Challa', 't-challa', 'Celebrate the alternate universe of Marvel\'s What If...? with this Star-Lord T\'Challa Funko Pop!. Featuring T\'Challa in his Ravager gear, this stylized vinyl bobblehead comes in a window display box ready for your Marvel lineup.', 300.00, 4, NULL, 0, 0, 'uploads/products/pop-2faf773fa6b6df0d.jpg', '2026-11-17 01:25:25', '2026-11-17 23:02:45', 'Regular'),
+(26, 7, 'Thanos', 'thanos', 'Bring the Mad Titan to your Marvel shelf with this Avengers: Endgame Thanos #453 Funko Pop!. Sculpted in his battle armor with the Infinity Gauntlet, this stylized vinyl bobblehead is a must-have centerpiece for any Marvel collection.', 300.00, 9, NULL, 0, 0, 'uploads/products/pop-2c12eccc55f5d1c3.jpg', '2026-11-17 01:26:28', '2026-11-17 23:02:36', 'Regular'),
+(27, 7, 'Thor (Ragnarok)', 'thor-ragnarok', 'Suit up for the final battle with this Avengers: Endgame Thor Funko Pop!. Wielding Stormbreaker in his white-and-black team suit, the God of Thunder is ready to join your Marvel lineup.', 300.00, 5, NULL, 0, 0, 'uploads/products/pop-38995e36ce6bf9ef.jpg', '2026-11-17 01:27:51', '2026-11-17 23:01:45', 'Regular'),
+(28, 11, 'Todoroki', 'todoroki', 'Bring fire and ice to your collection with this Special Edition Shoto Todoroki Funko Pop!. Featuring his signature split red-and-white hair and active flames, this U.A. High hero-in-training is ready to stand out on any shelf.', 399.00, 4, NULL, 0, 0, 'uploads/products/pop-1da066a839035752.jpg', '2026-11-17 01:28:40', '2026-11-17 23:00:40', 'Regular'),
+(29, 11, 'Tomura Shigaraki', 'tomura-shigaraki', 'Bring the leader of the League of Villains to your shelf with this Galactic Toys Exclusive Tomura Shigaraki Funko Pop!. Sculpted with his signature Pale Blue hair and eerie disembodied hands, he\'s an essential centerpiece for any My Hero Academia villain display.', 349.00, 5, NULL, 0, 0, 'uploads/products/pop-c967fe87c7303c56.jpg', '2026-11-17 01:29:59', '2026-11-17 22:59:35', 'Regular'),
+(30, 9, 'Vi', 'vi', 'Bring home the fierce brawler of Zaun with this Vi Funko Pop! featuring her iconic pink hair, facial tattoo, and heavy gauntlets. A must-have collectible for any Arcane or League of Legends fan!', 499.00, 3, NULL, 0, 0, 'uploads/products/pop-7b70945921fdfafe.jpg', '2026-11-17 01:30:56', '2026-11-17 22:58:46', 'Regular'),
+(31, 9, 'Vi (Arcane)', 'vi-arcane', 'Bring home the fierce brawler of Zaun with this Vi Funko Pop! featuring her iconic pink hair, facial tattoo, and heavy gauntlets. A must-have collectible for any Arcane or League of Legends fan!', 3499.00, 1, NULL, 0, 0, 'uploads/products/pop-4baf8eb7777008aa.jpg', '2026-11-17 01:31:47', '2026-11-17 22:58:40', 'Regular');
 
 -- --------------------------------------------------------
 
@@ -287,6 +289,13 @@ CREATE TABLE `reviews` (
   `created_at` timestamp NOT NULL DEFAULT current_timestamp()
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
+--
+-- Dumping data for table `reviews`
+--
+
+INSERT INTO `reviews` (`review_id`, `product_id`, `user_id`, `rating`, `comment`, `is_anonymous`, `created_at`) VALUES
+(1, 13, 2, 4, 'Frieren is one of my favorite Funko Pops! I\'m glad this product was sold at a fair price.', 0, '2026-11-17 23:13:49');
+
 -- --------------------------------------------------------
 
 --
@@ -312,7 +321,8 @@ CREATE TABLE `users` (
 --
 
 INSERT INTO `users` (`user_id`, `username`, `email`, `password_hash`, `full_name`, `phone`, `address`, `city`, `postal_code`, `country`, `user_role`) VALUES
-(1, 'admin', 'admin@gmail.com', '$2y$12$ZhW5uyDqbvpYwvtE1OqL7eGLucYlS7jt1pFDjvBL7.vQxRhZXzVl2', 'Admin 1', '', '', '', '', '', 'admin');
+(1, 'admin', 'admin@gmail.com', '$2y$12$ZhW5uyDqbvpYwvtE1OqL7eGLucYlS7jt1pFDjvBL7.vQxRhZXzVl2', 'Admin 1', '', '', '', '', '', 'admin'),
+(2, 'customer', 'customer@gmail.com', '$2y$12$7AtORibJkJXxkSoj5E5c1u3smlRSlNZspuipfO.dKWbFSL4SxEeh2', 'Customer 1', '', '', '', '', '', 'customer');
 
 --
 -- Indexes for dumped tables
@@ -406,7 +416,7 @@ ALTER TABLE `users`
 -- AUTO_INCREMENT for table `carts`
 --
 ALTER TABLE `carts`
-  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=7;
+  MODIFY `cart_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `cart_items`
@@ -454,13 +464,13 @@ ALTER TABLE `products`
 -- AUTO_INCREMENT for table `reviews`
 --
 ALTER TABLE `reviews`
-  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `review_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `users`
 --
 ALTER TABLE `users`
-  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `user_id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- Constraints for dumped tables
