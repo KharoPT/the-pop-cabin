@@ -5,7 +5,7 @@
 
 **Every card:** Git preflight (`AGENTS.md` "Git") → branch from up-to-date `main` → build, one commit per finished page/step → write `docs/REPORT.md` (max 30 lines, questions go there) → add one Run log line in `docs/SESSION.md` → push the branch → **stop**. Never touch `main`. Cards that read a frame run the Figma MCP check first (`AGENTS.md`).
 
-**Order:** A → F → B1 → B2 (tonight), B3 → C (tomorrow, done before the freeze). Each card is one run. Run the next card only after the user merged the previous one.
+**Order:** A, F (merged) → **H → B1 (redo)** → B2 → B3 → C. Done before the 10:00 freeze. Each card is one run. Run the next card only after the user merged the previous one.
 
 ---
 ## A — re-skin (`slice-a`) · no Figma needed
@@ -17,8 +17,18 @@
 ## F — per-field errors (`slice-f`) · no Figma needed
 Add the invalid state to every form (contact, sign in, sign up, checkout, admin product form): red border (`--color-feedback-error`), message under the field, `aria-invalid="true"`, `aria-describedby`, keep the top banner. Only top-of-file input handling may change, to show errors per field; no logic changes. Test: submit empty, submit invalid, submit valid.
 
-## B1 — home, shop, product (`slice-b1`)
-Frames: `Mobile/Public` → `index.php`, `Mobile/Collection` → `shop.php`, `Mobile/Product Profile` → `product.php` (node ids: `docs/DESIGN.md` §9). Read **one frame at a time** via MCP. Apply the `AGENTS.md` "Decisions" bulk rule. Restyle desktop (700/1000 px) from the same components. Log differences per page in the report (max 6 lines each).
+## H — shared header, nav, footer (`slice-h`) · runs BEFORE B1
+Files: `includes/header.php`, `includes/footer.php`, `admin/includes/admin_header.php` (and its footer). Read the header and footer of `Mobile/Public` (243:5030) via MCP (design context, not only screenshots); export logo/mascot/background assets per `AGENTS.md` rule 7. Keep every link, the Basket count, the login/account/admin states and the search. Menu open state has no frame: build it CSS-first from the header components and tokens (JS only if CSS cannot, must work with JS off) and write `LAYOUT NOT VERIFIED: nav open state`. Desktop (700/1000 px): same components, nav in a row. Test logged out, customer and admin, at 390 and 1000 px, keyboard focus.
+
+## B1 — home, shop, product (`slice-b1`) · REDO of a rejected run
+Continue on the existing `slice-b1` branch (new commits; do not force-push). Frames: `Mobile/Public` → `index.php`, `Mobile/Collection` → `shop.php`, `Mobile/Product Profile` → `product.php` (node ids: `docs/DESIGN.md` §9). Header/footer are card H (already merged): do not touch them. Read **one frame at a time** and use `get_design_context` values for every spacing, size and radius (`AGENTS.md` rule 9). The first run was rejected for these faults; fix each:
+1. Hero and "Devs" backgrounds, the Overview illustration, and every decorative/complex vector shape were replaced by gradients or plain boxes. Export them to `assets/img/` and use them.
+2. Spacing is off. Re-measure every section.
+3. Meet the Devs cards were simplified. Rebuild exactly: card shape, glass/border, portrait, name, role. Use the **real Figma names and portrait PNGs** (rule 10).
+4. Remove the "Ready to order your pop" section (not in Figma).
+5. Add the Overview section back: Lorem ipsum in Figma → write mock Pop Cabin copy with the same word/sentence count and text style; keep its illustration.
+6. Wooden signs/headings replaced by plain text: rebuild the Figma look.
+Re-check shop and product against their frames with the same method. Log differences per page (max 6 lines each).
 
 ## B2 — sign in/up, basket, checkout (`slice-b2`)
 Frames: `Mobile/Sign In` → `login.php`, `Mobile/Sign Up` → `register.php`, `Mobile/Basket` → `cart.php`, `Mobile/Checkout` → `checkout.php`. Wording: "Basket", "Update Basket", "Order". Same method as B1. Keep CSRF inputs and `name=` attributes.

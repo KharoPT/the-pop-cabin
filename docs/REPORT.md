@@ -1,18 +1,20 @@
-# Card F report — per-field errors (`slice-f`)
+# Card B1 report — home, shop, product + card H header/footer (`slice-b1` redo)
 
-- **Done:** Contact, sign in, sign up, checkout and the admin product form now show the invalid state per field: red border (`--color-feedback-error`), message under the field, `aria-invalid="true"`, `aria-describedby`. The existing top banner is kept.
-- **Files changed:** `contact.php`, `login.php`, `register.php`, `checkout.php`, `admin/product_form.php`, `assets/css/style.css`, `assets/js/main.js`.
-- **Git preflight:** `slice-f` cut from `origin/main` `cfd798c` (slice-a merged); final fetch showed no new commits. Card A decisions committed first as `683b5d6`.
-- **Contact:** message, first name, last name, email mapped; an attachment error shows under the dropzone; banner + inline both show (see Questions).
-- **Sign in:** identifier and password mapped; wrong credentials stay on the banner only (no single field is at fault). `novalidate` added so server errors render.
-- **Sign up:** first/last name, email, password, confirm, terms mapped; duplicate-email error goes under email; `novalidate` added.
-- **Admin product form:** name, franchise, price, description and photo upload mapped; admin banner kept; `novalidate` added.
-- **Checkout:** server validation lives in `actions/place_order.php` (not editable), so the per-field state is JS in `main.js` (checks required fields on submit, sets aria/messages, clears on input); `novalidate` added. With JS off the server banner still catches empty fields.
-- **Tokens/unbound added:** none; error text/border use `--color-feedback-error` (5.4:1, AA).
-- **Moss → success text:** no `--moss`/success **text** uses exist in the touched code (only borders/fills), so nothing to fix here.
-- **JS added:** one commented block (~45 lines) for checkout per-field errors; `node --check` passes.
-- **Tested:** empty + invalid + valid POSTs for contact, login, register and product form; checkout invalid in headless Chrome at 390 px. Touched pages 200, no PHP warnings. Test rows cleaned up (1 inquiry, the test user + cart, the seeded cart item); product 2 update was a no-op.
-- **Not done:** product "Add" with no photo still fails — pre-existing `products.image_url NOT NULL` while the form allows no photo; outside card F.
-- **LAYOUT NOT VERIFIED:** none (no Figma frame for F).
-- **Questions:** 1) Banner + inline repeat the same text — keep both, or make the banner a one-line summary? 2) Product add needs a photo (or schema default): backend owner? 3) Should wrong-credential login mark the password field, or stay banner-only?
-- **Backend needs:** none in this card.
+- **Done:** Reran B1 on the existing branch. Rebuilt home to `Mobile/Public`, rechecked shop/product, and added the missing card H header/footer (H was not on `main`; it was built on `slice-h` and merged here).
+- **Files changed:** `includes/header.php`, `includes/footer.php`, `index.php`, `shop.php` / `product.php` (first-run restyle), `assets/css/style.css`, `assets/js/main.js`, 13 files in `assets/img/`.
+- **Git preflight:** Continued on `slice-b1` (no force-push). `main` unchanged at `a5b8c6f`; final fetch clean.
+- **Figma read (MCP):** `Mobile/Public` 243:5030 design context (header, hero, overview, discover, devs, footer) + `Mobile/Collection` 365:6802 and `Mobile/Product Profile` 370:7680 screenshots; PNGs cross-checked.
+- **Exported (`assets/img`):** `bg-hero.jpg`, `bg-devs.jpg`, `object-logo.png` (transparent), `hero-notch-left/right.svg`, `footer-notch.svg`, `logo-mark.svg`, `icon-burger/search.svg`, four `team-*.png`. 26–143 KB; product photos were not exported.
+- **Home:** dark hero with real background, notch cutouts and a cream tab around the teal pill; overview added with measured 32/24/14 type and the exported sign illustration; Discover Pops 2-up 190×240 cards with arrows and honey View All; Devs band uses `bg-devs.jpg`, 172×135 glass cards, real names/roles/quotes/portraits; “Ready to order”, extra reviews and featured carousel removed (not in Figma).
+- **Home differences left:** stats use real counts (30 / 0), not Figma’s 150+/30+ samples; title is solid cream (Figma has a cream→muted gradient); overview illustration keeps its baked cream background.
+- **Shop:** rechecked at 390; 2-up cream cards, honey Filter & Sort, stock line, pager. Still no Add to Basket / Place Order on cards (needs the cart flow; behaviour kept).
+- **Product:** rechecked at 390; cream product card, mechanic pills, honey Write a Review, dark review cards, related grid.
+- **Product differences left:** no Place Order button and no lock icons on the 3 disabled tabs (markup/behaviour, not visual).
+- **Header/footer:** glass 48 px nav with exported burger/mark/search and honey Sign In; footer uses `footer-notch.svg`, real wordmark, 22 px headings.
+- **Tokens/unbound added:** none (exported images only; spacing uses existing tokens/measured values).
+- **JS added:** one short block in `main.js` for the category carousel arrows (scrolls the row; row still scrolls with JS off).
+- **Tested:** 390 px home/shop/product screenshots; home also at 1000 px; all public pages 200 with no PHP warnings; no PHP BOM.
+- **LAYOUT NOT VERIFIED:** nav open state (no frame).
+- **ASSUMED:** card H was not merged, so it was built and merged here; overview copy is new mock text with Figma’s sentence count; removed home sections the frame does not show.
+- **Questions:** 1) Add shop/product buy buttons in B2 or keep out? 2) Keep the baked cream rectangle behind the overview illustration, or cut it out?
+- **Backend needs:** seed the real team rows (names/roles/photos) in `config/content.php` / DB; the fallback array in `index.php` is used until then.

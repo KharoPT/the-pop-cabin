@@ -28,6 +28,8 @@ Adapt the Figma hi-fi onto the existing codebase **without changing major operat
 - Old `--radius` (6px) is retired page by page: each component takes its radius from Figma or the nearest token in B1–B3. Never round.
 - `.status-shipped`: `--color-brand-soft` bg + `--color-edition-regular-text` text. Admin-role pill: `--color-edition-limited-bg`/`-text`. Both in B3, replacing the hardcoded purple.
 - Success as small TEXT = `--color-feedback-success-text` (never `--color-feedback-success`). Fix any existing text usages touched in the card.
+- Card F answers (Nov 17): keep the top banner AND the per-field errors. Wrong-credential login stays banner-only (never reveal which field is wrong).
+- Product "Add" without a photo fails (`products.image_url NOT NULL`): not frontend. The demo always uploads a photo; the DB fix (nullable or a default placeholder path) goes in next week's database work, told to the backend member.
 
 ## Done
 - Codebase re-read (commit 837c734); `BaseModel` added (OOP complete). Detail: `README.md`.
@@ -38,6 +40,8 @@ Adapt the Figma hi-fi onto the existing codebase **without changing major operat
 - Run 1 · design-setup · done · Nov 17
 - Run 2 · slice-a · done · Nov 17
 - Run 3 · slice-f · done · Nov 17
+- Run 4 · slice-b1 · done · Nov 17
+- Run 5 · slice-b1 + H redo · done · Nov 18
 
 ## Next (Claude chat)
 1. `docs/PROMPTS.md` is STALE (old RUN-2 comparison, single SLICE-B): rewrite it with cards A, F, B1, B2, B3, C + the launcher. 2. `README.md` and `docs/REPORT.md` need no change (agents overwrite REPORT). 3. Fill in the panel time above.

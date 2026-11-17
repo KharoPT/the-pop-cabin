@@ -25,6 +25,7 @@ $cardSold  = (int) $card['stock_quantity'] <= 0;
     <div class="pop-card-body">
         <h3 class="pop-name"><a href="<?php echo e($cardUrl); ?>"><?php echo e($card['name']); ?></a></h3>
         <?php if (!empty($card['category_name'])): ?><p class="pop-cat"><?php echo e($card['category_name']); ?></p><?php endif; ?>
+        <?php if (!empty($cardShowStock)): ?><p class="pop-stock">Stock: <?php echo (int) $card['stock_quantity']; ?></p><?php endif; ?>
         <p class="pop-price"><?php echo formatPrice($card['price']); ?></p>
     </div>
 </article>
