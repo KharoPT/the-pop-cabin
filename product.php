@@ -9,7 +9,7 @@ $product = $slug !== '' ? $productModel->getBySlug($slug) : false;
 
 if (!$product) {
     http_response_code(404);
-    $pageTitle = 'Pop not found — ' . SITE_NAME;
+    $pageTitle = 'Pop not found â€” ' . SITE_NAME;
     require_once __DIR__ . '/includes/header.php';
     echo '<div class="wrap empty-state"><h1 class="sign sign-center">Pop not found</h1><p>That pop is not in the collection (it may have been removed).</p>'
        . '<a class="btn btn-dark" href="' . SITE_URL . '/shop.php">Back to Collection</a></div>';
@@ -31,7 +31,7 @@ $canReview    = isLoggedIn() && !$reviewModel->userHasReviewed($productId, (int)
 $hasReviewed  = isLoggedIn() && !$canReview;
 $reviewOpen   = ($_GET['review'] ?? '') === 'error';
 
-$pageTitle       = $product['name'] . ' — ' . SITE_NAME;
+$pageTitle       = $product['name'] . ' â€” ' . SITE_NAME;
 $metaDescription = trim((string) $product['description']) !== '' ? mb_strimwidth_safe(preg_replace('/\s+/', ' ', $product['description']), 155) : $product['name'] . ' at ' . SITE_NAME;
 $bodyClass       = 'page-product';
 require_once __DIR__ . '/includes/header.php';
@@ -59,6 +59,7 @@ require_once __DIR__ . '/includes/header.php';
         <?php if (!empty($product['category_name'])): ?>
             <a class="tag" href="<?php echo SITE_URL; ?>/shop.php?category=<?php echo urlencode($product['category_slug']); ?>"><?php echo e($product['category_name']); ?></a>
         <?php endif; ?>
+        <p class="product-stock">Stock: <?php echo (int) $product['stock_quantity']; ?></p>
         <p class="sign product-price"><?php echo formatPrice($product['price']); ?></p>
         <p class="rating-line">
             <?php echo renderStars($summary['average']); ?>
@@ -91,7 +92,7 @@ require_once __DIR__ . '/includes/header.php';
 </div>
 
 <section class="wrap product-details" aria-labelledby="details-title">
-    <h2 class="sign" id="details-title">details</h2>
+    <h2 class="sign" id="details-title">Details</h2>
     <?php if (trim((string) $product['description']) !== ''): ?>
         <div class="details-text"><?php echo nl2br(e($product['description'])); ?></div>
     <?php else: ?>
@@ -101,7 +102,7 @@ require_once __DIR__ . '/includes/header.php';
 
 <section class="wrap reviews" id="reviews" aria-labelledby="reviews-title">
     <div class="reviews-head">
-        <h2 class="sign" id="reviews-title">Review &amp; Comment</h2>
+        <h2 class="sign" id="reviews-title">Reviews &amp; Comments</h2>
         <?php if (!isLoggedIn()): ?>
             <a class="sign sign-btn" href="<?php echo SITE_URL; ?>/login.php?next=<?php echo urlencode($productUrl . '#write-review'); ?>">Write a Review</a>
         <?php elseif ($canReview): ?>
@@ -164,7 +165,7 @@ require_once __DIR__ . '/includes/header.php';
 
 <?php if ($related): ?>
 <section class="wrap related" aria-labelledby="related-title">
-    <h2 class="sign sign-center" id="related-title">you may also like</h2>
+    <h2 class="sign sign-center" id="related-title">You may also like</h2>
     <div class="pop-grid">
         <?php foreach ($related as $card): ?>
             <?php include __DIR__ . '/includes/product_card.php'; ?>
@@ -185,3 +186,4 @@ require_once __DIR__ . '/includes/header.php';
 <?php endif; ?>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
