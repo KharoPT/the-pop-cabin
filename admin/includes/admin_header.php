@@ -40,9 +40,7 @@ foreach ($adminErrors as $message) { $banners[] = ['error', $message]; }
 <meta name="robots" content="noindex, nofollow">
 <title><?php echo e($pageTitle ?? 'Admin — ' . SITE_NAME); ?></title>
 <link rel="icon" type="image/svg+xml" href="<?php echo SITE_URL; ?>/assets/img/logo.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/tokens.css">
 <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
 </head>
 <body class="admin-body">

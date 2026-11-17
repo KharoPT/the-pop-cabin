@@ -3,30 +3,74 @@
    Light pine and oak tones; walnut "log wall" wherever the wireframes use a
    dark fill; wooden signs (with nailheads) for the dark label bars.
    Mobile-first (the wireframes are 390px wide); wider layouts start at 700px.
-   Retheme from the variables in :root.
+   Retheme from the variables in :root (aliases of assets/css/tokens.css).
    ========================================================================== */
 
+/* Self-hosted fonts: Fredoka (headings) + Nunito (body). Weights 400-700,
+   one static @font-face per file, no network dependency (docs/DESIGN.md §3). */
+@font-face {
+  font-family: "Fredoka";
+  src: url("../fonts/Fredoka/Fredoka-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("../fonts/Fredoka/Fredoka-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("../fonts/Fredoka/Fredoka-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("../fonts/Fredoka/Fredoka-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+/* Temporary aliases: old names point at the matching token by role.
+   Remove each alias once no page uses it (docs/DESIGN.md §4). */
 :root {
-  --birch: #f7f0e1;       /* page background: pale pine */
-  --pine-100: #f0e4cc;
-  --pine-200: #e4d1ae;    /* light wood */
-  --pine-300: #d2b88b;
-  --oak: #c29a68;         /* mid light-brown */
-  --cedar: #8d5f3a;
-  --bark: #5f3f29;
-  --walnut: #3b2a1f;      /* dark blocks */
-  --espresso: #281c14;
-  --ember: #b95a26;       /* firelight accent, used sparingly */
-  --moss: #5b6b39;
-  --cream: #fbf5e8;
-  --ink: #33231a;
-  --muted: #6e5846;
+  --birch: var(--color-bg-page);              /* page background */
+  --pine-100: var(--color-bg-surface-alt);    /* light surface */
+  --pine-200: var(--color-brand-soft);        /* soft brand surface */
+  --pine-300: var(--color-border-default);    /* mid wood border/fill */
+  --oak: var(--color-border-strong);          /* stronger wood border */
+  --bark: var(--color-action-brand);          /* dark brand outline/text */
+  --walnut: var(--color-action-brand);        /* dark blocks / brand fill */
+  --espresso: var(--color-bg-inverse);        /* darkest block */
+  --ember: var(--color-action-primary);       /* interactive accent (hover/focus) */
+  --moss: var(--color-feedback-success);      /* success */
+  --cream: var(--color-bg-surface);           /* card surface */
+  --ink: var(--color-text-primary);           /* body text */
+  --muted: var(--color-text-muted-aa);        /* muted text, AA-safe */
 
-  --font-body: 'Cabin', 'Trebuchet MS', 'Segoe UI', system-ui, sans-serif;
-  --font-display: 'Zilla Slab', 'Rockwell', 'Georgia', serif;
+  --font-body: var(--font-family-body);
+  --font-display: var(--font-family-heading);
 
-  --wrap: 1100px;
-  --radius: 6px;
+  --wrap: var(--container-max);
+  --radius: 6px; /* no 6px token exists (xs 4 / sm 8); kept raw, see report */
 
   /* wood textures */
   --grain: repeating-linear-gradient(0deg, rgba(120, 80, 40, .05) 0 1px, transparent 1px 6px);

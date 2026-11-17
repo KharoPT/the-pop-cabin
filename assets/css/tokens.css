@@ -1,0 +1,295 @@
+/* Figma variables: High-Fi (Wyn), Mode 1 (252 variables). Aliases kept as var() references.
+   Cleaned Nov 17: colors converted from color(srgb ...) to hex / rgb(), float noise trimmed. Values unchanged. */
+:root {
+  /* space */
+  --space-0: 0px;
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --space-16: 64px;
+  --space-20: 80px;
+  --space-24: 96px;
+  --space-32: 112px; /* DO NOT USE: breaks the 4px scale. Use --space-24 or --section-gap-* */
+  --space-14: 56px;
+  --space-48: 161px; /* DO NOT USE: breaks the 4px scale. Use --space-24 or --section-gap-* */
+  /* radius */
+  --radius-none: 0px;
+  --radius-xs: 4px;
+  --radius-sm: 8px;
+  --radius-md: 12px;
+  --radius-lg: 16px;
+  --radius-xl: 24px;
+  --radius-pill: 999px;
+  /* font-size */
+  --font-size-xs: 12px;
+  --font-size-sm: 14px;
+  --font-size-base: 16px;
+  --font-size-lg: 18px;
+  --font-size-xl: 20px;
+  --font-size-2xl: 24px;
+  --font-size-3xl: 32px;
+  --font-size-4xl: 40px;
+  --font-size-5xl: 48px;
+  /* font-weight */
+  --font-weight-regular: 400;
+  --font-weight-medium: 500;
+  --font-weight-semibold: 600;
+  --font-weight-bold: 700;
+  /* line-height */
+  --line-height-tight: 120%;
+  --line-height-snug: 135%;
+  --line-height-body: 150%;
+  --line-height-relaxed: 165%;
+  /* letter-spacing */
+  --letter-spacing-tight: -1px;
+  --letter-spacing-normal: 0px;
+  --letter-spacing-caps: 4px;
+  /* text */
+  --text-max-width: 640px;
+  /* frame */
+  --frame-mobile: 390px;
+  --frame-tablet: 768px;
+  --frame-desktop: 1280px;
+  /* container */
+  --container-max: 1200px;
+  /* grid */
+  --grid-columns-mobile: 4;
+  --grid-columns-tablet: 8;
+  --grid-columns-desktop: 12;
+  --grid-margin-mobile: var(--space-4);
+  --grid-margin-tablet: var(--space-6);
+  --grid-margin-desktop: var(--space-8);
+  --grid-gutter-mobile: var(--space-4);
+  --grid-gutter-tablet: var(--space-6);
+  --grid-gutter-desktop: var(--space-6);
+  /* section */
+  --section-gap-mobile: var(--space-12);
+  --section-gap-tablet: var(--space-16);
+  --section-gap-desktop: var(--space-20);
+  --section-mobile: 64px;
+  /* header */
+  --header-height-mobile: 56px;
+  --header-height-desktop: 64px;
+  /* sidebar */
+  --sidebar-width: 240px;
+  --sidebar-width-collapsed: 72px;
+  /* table */
+  --table-row-height: 48px;
+  /* control */
+  --control-height-sm: 32px;
+  --control-height-md: 40px;
+  --control-height-lg: 48px;
+  /* icon */
+  --icon-size-sm: 16px;
+  --icon-size-md: 20px;
+  --icon-size-lg: 24px;
+  /* avatar */
+  --avatar-size-sm: 32px;
+  --avatar-size-md: 40px;
+  --avatar-size-lg: 64px;
+  /* touch-target */
+  --touch-target-min: 44px;
+  /* stroke */
+  --stroke-default: 1px;
+  --stroke-strong: 2px;
+  /* focus-ring */
+  --focus-ring-width: 2px;
+  --focus-ring-offset: 2px;
+  /* opacity */
+  --opacity-disabled: 0.4;
+  --opacity-hover-overlay: 0.08;
+  --opacity-pressed-overlay: 0.12;
+  --opacity-scrim: 0.5;
+  --opacity-glass-header: 0.65;
+  --opacity-glass-button: 0.55;
+  /* shadow */
+  --shadow-sm-offset-y: 1px;
+  --shadow-sm-blur: 2px;
+  --shadow-sm-spread: 0px;
+  --shadow-sm-opacity: 0.08;
+  --shadow-md-offset-y: 4px;
+  --shadow-md-blur: 12px;
+  --shadow-md-spread: 0px;
+  --shadow-md-opacity: 0.12;
+  --shadow-lg-offset-y: 12px;
+  --shadow-lg-blur: 32px;
+  --shadow-lg-spread: -4px;
+  --shadow-lg-opacity: 0.16;
+  /* glass */
+  --glass-blur-header: 12px;
+  --glass-blur-button: 8px;
+  /* motion */
+  --motion-duration-fast: 0.12s;
+  --motion-duration-base: 0.2s;
+  --motion-duration-slow: 0.32s;
+  --motion-ease-out: cubic-bezier(0.2, 0, 0, 1);
+  /* z */
+  --z-base: 0;
+  --z-dropdown: 10;
+  --z-sticky: 20;
+  --z-modal: 30;
+  --z-toast: 40;
+  /* contrast */
+  --contrast-text-min: 4.5;
+  --contrast-large-text-min: 3;
+  /* primitive */
+  --primitive-walnut-50: #F6EFEA;
+  --primitive-walnut-100: #EADBD0;
+  --primitive-walnut-200: #D3B8A5;
+  --primitive-walnut-300: #B88F76;
+  --primitive-walnut-400: #96684D;
+  --primitive-walnut-500: #774A33;
+  --primitive-walnut-600: #5A3A29;
+  --primitive-walnut-700: #482E20;
+  --primitive-walnut-800: #362218;
+  --primitive-walnut-900: #241812;
+  --primitive-honey-50: #FBF4E3;
+  --primitive-honey-100: #F6E6BF;
+  --primitive-honey-200: #EFD18A;
+  --primitive-honey-300: #E6BC5F;
+  --primitive-honey-400: #D9A441;
+  --primitive-honey-500: #BF8A2B;
+  --primitive-honey-600: #9A6D20;
+  --primitive-honey-700: #765319;
+  --primitive-honey-800: #533A12;
+  --primitive-honey-900: #33240B;
+  --primitive-teal-50: #E6F1F2;
+  --primitive-teal-100: #C5DFE2;
+  --primitive-teal-200: #92BEC4;
+  --primitive-teal-300: #5F9CA5;
+  --primitive-teal-400: #2F7482;
+  --primitive-teal-500: #1F5560;
+  --primitive-teal-600: #194650;
+  --primitive-teal-700: #133740;
+  --primitive-teal-800: #0E2830;
+  --primitive-teal-900: #091A1F;
+  --primitive-cream-50: #FBF7EE;
+  --primitive-cream-100: #F7F0E1;
+  --primitive-cream-200: #F3E8D3;
+  --primitive-cream-300: #E8D9BC;
+  --primitive-cream-400: #D9C5A0;
+  --primitive-red-50: #FBEAE8;
+  --primitive-red-600: #B3261E;
+  --primitive-green-50: #E7F2EA;
+  --primitive-green-600: #3E7B4F;
+  --primitive-green-700: #2F5E3E;
+  --primitive-white: #FFFFFF;
+  --primitive-walnut-900-a08: rgb(36 24 18 / 0.08);
+  --primitive-walnut-900-a12: rgb(36 24 18 / 0.12);
+  --primitive-walnut-900-a20: rgb(36 24 18 / 0.2);
+  --primitive-walnut-900-a50: rgb(36 24 18 / 0.5);
+  --primitive-walnut-600-a85: rgb(90 58 41 / 0.85);
+  --primitive-teal-500-a25: rgb(31 85 96 / 0.25);
+  --primitive-honey-400-a50: rgb(217 164 65 / 0.5);
+  --primitive-cream-50-a70: rgb(251 247 238 / 0.7);
+  --primitive-white-a40: rgb(255 255 255 / 0.4);
+  /* color */
+  --color-bg-page: var(--primitive-cream-200);
+  --color-border-very-strong: var(--primitive-walnut-800);
+  --color-bg-surface: var(--primitive-cream-50);
+  --color-bg-surface-alt: var(--primitive-cream-100);
+  --color-bg-header: var(--primitive-walnut-600);
+  --color-bg-footer: var(--primitive-walnut-800);
+  --color-text-primary: var(--primitive-walnut-900);
+  --color-text-secondary: var(--primitive-walnut-800);
+  --color-text-muted: var(--primitive-walnut-400);
+  --color-text-on-dark: var(--primitive-cream-50);
+  --color-text-on-highlight: var(--primitive-walnut-900);
+  --color-text-link: var(--primitive-teal-500);
+  --color-text-link-hover: var(--primitive-teal-700);
+  --color-border-default: var(--primitive-cream-400);
+  --color-border-strong: var(--primitive-walnut-300);
+  --color-focus-ring: var(--primitive-teal-500);
+  --color-action-primary: var(--primitive-teal-500);
+  --color-action-primary-hover: var(--primitive-teal-600);
+  --color-action-primary-pressed: var(--primitive-teal-700);
+  --color-action-primary-text: var(--primitive-cream-50);
+  --color-action-brand: var(--primitive-walnut-600);
+  --color-action-brand-hover: var(--primitive-walnut-700);
+  --color-action-brand-text: var(--primitive-cream-50);
+  --color-highlight-default: var(--primitive-honey-400);
+  --color-highlight-subtle: var(--primitive-honey-100);
+  --color-feedback-error: var(--primitive-red-600);
+  --color-feedback-error-bg: var(--primitive-red-50);
+  --color-feedback-success: var(--primitive-green-600);
+  --color-feedback-success-bg: var(--primitive-green-50);
+  --color-status-pending-bg: var(--primitive-honey-100);
+  --color-status-pending-text: var(--primitive-honey-700);
+  --color-status-confirmed-bg: var(--primitive-teal-100);
+  --color-status-confirmed-text: var(--primitive-teal-700);
+  --color-status-completed-bg: var(--primitive-green-50);
+  --color-status-completed-text: var(--primitive-green-700);
+  --color-status-cancelled-bg: var(--primitive-red-50);
+  --color-status-cancelled-text: var(--primitive-red-600);
+  --color-edition-regular-bg: var(--primitive-walnut-100);
+  --color-edition-regular-text: var(--primitive-walnut-700);
+  --color-edition-chase-bg: var(--primitive-honey-400);
+  --color-edition-chase-text: var(--primitive-walnut-900);
+  --color-edition-exclusive-bg: var(--primitive-teal-500);
+  --color-edition-exclusive-text: var(--primitive-cream-50);
+  --color-edition-limited-bg: var(--primitive-walnut-600);
+  --color-edition-limited-text: var(--primitive-cream-50);
+  --color-shadow-sm: var(--primitive-walnut-900-a08);
+  --color-shadow-md: var(--primitive-walnut-900-a12);
+  --color-shadow-lg: var(--primitive-walnut-900-a20);
+  --color-shadow-glow-honey: var(--primitive-honey-400-a50);
+  --color-shadow-glow-teal: var(--primitive-teal-500-a25);
+  --color-shadow-inset-light: var(--primitive-white-a40);
+  --color-shadow-inset-dark: var(--primitive-walnut-900-a20);
+  --color-glass-bg-light: var(--primitive-cream-50-a70);
+  --color-glass-bg-dark: var(--primitive-walnut-600-a85);
+  --color-glass-border: var(--primitive-white-a40);
+  --color-bg-overlay: var(--primitive-walnut-900-a50);
+  --color-highlight-soft: var(--primitive-honey-200);
+  --color-highlight-hover: var(--primitive-honey-300);
+  --color-highlight-pressed: var(--primitive-honey-500);
+  --color-highlight-border: var(--primitive-honey-300);
+  --color-text-highlight-on-dark: var(--primitive-honey-300);
+  --color-accent-subtle: var(--primitive-teal-50);
+  --color-accent-soft: var(--primitive-teal-100);
+  --color-accent-border: var(--primitive-teal-200);
+  --color-brand-subtle: var(--primitive-walnut-50);
+  --color-brand-soft: var(--primitive-walnut-100);
+  --color-brand-border: var(--primitive-walnut-200);
+  --color-bg-selected: var(--primitive-teal-50);
+  --color-bg-disabled: var(--primitive-cream-300);
+  --color-bg-inverse: var(--primitive-walnut-900);
+  --color-bg-inverse-alt: var(--primitive-walnut-800);
+  --color-text-disabled: var(--primitive-walnut-300);
+  --color-text-on-dark-muted: var(--primitive-walnut-200);
+  --color-border-subtle: var(--primitive-cream-300);
+  --color-border-inverse: var(--primitive-walnut-500);
+  --color-action-outline-border: var(--primitive-teal-500);
+  --color-action-outline-hover-bg: var(--primitive-teal-50);
+  --color-action-disabled: var(--primitive-cream-300);
+  --color-action-disabled-text: var(--primitive-walnut-300);
+  --color-feedback-warning: var(--primitive-honey-600);
+  --color-feedback-warning-bg: var(--primitive-honey-100);
+  --color-feedback-info: var(--primitive-teal-500);
+  --color-feedback-info-bg: var(--primitive-teal-50);
+  --color-text-secondary-orig: var(--primitive-honey-400); /* ad-hoc name, review in Figma. Honey fails as text on cream: fills / dark surfaces only */
+  --color-border: var(--primitive-walnut-900); /* ad-hoc name, review in Figma */
+  --color-text-opposite: var(--primitive-teal-800); /* ad-hoc name, review in Figma */
+  --color-delete: var(--primitive-red-600); /* ad-hoc name, review in Figma */
+  --color-info-delete-mute: rgb(179 38 30 / 0.8); /* ad-hoc name and raw value (not an alias), review in Figma */
+  /* strong teal border */
+  --strong-teal-border: var(--primitive-teal-700); /* ad-hoc name, review in Figma */
+  /* placeholder-muted */
+  --placeholder-muted: color-mix(in srgb, var(--primitive-walnut-800) 60%, transparent); /* ad-hoc name, review in Figma */
+  /* button */
+  --button-second: var(--primitive-honey-500); /* ad-hoc name, review in Figma */
+  /* added by hand (Claude, Nov 17), NOT from Figma: AA-safe text colors on cream.
+     --color-text-muted (walnut-400) is ~3.9:1 on cream, FAILS 4.5:1 for small text.
+     --color-feedback-success (green-600) is ~4.2:1 on cream, FAILS for small text. Use these instead for TEXT. */
+  --color-text-muted-aa: var(--primitive-walnut-500);       /* ~6.1:1 on cream */
+  --color-feedback-success-text: var(--primitive-green-700); /* ~6.2:1 on cream */
+  /* added by hand, NOT from Figma (Figma has no font-family variable). Fonts are decided: Fredoka + Nunito */
+  --font-family-heading: "Fredoka", system-ui, sans-serif;
+  --font-family-body: "Nunito", system-ui, sans-serif;
+}
