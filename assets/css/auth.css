@@ -1,0 +1,138 @@
+/* ==========================================================================
+   Auth pages — Sign In / Sign Up (FigCraft "Mobile/Sign In" + "Mobile/Sign Up")
+   One stylesheet for both forms; the markup keeps the real PHP form flow.
+   Loaded with: $pageStyles = ['css/auth.css'].
+   ========================================================================== */
+.page-auth { background: var(--color-bg-page); background-image: none; }
+
+.page-auth main {
+  position: relative;
+  margin-top: calc(-1 * var(--site-header-h, 72px)); /* header floats on the photo */
+  padding: 112px 20px 0;
+}
+.page-auth.has-flash main { margin-top: 0; padding-top: 32px; }
+.page-auth.has-flash .auth-bg { top: 0; }
+.auth-bg {
+  position: absolute; top: -22px; left: 16px; z-index: 0;
+  width: calc(100% - 32px); height: 204px; max-width: none;
+  border-radius: 12px; object-fit: cover;
+}
+
+/* Card */
+.auth-card {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 350px; margin: 0 auto;
+  padding: 16px; border-radius: 8px;
+  background: var(--color-bg-surface);
+  box-shadow: 0 10px 21px -4px rgba(0, 0, 0, .05), 0 6px 8px -3px rgba(0, 0, 0, .19),
+              0 2px 4px -2px rgba(0, 0, 0, .12), inset 0 1px 1px rgba(255, 255, 255, 1);
+}
+.auth-card h1 {
+  margin: 0 0 20px; text-align: center;
+  color: var(--color-text-primary); font: 600 26px/32px var(--font-family-heading);
+}
+.auth-card .flash-message {
+  margin: 0 0 8px; padding: 8px 10px; border-radius: 6px; border: 1px solid var(--color-feedback-error); border-left-width: 6px;
+  background: var(--color-feedback-error-bg); color: var(--color-feedback-error);
+  font: 600 11px/15px var(--font-family-body);
+}
+.auth-card .flash-message + .flash-message { margin-top: -4px; }
+
+/* Form rhythm: title 20, body 12, fields 8, inputs 20, actions 8 */
+.auth-form { display: flex; flex-direction: column; gap: 12px; }
+.auth-fields { display: flex; flex-direction: column; gap: 8px; }
+.auth-inputs { display: flex; flex-direction: column; gap: 20px; }
+.field-row { display: flex; gap: 12px; }
+.field-row .field { flex: 1; min-width: 0; }
+.field-stack { display: flex; flex-direction: column; gap: 12px; }
+
+.auth-card .field { display: flex; flex-direction: column; gap: 6px; margin: 0; }
+.auth-card .field label {
+  color: var(--color-text-secondary);
+  font: 500 12px/16px var(--font-family-heading); letter-spacing: .02em;
+}
+.auth-card .field input {
+  width: 100%; height: 44px; padding: 13px 16px;
+  border: 1px solid transparent; border-radius: 8px;
+  background: rgba(36, 24, 18, .14); color: var(--color-text-primary);
+  font: 400 14px/16px var(--font-family-body);
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .19), inset 1px 1px 2px rgba(0, 0, 0, .11);
+}
+.auth-card .field input::placeholder { color: var(--placeholder-muted); }
+.auth-card .field input:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 1px; }
+.auth-card .field input.is-invalid {
+  border-color: var(--color-feedback-error);
+  box-shadow: 0 0 0 1px var(--color-feedback-error), inset 1px 1px 2px rgba(0, 0, 0, .11);
+}
+.auth-card .field-error {
+  margin: 0; color: var(--color-feedback-error);
+  font: 600 10px/14px var(--font-family-body);
+}
+
+/* Checkboxes (remember me / terms) */
+.auth-card input[type="checkbox"] {
+  appearance: none; -webkit-appearance: none;
+  width: 16px; height: 17px; flex: none; margin: 0;
+  border: 1px solid var(--strong-teal-border); border-radius: 4px; background: transparent;
+  display: grid; place-items: center; cursor: pointer;
+}
+.auth-card input[type="checkbox"]:checked { background: var(--color-action-primary); border-color: var(--color-action-primary); }
+.auth-card input[type="checkbox"]:checked::after {
+  content: ""; width: 9px; height: 5px;
+  border-left: 2px solid var(--color-text-on-dark); border-bottom: 2px solid var(--color-text-on-dark);
+  transform: translateY(-1px) rotate(-45deg);
+}
+.auth-card input[type="checkbox"]:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+.auth-card .check-line { display: flex; align-items: center; gap: 6px; margin: 0; font-size: 10px; cursor: pointer; }
+
+/* Terms row */
+.auth-card .check-terms {
+  color: var(--color-text-link); font: 400 10px/14px var(--font-family-body);
+  align-items: flex-start;
+}
+.auth-card .check-terms input { margin-top: 1px; }
+.auth-card .check-terms a { color: inherit; font-weight: 700; text-decoration: underline; }
+.auth-card .check-terms.is-invalid { color: var(--color-feedback-error); }
+
+/* Sign-in options row */
+.auth-options { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.auth-options .check-line { color: var(--color-text-secondary); font-family: var(--font-family-body); }
+.auth-link { color: var(--color-text-link); font: 700 10px/14px var(--font-family-body); text-decoration: none; }
+.auth-link:hover { color: var(--color-text-link-hover); text-decoration: underline; }
+
+/* Actions */
+.auth-actions { display: flex; flex-direction: column; gap: 8px; }
+.auth-submit {
+  width: 100%; height: 53px; padding: 0; border: 0; border-radius: 24px; cursor: pointer;
+  background: var(--color-action-primary); color: #EBEBEB;
+  font: 600 18px/24px var(--font-family-heading);
+  box-shadow: 0 14px 21px -4px rgba(0, 0, 0, .20), 0 6px 8px -3px rgba(0, 0, 0, .19),
+              0 2px 4px -2px rgba(0, 0, 0, .12), inset 0 1px 1px rgba(31, 85, 96, .25);
+}
+.auth-submit:hover { background: var(--color-action-primary-hover); }
+.auth-submit:active { background: var(--color-action-primary-pressed); transform: translateY(1px); }
+
+.auth-switch {
+  position: relative; margin: 0; padding-top: 9px; text-align: center;
+  color: var(--color-text-link); font: 400 10px/14px var(--font-family-body);
+}
+.auth-switch::before {
+  content: ""; position: absolute; top: 0; left: 14px; right: 14px;
+  border-top: 1px solid rgba(54, 34, 24, .45);
+}
+.auth-switch a { color: inherit; font-weight: 700; text-decoration: underline; }
+
+/* Tablet / desktop: full-bleed photo band, card stays centred */
+@media (min-width: 700px) {
+  .page-auth main { max-width: none; padding: 160px 32px 0; }
+  .auth-bg { left: 0; width: 100%; top: -24px; height: 280px; border-radius: 0; }
+  .auth-card { max-width: 456px; padding: 24px; }
+  .auth-card h1 { font-size: 30px; line-height: 36px; }
+  .auth-card .field input { height: 48px; }
+  .auth-submit { height: 56px; }
+}
+@media (min-width: 1000px) {
+  .page-auth main { padding-top: 180px; }
+  .auth-bg { height: 320px; }
+  .auth-card { max-width: 480px; padding: 28px; }
+}

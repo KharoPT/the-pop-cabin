@@ -31,6 +31,9 @@ $menuLinks = [
 <link rel="stylesheet" href="<?php echo assetUrl('css/style.css'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/header.css'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/footer.css'); ?>">
+<?php foreach (($pageStyles ?? []) as $style): ?>
+<link rel="stylesheet" href="<?php echo assetUrl($style); ?>">
+<?php endforeach; ?>
 </head>
 <body class="<?php echo e(trim(($bodyClass ?? '') . (!empty($flashMessages) ? ' has-flash' : ''))); ?>">
 <script>

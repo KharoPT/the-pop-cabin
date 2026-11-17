@@ -20,9 +20,10 @@ The agent reads the design and builds; the user reviews the branch and merges.
    raw value. Do not round to the nearest token.
 
 ## Workflow (one page or one group of frames per run)
-1. **Git.** `git switch main && git pull` → `git switch -c design-<page>`. Never commit
-   to `main`, never force-push. Commit each finished page, push the branch, stop for
-   the user to review and merge.
+1. **Git.** `git switch main && git pull` → `git switch -c design-<pages>`. Never
+   commit to `main`, never force-push. Commit each finished page, push the branch,
+   stop for the user to review and merge. If `main` moved while you worked, merge it
+   into your branch and re-test before pushing.
 2. **Read the frame.** `inspect_document` (tree), `get_node` (sizes/gaps/fills/type),
    `screenshot` (look), then export the assets the page needs: backgrounds, hero art,
    illustrations, logos, icons. Product photos stay in `uploads/products/` — never
@@ -36,10 +37,20 @@ The agent reads the design and builds; the user reviews the branch and merges.
 5. **Commit + push.** No REPORT.md, no run log. The branch and a short chat summary
    are the handoff.
 
+## Naming
+- **Never keep the design export's layer names in the code.** `frame-63`, `group-2`,
+   `vector2`, `sign-in-content` and friends describe the design tree, not this page.
+  Name every class, id and variable for what it does here (`auth-card`, `field-row`,
+  `auth-switch`, `tile-nav`). The same applies to the HTML/CSS references the user
+  supplies — read their values, rewrite their names.
+- One file per page group: `assets/css/auth.css`, `assets/css/shop.css`, … Loaded by
+  the page with `$pageStyles = ['css/auth.css'];` before `includes/header.php`.
+  `style.css` keeps the shared/base rules; `header.css` and `footer.css` are components.
+
 ## Components (used by every public page, admin has its own)
 - Header: `includes/header.php` + `assets/css/header.css`.
 - Footer: `includes/footer.php` + `assets/css/footer.css`.
-- Page sections: `assets/css/style.css` (one block per page, scoped by `body` class).
+- Page sections: `assets/css/<page>.css`, loaded through `$pageStyles`.
 - Shared scripts: `assets/js/main.js` (small vanilla JS, commented).
 Changing the header or footer means changing the component files once — never
 override them per page.
