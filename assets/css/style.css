@@ -497,27 +497,6 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
 .dropzone input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
 .submit-note { text-align: center; font-size: .85rem; color: var(--muted); max-width: 32ch; margin: 1rem auto 0; }
 
-.page-banner {
-  display: grid; place-items: center; height: 160px; margin: 14px 12px 0; border-radius: 8px; text-align: center; overflow: hidden; position: relative;
-  background-color: var(--pine-300);
-  background-image:
-    url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 400 60' preserveAspectRatio='none'%3E%3Cpath d='M0 60V40l14-24 14 24-6 0 14-22 14 22h-6l14-26 14 26H0zm120 0V38l12-22 12 22h-5l12-20 12 20h-5l12-24 12 24H120zm150 0V40l12-20 12 20h-5l12-22 12 22h-5l12-26 12 26h-6l12-20 12 20H270z' fill='%235f3f29' opacity='.35'/%3E%3C/svg%3E"),
-    var(--grain), var(--planks);
-  background-repeat: no-repeat, repeat, repeat; background-position: bottom, 0 0, 0 0; background-size: 100% 56px, auto, auto;
-  border: 3px solid var(--bark); box-shadow: 0 5px 0 rgba(30, 20, 12, .3);
-}
-.banner-title { margin: 0 0 12px; font: 700 clamp(2rem, 9vw, 3rem) var(--font-display); color: var(--walnut); letter-spacing: .02em; text-shadow: 0 2px 0 rgba(255, 255, 255, .35); }
-.auth-panel { margin: 0 12px; padding: 1.8rem 14px 2.2rem; background-color: var(--pine-300); background-image: var(--grain); border: 3px solid var(--bark); border-top: 0; border-radius: 0 0 8px 8px; }
-.auth-card { max-width: 480px; margin: 0 auto; }
-.auth-card h1 { text-align: center; font-size: 1.9rem; margin-bottom: 1.3rem; }
-.auth-card .field label { display: block; font-weight: 600; margin-bottom: .3rem; }
-.field-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
-.auth-options { display: flex; align-items: center; justify-content: space-between; gap: 1rem; margin: -.2rem 0 1.2rem; flex-wrap: wrap; }
-.auth-options .check-line { margin: 0; }
-.auth-options a { font-size: .85rem; }
-.check-terms { align-items: flex-start; font-size: .85rem; margin: .3rem 0 1.3rem; }
-.check-terms input { margin-top: .15rem; }
-.auth-switch { text-align: center; font-size: .9rem; margin: 1.3rem 0 0; padding-top: 1rem; border-top: 2px solid var(--bark); }
 .shell-page { padding: 2.4rem 0 3rem; min-height: 40vh; }
 .shell-note { text-align: center; color: var(--muted); margin-top: 1.6rem; }
 
