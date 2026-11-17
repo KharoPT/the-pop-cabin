@@ -315,7 +315,7 @@
     btn.addEventListener('click', function () {
       var row = document.getElementById(btn.getAttribute('data-tile-nav'));
       if (!row) return;
-      var step = btn.getAttribute('data-dir') === 'next' ? 206 : -206;
+      var step = btn.getAttribute('data-dir') === 'next' ? 310 : -310;
       if (row.scrollBy) row.scrollBy({ left: step, behavior: 'smooth' });
     });
   });

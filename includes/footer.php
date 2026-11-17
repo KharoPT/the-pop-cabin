@@ -36,13 +36,13 @@ $tiktokUrl   = siteContent('tiktok_url');
             </nav>
             <nav class="footer-col" aria-labelledby="f-about">
                 <h2 id="f-about">About Pop Cabin</h2>
-                <a href="<?php echo SITE_URL; ?>/about.php">About us</a>
+                <a href="<?php echo SITE_URL; ?>/about.php">About Us</a>
                 <a href="<?php echo SITE_URL; ?>/terms.php">Terms of Service</a>
             </nav>
             <nav class="footer-col" aria-labelledby="f-connect">
                 <h2 id="f-connect">Connect With Us</h2>
                 <a href="<?php echo SITE_URL; ?>/contact.php">Contact Us</a>
-                <a class="<?php echo $facebookUrl ? '' : 'is-pending'; ?>" <?php if ($facebookUrl): ?>href="<?php echo e($facebookUrl); ?>" target="_blank" rel="noopener"<?php endif; ?>>Visit Our Facebook Page</a>
+                <a class="<?php echo $facebookUrl ? '' : 'is-pending'; ?>" <?php if ($facebookUrl): ?>href="<?php echo e($facebookUrl); ?>" target="_blank" rel="noopener"<?php endif; ?>>Facebook/Messenger</a>
                 <a class="<?php echo $tiktokUrl ? '' : 'is-pending'; ?>" <?php if ($tiktokUrl): ?>href="<?php echo e($tiktokUrl); ?>" target="_blank" rel="noopener"<?php endif; ?>>Tiktok</a>
             </nav>
         </div>
