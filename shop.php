@@ -1,4 +1,4 @@
-<?php
+﻿<?php
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/classes/Product.php';
 
@@ -32,7 +32,7 @@ $collections = $productModel->getCollections();
 $queryBase = $activeFilters + ($filters['sort'] !== '' ? ['sort' => $filters['sort']] : []);
 $pageUrl   = fn(int $p): string => SITE_URL . '/shop.php?' . http_build_query($queryBase + ['page' => $p]);
 
-$pageTitle = 'Shop Collections — ' . SITE_NAME;
+$pageTitle = 'Shop Collections â€” ' . SITE_NAME;
 $bodyClass = 'page-shop';
 require_once __DIR__ . '/includes/header.php';
 ?>
@@ -44,7 +44,7 @@ require_once __DIR__ . '/includes/header.php';
                 <span class="filter-icon" aria-hidden="true">
                     <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
                 </span>
-                <span>Filter and sort</span>
+                <span>Filter &amp; Sort</span>
             </summary>
             <form class="filter-form" method="get" action="<?php echo SITE_URL; ?>/shop.php">
                 <?php if ($filters['search'] !== ''): ?>
@@ -92,7 +92,7 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             </form>
         </details>
-        <p class="sign shop-total"><span class="shop-total-n"><?php echo number_format($total); ?></span> <?php echo $total === 1 ? 'pop' : 'pops'; ?></p>
+        <p class="sign shop-total"><span class="shop-total-n"><?php echo number_format($total); ?></span> <?php echo $total === 1 ? 'Pop' : 'Pops'; ?></p>
     </div>
     <hr class="stitch">
 </div>
@@ -100,6 +100,7 @@ require_once __DIR__ . '/includes/header.php';
 <section class="wrap shop-results" aria-label="Pops">
     <?php if ($products): ?>
         <div class="pop-grid">
+            <?php $cardShowStock = true; ?>
             <?php foreach ($products as $card): ?>
                 <?php include __DIR__ . '/includes/product_card.php'; ?>
             <?php endforeach; ?>
@@ -144,3 +145,4 @@ require_once __DIR__ . '/includes/header.php';
 </section>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
+
