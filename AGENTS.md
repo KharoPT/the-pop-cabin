@@ -18,8 +18,8 @@ Read one small node from `http://127.0.0.1:3845`. If it fails: **STOP**, change 
 3. **Cannot see the frame?** Do NOT guess layout. Restyle with tokens, keep the existing structure, and write `LAYOUT NOT VERIFIED: <page>` in the report. Never invent values.
 
 ## Decisions (bulk rule, set by the orchestrator, replaces the row-by-row COMPARISON.md)
-- **Visuals** (color, type, spacing, radius, shadow, component look, section order, copy of labels) → **change the code to match Figma.**
-- **Behavior and data** (form fields, validation, features, real product data, real copy) → **keep the code**, restyle it. Figma sample copy (Lorem ipsum, repeated products, "1-16 out of 11 Pops", ₱449 × 2 = ₱800, repeated "Movies" chips) is placeholder: never copy it.
+- **Visuals** (color, type, spacing, radius, shadow, component look, section order, copy of labels) → **change the code to match Figma.** Section presence follows Figma too: on the 9 framed screens, remove marketing sections Figma does not have (e.g. home "Ready to order"). Never remove forms, nav, or other functional parts.
+- **Behavior and data** (form fields, validation, features, real product data, real copy) → **keep the code**, restyle it. **Lorem ipsum = placeholder, but keep the section:** write realistic Pop Cabin mock copy with the same word/sentence count and text style. Repeated products/chips and wrong numbers ("1-16 out of 11 Pops", ₱449 × 2 = ₱800) are placeholder: use real data. **Real names and portraits in Figma (the team / Meet the Devs) are real: use them exactly.**
 - **Figma-only features** needing backend (new fields, new pages) → skip; list under "Backend needs".
 - **Pages without a frame** (contact, about, account, order detail, admin lists, delete confirm, mechanics, terms) and **desktop widths** → restyle from the nearest Figma component and tokens.
 - Wording: "Basket" (not Cart), "Order" (not Reservation), "Update Basket", "Dibs!" keeps its exclamation mark. Lock icons only on the 3 disabled tabs. Keep the "Out of stock" dashboard card. Text only: never rename files, classes, or `name=` attributes. Wording inside `actions/` or `classes/` is out of scope: list it under Backend needs.
@@ -37,8 +37,10 @@ Read one small node from `http://127.0.0.1:3845`. If it fails: **STOP**, change 
 4. **Every screen covers default, empty, invalid, success.** Invalid = per-field error: red border, message under the field, `aria-invalid="true"`, `aria-describedby`; keep the existing top banner too. Every input has a `<label>`.
 5. **Safe PHP:** escape output with `e()`, no SQL in pages, every POST form keeps its CSRF token.
 6. **Mobile-first at 390 px**, then 700 px and 1000 px (the code's breakpoints; Figma's 390/768/1280 are frame widths).
-7. Images: product photos in Figma are placeholders (real ones come from `uploads/products/`); never export them. Backgrounds stay CSS tonight; `assets/img/` only via the EXPORT card.
+7. Images: product photos in Figma are placeholders (real ones come from `uploads/products/`); never export them. **Everything else is exported from Figma and used in the page:** backgrounds, hero, team portraits, illustrations, and any decorative vector shape. Download the asset URLs that `get_design_context` returns (e.g. `curl` from `http://127.0.0.1:3845/assets/...`) into `assets/img/`, named by use (`bg-hero.webp`, `team-<name>.png`); vectors stay `.svg`; rasters about 150 KB max. Never replace an image or a complex shape with a CSS gradient or a plain box. Cannot download one → list its node id under Questions (the user exports it by hand).
 8. Unsure? Put it under "Questions". Do not guess.
+9. **Measure, do not eyeball.** Read sizes, gaps, padding, radius, colors and text styles from `get_design_context`, not only from screenshots. Before reporting, compare your 390 px render with the frame PNG section by section and list every visible difference left under "Not done". Wrong spacing or a skipped section is a failed card.
+10. **Team data:** use the Figma names and portraits. Keep a fallback array at the top of `index.php` used when `siteContent('team')` is empty; list DB seeding under Backend needs.
 
 ## Loop per card
 1. **Git preflight** (below). Create the card's branch from up-to-date `main`.
@@ -48,8 +50,8 @@ Read one small node from `http://127.0.0.1:3845`. If it fails: **STOP**, change 
 - **Running out of quota or time:** commit what is done as `WIP: <what>`, push, list the rest under "Not done". **Resuming** (new agent or new session): read `docs/REPORT.md` "Not done" and the Run log, continue on the same branch.
 
 ## Git (the agent runs all of it; the user only clicks Merge)
-- Preflight: `git status` (changes only in `docs/`, `assets/css/tokens.css`, `assets/fonts/` are the user's handoff files: commit them first on the card branch as `chore: handoff context`; any other change → stop and report) → `git fetch origin` → `git log --oneline HEAD..origin/main` (note in the report if teammates pushed). If `main` moved: `git switch main && git pull && git switch <branch> && git merge main`. Conflict in a frontend file you own: keep both sides' intent and report it. Conflict in `classes/`, `config/`, `actions/`, `sql/`: **stop, change nothing, report.**
-- Branches: `slice-a`, `slice-f`, `slice-b1`, `slice-b2`, `slice-b3`, `slice-c`, `design-frames`, `design-images`. Never commit to `main`. Never force-push. The PR is squashed on merge, so many small commits are fine.
+- Preflight: `git status` (changes only in `docs/`, `AGENTS.md`, `assets/css/tokens.css`, `assets/fonts/` are the user's handoff files: commit them first on the card branch as `chore: handoff context`; any other change → stop and report) → `git fetch origin` → `git log --oneline HEAD..origin/main` (note in the report if teammates pushed). If `main` moved: `git switch main && git pull && git switch <branch> && git merge main`. Conflict in a frontend file you own: keep both sides' intent and report it. Conflict in `classes/`, `config/`, `actions/`, `sql/`: **stop, change nothing, report.**
+- Branches: `slice-h`, `slice-a`, `slice-f`, `slice-b1`, `slice-b2`, `slice-b3`, `slice-c`, `design-frames`, `design-images`. Never commit to `main`. Never force-push. The PR is squashed on merge, so many small commits are fine.
 - Before finishing: fetch again; if `main` moved, merge it and re-test touched pages; `git push -u origin <branch>`.
 
 ## Context hygiene (free-tier limits)
