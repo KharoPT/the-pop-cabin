@@ -1,15 +1,18 @@
-# Card A report — re-skin (`slice-a`)
+# Card F report — per-field errors (`slice-f`)
 
-- **Done:** `tokens.css` loaded before `style.css` on public + admin; Google Fonts links removed; Fredoka/Nunito self-hosted (8 static faces, 400/500/600/700); every old `:root` variable aliased to a token by role; all public + admin pages checked at 390 px.
-- **Files changed:** `includes/header.php`, `admin/includes/admin_header.php`, `assets/css/style.css`. Handoff commit `68d009a` carries AGENTS.md, tokens.css, DESIGN.md, SESSION.md, PROMPTS.md and `assets/fonts/`.
-- **Git preflight:** Handoff files committed first. `origin/main` moved to `a6db94c` (duplicate `CREATE DATABASE` fix) — merged clean. `slice-a` was branched from `design-setup` (Run 1: tokens/DESIGN/PNGs), because Run 1 is not on `main` yet; merging `origin/main` brought only the SQL fix.
-- **Mapping (old `:root` → token):** birch→bg-page · pine-100→bg-surface-alt · pine-200→brand-soft · pine-300→border-default · oak→border-strong · bark→action-brand · walnut→action-brand · espresso→bg-inverse · ember→action-primary · moss→feedback-success · cream→bg-surface · ink→text-primary · muted→text-muted-aa · font-body→font-family-body · font-display→font-family-heading · wrap→container-max.
-- **Removed / kept raw:** unused `--cedar` removed (0 usages). `--radius` kept at `6px`: no 6 px token exists (xs 4 / sm 8), not rounded.
-- **Tokens/unbound added:** none. No new raw values in components.
-- **JS added:** none.
-- **Tested (Chrome, 390 px viewport):** index, shop, login, register, cart (empty), contact, about, mechanics, terms → `scrollWidth` 390, no page overflow (home carousel scrolls by design); empty shop search renders. Admin as seeded admin: dashboard, products, add/edit product, users, delete confirm, oop_demo → no overflow. Focus outline on header search + admin photo input = 3 px teal `rgb(31,85,96)`. Checkout/account/order detail redirect guests as before. All pages 200, no PHP warnings; `tokens.css`, `style.css` and all 8 fonts return 200.
-- **Differences found and done (per page):** no Figma frame for this card, so no visual compare; alias re-skin only.
-- **Not done:** per-field invalid/empty/success states (card F); per-page Figma restyle (B1–B3); desktop polish.
-- **LAYOUT NOT VERIFIED:** none for A (no frame read).
-- **Questions:** 1) `--wrap` 1100→1200 (`--container-max`) widens desktop; keep? 2) `--ember`→teal action-primary (hover/focus/active), honey left for CTAs — OK? 3) `--radius` has no exact token: keep 6 px or move to 4/8? 4) `.status-shipped` (also the admin-role pill) is still hardcoded purple; restyle in B3?
-- **Backend needs:** none.
+- **Done:** Contact, sign in, sign up, checkout and the admin product form now show the invalid state per field: red border (`--color-feedback-error`), message under the field, `aria-invalid="true"`, `aria-describedby`. The existing top banner is kept.
+- **Files changed:** `contact.php`, `login.php`, `register.php`, `checkout.php`, `admin/product_form.php`, `assets/css/style.css`, `assets/js/main.js`.
+- **Git preflight:** `slice-f` cut from `origin/main` `cfd798c` (slice-a merged); final fetch showed no new commits. Card A decisions committed first as `683b5d6`.
+- **Contact:** message, first name, last name, email mapped; an attachment error shows under the dropzone; banner + inline both show (see Questions).
+- **Sign in:** identifier and password mapped; wrong credentials stay on the banner only (no single field is at fault). `novalidate` added so server errors render.
+- **Sign up:** first/last name, email, password, confirm, terms mapped; duplicate-email error goes under email; `novalidate` added.
+- **Admin product form:** name, franchise, price, description and photo upload mapped; admin banner kept; `novalidate` added.
+- **Checkout:** server validation lives in `actions/place_order.php` (not editable), so the per-field state is JS in `main.js` (checks required fields on submit, sets aria/messages, clears on input); `novalidate` added. With JS off the server banner still catches empty fields.
+- **Tokens/unbound added:** none; error text/border use `--color-feedback-error` (5.4:1, AA).
+- **Moss → success text:** no `--moss`/success **text** uses exist in the touched code (only borders/fills), so nothing to fix here.
+- **JS added:** one commented block (~45 lines) for checkout per-field errors; `node --check` passes.
+- **Tested:** empty + invalid + valid POSTs for contact, login, register and product form; checkout invalid in headless Chrome at 390 px. Touched pages 200, no PHP warnings. Test rows cleaned up (1 inquiry, the test user + cart, the seeded cart item); product 2 update was a no-op.
+- **Not done:** product "Add" with no photo still fails — pre-existing `products.image_url NOT NULL` while the form allows no photo; outside card F.
+- **LAYOUT NOT VERIFIED:** none (no Figma frame for F).
+- **Questions:** 1) Banner + inline repeat the same text — keep both, or make the banner a one-line summary? 2) Product add needs a photo (or schema default): backend owner? 3) Should wrong-credential login mark the password field, or stay banner-only?
+- **Backend needs:** none in this card.
