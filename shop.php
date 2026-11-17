@@ -32,18 +32,19 @@ $collections = $productModel->getCollections();
 $queryBase = $activeFilters + ($filters['sort'] !== '' ? ['sort' => $filters['sort']] : []);
 $pageUrl   = fn(int $p): string => SITE_URL . '/shop.php?' . http_build_query($queryBase + ['page' => $p]);
 
-$pageTitle = 'Shop Collections â€” ' . SITE_NAME;
+$pageTitle = 'Shop Collections — ' . SITE_NAME;
 $bodyClass = 'page-shop';
+$pageStyles = ['css/shop.css'];
 require_once __DIR__ . '/includes/header.php';
 ?>
+
+<img class="shop-bg" src="<?php echo SITE_URL; ?>/assets/img/shop-bg.jpg" alt="" width="716" height="304">
 
 <div class="wrap shop-top">
     <div class="shop-bar">
         <details class="filter-panel" <?php echo $filtersOpen ? 'open' : ''; ?>>
             <summary class="sign filter-summary">
-                <span class="filter-icon" aria-hidden="true">
-                    <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M4 7h10M18 7h2M4 17h2M10 17h10"/><circle cx="16" cy="7" r="2"/><circle cx="8" cy="17" r="2"/></svg>
-                </span>
+                <img class="filter-icon" src="<?php echo SITE_URL; ?>/assets/img/icon-filter.svg" alt="" width="12" height="20">
                 <span>Filter &amp; Sort</span>
             </summary>
             <form class="filter-form" method="get" action="<?php echo SITE_URL; ?>/shop.php">
@@ -107,13 +108,13 @@ require_once __DIR__ . '/includes/header.php';
         </div>
 
         <nav class="pager" aria-label="Pagination">
-            <p class="pager-count"><?php echo $from; ?>-<?php echo $to; ?> out of <?php echo number_format($total); ?> pops<?php echo $filters['search'] !== '' ? ' for &ldquo;' . e($filters['search']) . '&rdquo;' : ''; ?></p>
+            <p class="pager-count"><?php echo $from; ?>-<?php echo $to; ?> out of <?php echo number_format($total); ?> Pops<?php echo $filters['search'] !== '' ? ' for &ldquo;' . e($filters['search']) . '&rdquo;' : ''; ?></p>
             <?php if ($totalPages > 1): ?>
                 <div class="pager-links">
                     <?php if ($page > 1): ?>
-                        <a class="pager-btn" href="<?php echo e($pageUrl($page - 1)); ?>" rel="prev"><span aria-hidden="true">&lsaquo;</span> prev</a>
+                        <a class="pager-btn" href="<?php echo e($pageUrl($page - 1)); ?>" rel="prev" aria-label="Previous page"><img src="<?php echo SITE_URL; ?>/assets/img/pager-prev.svg" alt="" width="32" height="32"></a>
                     <?php else: ?>
-                        <span class="pager-btn is-disabled" aria-disabled="true"><span aria-hidden="true">&lsaquo;</span> prev</span>
+                        <span class="pager-btn is-disabled" aria-disabled="true" aria-label="Previous page"><img src="<?php echo SITE_URL; ?>/assets/img/pager-prev.svg" alt="" width="32" height="32"></span>
                     <?php endif; ?>
 
                     <span class="pager-pages">
@@ -129,9 +130,9 @@ require_once __DIR__ . '/includes/header.php';
                     </span>
 
                     <?php if ($page < $totalPages): ?>
-                        <a class="pager-btn" href="<?php echo e($pageUrl($page + 1)); ?>" rel="next">next <span aria-hidden="true">&rsaquo;</span></a>
+                        <a class="pager-btn" href="<?php echo e($pageUrl($page + 1)); ?>" rel="next" aria-label="Next page"><img src="<?php echo SITE_URL; ?>/assets/img/pager-next.svg" alt="" width="32" height="32"></a>
                     <?php else: ?>
-                        <span class="pager-btn is-disabled" aria-disabled="true">next <span aria-hidden="true">&rsaquo;</span></span>
+                        <span class="pager-btn is-disabled" aria-disabled="true" aria-label="Next page"><img src="<?php echo SITE_URL; ?>/assets/img/pager-next.svg" alt="" width="32" height="32"></span>
                     <?php endif; ?>
                 </div>
             <?php endif; ?>
