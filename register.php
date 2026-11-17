@@ -9,8 +9,9 @@ if (isLoggedIn()) {
 // Character count that still works on hosts without the mbstring extension.
 $textLength = static fn(string $s): int => function_exists('mb_strlen') ? mb_strlen($s) : strlen($s);
 
-$errors = [];
-$old    = ['first_name' => '', 'last_name' => '', 'email' => ''];
+$errors      = [];
+$fieldErrors = [];
+$old         = ['first_name' => '', 'last_name' => '', 'email' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $old = [
@@ -26,28 +27,40 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     } else {
         $fullName = trim($old['first_name'] . ' ' . $old['last_name']);
 
+        if ($old['first_name'] === '') {
+            $fieldErrors['first_name'] = 'Please enter your first name.';
+        }
+        if ($old['last_name'] === '') {
+            $fieldErrors['last_name'] = 'Please enter your last name.';
+        }
         if ($old['first_name'] === '' || $old['last_name'] === '' || $textLength($fullName) > 100) {
             $errors[] = 'Please enter your first and last name.';
         }
         if (!filter_var($old['email'], FILTER_VALIDATE_EMAIL) || $textLength($old['email']) > 255) {
             $errors[] = 'Please enter a valid email address.';
+            $fieldErrors['email'] = 'Please enter a valid email address.';
         }
         if (strlen($password) < 8) {
             $errors[] = 'Password must be at least 8 characters.';
+            $fieldErrors['password'] = 'Password must be at least 8 characters.';
         } elseif (strlen($password) > 72) {
             // bcrypt (PASSWORD_DEFAULT) silently ignores everything past 72 bytes.
             $errors[] = 'Password must be 72 characters or fewer.';
+            $fieldErrors['password'] = 'Password must be 72 characters or fewer.';
         } elseif ($password !== $passwordConfirm) {
             $errors[] = 'The two passwords do not match.';
+            $fieldErrors['password_confirm'] = 'The two passwords do not match.';
         }
         if (empty($_POST['agree'])) {
             $errors[] = 'Please agree to the Terms & Conditions and Privacy Policy to continue.';
+            $fieldErrors['agree'] = 'Please agree to the Terms & Conditions and Privacy Policy to continue.';
         }
 
         if (empty($errors)) {
             $userModel = new User();
             if ($userModel->emailExists($old['email'])) {
                 $errors[] = 'An account with that email already exists. Try logging in instead.';
+                $fieldErrors['email'] = 'An account with that email already exists. Try logging in instead.';
             } else {
                 // The sign-up form has no username field, so one is generated from the email.
                 $result = $userModel->register([
@@ -95,36 +108,48 @@ require_once __DIR__ . '/includes/header.php';
             <div class="flash-message flash-error" role="alert"><?php echo e($error); ?></div>
         <?php endforeach; ?>
 
-        <form method="post" action="<?php echo SITE_URL; ?>/register.php">
+        <form method="post" action="<?php echo SITE_URL; ?>/register.php" novalidate>
             <input type="hidden" name="csrf_token" value="<?php echo e(generateCsrfToken()); ?>">
 
             <div class="field-split">
                 <div class="field">
                     <label for="first_name">First Name</label>
-                    <input type="text" id="first_name" name="first_name" required maxlength="50" autocomplete="given-name" placeholder="Your First Name..." value="<?php echo e($old['first_name']); ?>">
+                    <?php $err = $fieldErrors['first_name'] ?? null; ?>
+                    <input type="text" id="first_name" name="first_name" required maxlength="50" autocomplete="given-name" placeholder="Your First Name..." value="<?php echo e($old['first_name']); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="first_name-error"' : ''; ?>>
+                    <?php if ($err): ?><p class="field-error" id="first_name-error"><?php echo e($err); ?></p><?php endif; ?>
                 </div>
                 <div class="field">
                     <label for="last_name">Last Name</label>
-                    <input type="text" id="last_name" name="last_name" required maxlength="50" autocomplete="family-name" placeholder="Your Last Name..." value="<?php echo e($old['last_name']); ?>">
+                    <?php $err = $fieldErrors['last_name'] ?? null; ?>
+                    <input type="text" id="last_name" name="last_name" required maxlength="50" autocomplete="family-name" placeholder="Your Last Name..." value="<?php echo e($old['last_name']); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="last_name-error"' : ''; ?>>
+                    <?php if ($err): ?><p class="field-error" id="last_name-error"><?php echo e($err); ?></p><?php endif; ?>
                 </div>
             </div>
             <div class="field">
                 <label for="email">Email Address</label>
-                <input type="email" id="email" name="email" required maxlength="255" autocomplete="email" placeholder="Your Valid Email..." value="<?php echo e($old['email']); ?>">
+                <?php $err = $fieldErrors['email'] ?? null; ?>
+                <input type="email" id="email" name="email" required maxlength="255" autocomplete="email" placeholder="Your Valid Email..." value="<?php echo e($old['email']); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="email-error"' : ''; ?>>
+                <?php if ($err): ?><p class="field-error" id="email-error"><?php echo e($err); ?></p><?php endif; ?>
             </div>
             <div class="field">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required minlength="8" maxlength="72" autocomplete="new-password" placeholder="Your Password...">
+                <?php $err = $fieldErrors['password'] ?? null; ?>
+                <input type="password" id="password" name="password" required minlength="8" maxlength="72" autocomplete="new-password" placeholder="Your Password..."<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="password-error"' : ''; ?>>
+                <?php if ($err): ?><p class="field-error" id="password-error"><?php echo e($err); ?></p><?php endif; ?>
             </div>
             <div class="field">
                 <label for="password_confirm">Confirm Password</label>
-                <input type="password" id="password_confirm" name="password_confirm" required minlength="8" maxlength="72" autocomplete="new-password" placeholder="Confirm Your Password...">
+                <?php $err = $fieldErrors['password_confirm'] ?? null; ?>
+                <input type="password" id="password_confirm" name="password_confirm" required minlength="8" maxlength="72" autocomplete="new-password" placeholder="Confirm Your Password..."<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="password_confirm-error"' : ''; ?>>
+                <?php if ($err): ?><p class="field-error" id="password_confirm-error"><?php echo e($err); ?></p><?php endif; ?>
             </div>
 
-            <label class="check-line check-terms">
-                <input type="checkbox" name="agree" value="1" required>
+            <?php $err = $fieldErrors['agree'] ?? null; ?>
+            <label class="check-line check-terms<?php echo $err ? ' is-invalid' : ''; ?>">
+                <input type="checkbox" name="agree" value="1" required<?php echo $err ? ' aria-invalid="true" aria-describedby="agree-error"' : ''; ?>>
                 <span>I agree to the <a href="<?php echo SITE_URL; ?>/terms.php">Terms &amp; Conditions</a> and <a class="is-pending">Privacy Policy</a></span>
             </label>
+            <?php if ($err): ?><p class="field-error" id="agree-error"><?php echo e($err); ?></p><?php endif; ?>
 
             <button type="submit" class="btn btn-dark btn-block btn-lg">Sign Up</button>
         </form>

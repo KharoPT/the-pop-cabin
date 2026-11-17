@@ -28,7 +28,7 @@ require_once __DIR__ . '/includes/header.php';
 
 <section class="section">
     <div class="container cart-layout">
-        <form class="checkout-form" method="post" action="<?php echo SITE_URL; ?>/actions/place_order.php">
+        <form class="checkout-form" method="post" action="<?php echo SITE_URL; ?>/actions/place_order.php" novalidate>
             <input type="hidden" name="csrf_token" value="<?php echo e(generateCsrfToken()); ?>">
 
             <h3>Shipping Details</h3>

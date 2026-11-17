@@ -261,4 +261,53 @@
         });
     });
   });
+  // Checkout per-field errors (card F). Server validation lives in actions/place_order.php
+  // (out of scope), so this is the invalid state for checkout; with JS off the browser
+  // still posts and the server's top banner stays.
+  function markInvalid(field, message) {
+    var id = field.id + '-error';
+    var error = document.getElementById(id);
+    field.classList.add('is-invalid');
+    field.setAttribute('aria-invalid', 'true');
+    field.setAttribute('aria-describedby', id);
+    if (!error) {
+      error = document.createElement('p');
+      error.className = 'field-error';
+      error.id = id;
+      field.insertAdjacentElement('afterend', error);
+    }
+    error.textContent = message;
+  }
+
+  function clearInvalid(field) {
+    var error = document.getElementById(field.id + '-error');
+    field.classList.remove('is-invalid');
+    field.removeAttribute('aria-invalid');
+    field.removeAttribute('aria-describedby');
+    if (error) error.remove();
+  }
+
+  var checkoutForm = $('.checkout-form');
+  if (checkoutForm) {
+    var checkoutFields = $$('[required]', checkoutForm);
+    checkoutFields.forEach(function (field) {
+      field.addEventListener('input', function () { clearInvalid(field); });
+      field.addEventListener('change', function () { clearInvalid(field); });
+    });
+    checkoutForm.addEventListener('submit', function (e) {
+      var first = null;
+      checkoutFields.forEach(function (field) {
+        if (field.checkValidity()) {
+          clearInvalid(field);
+        } else {
+          markInvalid(field, field.validationMessage);
+          if (!first) first = field;
+        }
+      });
+      if (first) {
+        e.preventDefault();
+        first.focus();
+      }
+    });
+  }
 })();

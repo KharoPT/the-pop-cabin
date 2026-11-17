@@ -12,7 +12,8 @@ if (isLoggedIn()) {
     redirect($next ?? 'account.php');
 }
 
-$errors = [];
+$errors      = [];
+$fieldErrors = [];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (!verifyCsrfToken($_POST['csrf_token'] ?? '')) {
@@ -23,6 +24,12 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
         if ($identifier === '' || $password === '') {
             $errors[] = 'Please enter your email and password.';
+            if ($identifier === '') {
+                $fieldErrors['identifier'] = 'Please enter your email address.';
+            }
+            if ($password === '') {
+                $fieldErrors['password'] = 'Please enter your password.';
+            }
         } else {
             $user = (new User())->login($identifier, $password);
             if ($user) {
@@ -76,17 +83,21 @@ require_once __DIR__ . '/includes/header.php';
             <div class="flash-message flash-error" role="alert"><?php echo e($error); ?></div>
         <?php endforeach; ?>
 
-        <form method="post" action="<?php echo SITE_URL; ?>/login.php">
+        <form method="post" action="<?php echo SITE_URL; ?>/login.php" novalidate>
             <input type="hidden" name="csrf_token" value="<?php echo e(generateCsrfToken()); ?>">
             <?php if ($next !== null): ?><input type="hidden" name="next" value="<?php echo e($next); ?>"><?php endif; ?>
 
             <div class="field">
                 <label for="identifier">Email Address</label>
-                <input type="text" inputmode="email" id="identifier" name="identifier" required autocomplete="username" placeholder="Your Valid Email..." value="<?php echo e(is_string($_POST['identifier'] ?? null) ? $_POST['identifier'] : ''); ?>">
+                <?php $err = $fieldErrors['identifier'] ?? null; ?>
+                <input type="text" inputmode="email" id="identifier" name="identifier" required autocomplete="username" placeholder="Your Valid Email..." value="<?php echo e(is_string($_POST['identifier'] ?? null) ? $_POST['identifier'] : ''); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="identifier-error"' : ''; ?>>
+                <?php if ($err): ?><p class="field-error" id="identifier-error"><?php echo e($err); ?></p><?php endif; ?>
             </div>
             <div class="field">
                 <label for="password">Password</label>
-                <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Your Password...">
+                <?php $err = $fieldErrors['password'] ?? null; ?>
+                <input type="password" id="password" name="password" required autocomplete="current-password" placeholder="Your Password..."<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="password-error"' : ''; ?>>
+                <?php if ($err): ?><p class="field-error" id="password-error"><?php echo e($err); ?></p><?php endif; ?>
             </div>
 
             <div class="auth-options">

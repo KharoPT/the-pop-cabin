@@ -16,6 +16,7 @@ if ($id && !$product) {
 $franchises  = getAllCategories();
 $collections = $productModel->getCollections();
 $errors      = [];
+$fieldErrors = [];
 $posted      = null;
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -39,15 +40,19 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $validFranchiseIds = array_map('intval', array_column($franchises, 'category_id'));
         if ($posted['name'] === '' || strlen($posted['name']) > 255) {
             $errors[] = 'Please enter a name for the pop.';
+            $fieldErrors['name'] = 'Please enter a name for the pop.';
         }
         if (!in_array($posted['category_id'], $validFranchiseIds, true)) {
             $errors[] = 'Please choose a franchise.';
+            $fieldErrors['category_id'] = 'Please choose a franchise.';
         }
         if ($posted['price'] <= 0 || $posted['price'] > 99999999) {
             $errors[] = 'Please enter a price greater than zero.';
+            $fieldErrors['price'] = 'Please enter a price greater than zero.';
         }
         if (strlen($posted['description']) > 5000) {
             $errors[] = 'The description is too long (5000 characters at most).';
+            $fieldErrors['description'] = 'The description is too long (5000 characters at most).';
         }
 
         $upload = ['error' => null];
@@ -55,6 +60,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $upload = saveProductImage($_FILES['photo'] ?? []);
             if (isset($upload['error'])) {
                 $errors[] = $upload['error'];
+                $fieldErrors['photo'] = $upload['error'];
             }
         }
 
@@ -114,32 +120,38 @@ require_once __DIR__ . '/includes/admin_header.php';
     </div>
 <?php endif; ?>
 
-<form method="post" enctype="multipart/form-data" class="admin-card product-form" id="product-form" action="">
+<form method="post" enctype="multipart/form-data" class="admin-card product-form" id="product-form" action="" novalidate>
     <input type="hidden" name="csrf_token" value="<?php echo e(generateCsrfToken()); ?>">
 
-    <label class="photo-drop <?php echo $currentImage ? 'has-photo' : ''; ?>" for="photo" data-photo-drop>
+    <?php $err = $fieldErrors['photo'] ?? null; ?>
+    <label class="photo-drop <?php echo $currentImage ? 'has-photo' : ''; ?><?php echo $err ? ' is-invalid' : ''; ?>" for="photo" data-photo-drop>
         <?php if ($currentImage): ?><img class="photo-preview" src="<?php echo e($currentImage); ?>" alt="Current photo" data-photo-preview><?php else: ?><img class="photo-preview" alt="" hidden data-photo-preview><?php endif; ?>
         <span class="photo-prompt">
             <svg viewBox="0 0 24 24" width="30" height="30" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><circle cx="9" cy="10" r="1.6"/><path d="M4 17l5-4.5 3.5 3L16 12l4.5 4.5"/></svg>
             <span data-photo-label><?php echo $product && $currentImage ? 'Current photo - Replace' : 'Upload photo'; ?></span>
         </span>
-        <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/gif,image/webp">
+        <input type="file" id="photo" name="photo" accept="image/jpeg,image/png,image/gif,image/webp"<?php echo $err ? ' aria-invalid="true" aria-describedby="photo-error"' : ''; ?>>
     </label>
+    <?php if ($err): ?><p class="field-error" id="photo-error"><?php echo e($err); ?></p><?php endif; ?>
 
     <div class="form-row">
         <label for="name">Name</label>
-        <input type="text" id="name" name="name" required maxlength="255" placeholder="e.g. Cosmic Hulk" value="<?php echo e($values['name']); ?>">
+        <?php $err = $fieldErrors['name'] ?? null; ?>
+        <input type="text" id="name" name="name" required maxlength="255" placeholder="e.g. Cosmic Hulk" value="<?php echo e($values['name']); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="name-error"' : ''; ?>>
+        <?php if ($err): ?><p class="field-error" id="name-error"><?php echo e($err); ?></p><?php endif; ?>
     </div>
 
     <div class="form-row form-row-split">
         <div>
             <label for="category_id">Franchise</label>
-            <select id="category_id" name="category_id" required>
+            <?php $err = $fieldErrors['category_id'] ?? null; ?>
+            <select id="category_id" name="category_id" required<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="category_id-error"' : ''; ?>>
                 <option value="">Choose...</option>
                 <?php foreach ($franchises as $c): ?>
                     <option value="<?php echo (int) $c['category_id']; ?>" <?php echo (int) $values['category_id'] === (int) $c['category_id'] ? 'selected' : ''; ?>><?php echo e($c['category_name']); ?></option>
                 <?php endforeach; ?>
             </select>
+            <?php if ($err): ?><p class="field-error" id="category_id-error"><?php echo e($err); ?></p><?php endif; ?>
         </div>
         <div>
             <label for="edition">Edition</label>
@@ -154,7 +166,9 @@ require_once __DIR__ . '/includes/admin_header.php';
     <div class="form-row form-row-split">
         <div>
             <label for="price">Price (<?php echo e(SITE_CURRENCY_SYMBOL); ?>)</label>
-            <input type="number" id="price" name="price" step="0.01" min="0.01" required placeholder="0.00" value="<?php echo e($values['price']); ?>">
+            <?php $err = $fieldErrors['price'] ?? null; ?>
+            <input type="number" id="price" name="price" step="0.01" min="0.01" required placeholder="0.00" value="<?php echo e($values['price']); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="price-error"' : ''; ?>>
+            <?php if ($err): ?><p class="field-error" id="price-error"><?php echo e($err); ?></p><?php endif; ?>
         </div>
         <div>
             <label for="stock_quantity">Stock</label>
@@ -176,7 +190,9 @@ require_once __DIR__ . '/includes/admin_header.php';
 
     <div class="form-row">
         <label for="description">Description</label>
-        <textarea id="description" name="description" rows="5" maxlength="5000" placeholder="Add product details..."><?php echo e($values['description']); ?></textarea>
+        <?php $err = $fieldErrors['description'] ?? null; ?>
+        <textarea id="description" name="description" rows="5" maxlength="5000" placeholder="Add product details..."<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="description-error"' : ''; ?>><?php echo e($values['description']); ?></textarea>
+        <?php if ($err): ?><p class="field-error" id="description-error"><?php echo e($err); ?></p><?php endif; ?>
     </div>
 
     <?php if ($product): ?>
