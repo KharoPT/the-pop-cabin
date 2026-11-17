@@ -1,18 +1,18 @@
-# Card F report — per-field errors (`slice-f`)
+# Card B1 report — home, shop, product (`slice-b1`)
 
-- **Done:** Contact, sign in, sign up, checkout and the admin product form now show the invalid state per field: red border (`--color-feedback-error`), message under the field, `aria-invalid="true"`, `aria-describedby`. The existing top banner is kept.
-- **Files changed:** `contact.php`, `login.php`, `register.php`, `checkout.php`, `admin/product_form.php`, `assets/css/style.css`, `assets/js/main.js`.
-- **Git preflight:** `slice-f` cut from `origin/main` `cfd798c` (slice-a merged); final fetch showed no new commits. Card A decisions committed first as `683b5d6`.
-- **Contact:** message, first name, last name, email mapped; an attachment error shows under the dropzone; banner + inline both show (see Questions).
-- **Sign in:** identifier and password mapped; wrong credentials stay on the banner only (no single field is at fault). `novalidate` added so server errors render.
-- **Sign up:** first/last name, email, password, confirm, terms mapped; duplicate-email error goes under email; `novalidate` added.
-- **Admin product form:** name, franchise, price, description and photo upload mapped; admin banner kept; `novalidate` added.
-- **Checkout:** server validation lives in `actions/place_order.php` (not editable), so the per-field state is JS in `main.js` (checks required fields on submit, sets aria/messages, clears on input); `novalidate` added. With JS off the server banner still catches empty fields.
-- **Tokens/unbound added:** none; error text/border use `--color-feedback-error` (5.4:1, AA).
-- **Moss → success text:** no `--moss`/success **text** uses exist in the touched code (only borders/fills), so nothing to fix here.
-- **JS added:** one commented block (~45 lines) for checkout per-field errors; `node --check` passes.
-- **Tested:** empty + invalid + valid POSTs for contact, login, register and product form; checkout invalid in headless Chrome at 390 px. Touched pages 200, no PHP warnings. Test rows cleaned up (1 inquiry, the test user + cart, the seeded cart item); product 2 update was a no-op.
-- **Not done:** product "Add" with no photo still fails — pre-existing `products.image_url NOT NULL` while the form allows no photo; outside card F.
-- **LAYOUT NOT VERIFIED:** none (no Figma frame for F).
-- **Questions:** 1) Banner + inline repeat the same text — keep both, or make the banner a one-line summary? 2) Product add needs a photo (or schema default): backend owner? 3) Should wrong-credential login mark the password field, or stay banner-only?
-- **Backend needs:** none in this card.
+- **Done:** Re-skinned home, shop and product to the hi-fi frames at 390 px; desktop widths follow the same components. Data and behaviour untouched.
+- **Files changed:** `index.php`, `shop.php`, `product.php`, `includes/product_card.php`, `assets/css/style.css`.
+- **Git preflight:** `slice-b1` cut from `origin/main` `a5b8c6f` (slice-f merged). Final fetch: no new commits.
+- **Figma read (MCP):** `Mobile/Public` 243:5030 (design context + screenshot), `Mobile/Collection` 365:6802 and `Mobile/Product Profile` 370:7680 (screenshots); cross-checked the three PNGs.
+- **Home:** log-wall hero → dark CSS gradient; cream/honey title, real stat cards, teal Shop Collection pill; wooden signs → plain Fredoka; Discover cards 290 px / r16 with glass label; honey View All; team = dark forest band with 2×2 glass cards; reviews/CTA restyled.
+- **Home kept/dropped:** no Overview section (its Figma copy is Lorem placeholder); no hero photo (backgrounds stay CSS); shared header/footer still the old wood chrome (not in this card).
+- **Shop:** 2-up cream cards r16, image r12, dark Fredoka name, category/stock lines, plain price; honey Filter & Sort pill; "N Pops"; pager pills. Added `Stock: N` from real data.
+- **Shop not done:** Figma's Add to Basket / Place Order buttons stay off the cards (they need the cart flow; behaviour kept).
+- **Product:** cream product card, 32 px title, stock line, 28 px price, 4 mechanic pills (active honey), Dibs! walnut pill, Details 22 px, Reviews & Comments + honey Write a Review, dark review cards, related grid, honey Back to Collection.
+- **Product not done:** Place Order button and lock icons on the 3 disabled tabs (behaviour/markup, not visual); review empty state unchanged.
+- **Tokens/unbound added:** none; reused `--color-highlight-default`, `--color-action-primary`, `--color-bg-inverse`, `--color-feedback-error` etc.
+- **JS added:** none.
+- **Tested:** 390 px screenshots of all three pages (normal, shop empty search, product no-reviews); all 200, no PHP warnings. An editor step added a UTF-8 BOM to shop.php/product.php — stripped and re-tested (`5bf1d31`).
+- **LAYOUT NOT VERIFIED:** none.
+- **Questions:** 1) Home Overview: build it once real copy exists, or leave it out? 2) Product Place Order + lock icons: add in B2 or keep out? 3) Restyle the shared header/footer in B2/B3, or now?
+- **Backend needs:** none.

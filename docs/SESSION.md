@@ -40,6 +40,7 @@ Adapt the Figma hi-fi onto the existing codebase **without changing major operat
 - Run 1 · design-setup · done · Nov 17
 - Run 2 · slice-a · done · Nov 17
 - Run 3 · slice-f · done · Nov 17
+- Run 4 · slice-b1 · done · Nov 17
 
 ## Next (Claude chat)
 1. `docs/PROMPTS.md` is STALE (old RUN-2 comparison, single SLICE-B): rewrite it with cards A, F, B1, B2, B3, C + the launcher. 2. `README.md` and `docs/REPORT.md` need no change (agents overwrite REPORT). 3. Fill in the panel time above.
