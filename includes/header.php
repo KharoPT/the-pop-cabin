@@ -40,23 +40,23 @@ $menuLinks = [
 <header class="site-header" id="top">
     <div class="header-bar">
         <button type="button" class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
-            <span></span><span></span><span></span>
+            <img src="<?php echo SITE_URL; ?>/assets/img/icon-burger.svg" alt="" width="32" height="32">
         </button>
 
         <a href="<?php echo SITE_URL; ?>/index.php" class="logo-link" aria-label="<?php echo e(SITE_NAME); ?> home">
-            <img src="<?php echo SITE_URL; ?>/assets/img/logo.svg" alt="" width="46" height="46">
+            <img src="<?php echo SITE_URL; ?>/assets/img/logo-mark.svg" alt="" width="32" height="32">
         </a>
 
         <form class="search-form" role="search" action="<?php echo SITE_URL; ?>/shop.php" method="get">
             <label class="sr-only" for="site-search">Search pops</label>
-            <input type="search" id="site-search" name="search" placeholder="Search" value="<?php echo e(is_string($_GET['search'] ?? null) ? $_GET['search'] : ''); ?>">
+            <input type="search" id="site-search" name="search" placeholder="Search a Pop..." value="<?php echo e(is_string($_GET['search'] ?? null) ? $_GET['search'] : ''); ?>">
             <button type="submit" class="sr-only">Search</button>
         </form>
 
         <?php if (isLoggedIn()): ?>
             <a href="<?php echo SITE_URL; ?>/account.php" class="login-btn">Account</a>
         <?php else: ?>
-            <a href="<?php echo SITE_URL; ?>/login.php" class="login-btn">Login</a>
+            <a href="<?php echo SITE_URL; ?>/login.php" class="login-btn">Sign In</a>
         <?php endif; ?>
     </div>
 
