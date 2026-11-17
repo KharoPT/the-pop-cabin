@@ -29,7 +29,7 @@ return [
     ],
 
     // ---- About Us ----
-    'about_images'   => [],   // up to 4 image URLs/paths; empty slots show a wood placeholder
+    'about_images'   => ['assets\img\about-abalos.jpg','assets\img\about-caburnay.jpg', 'assets\img\about-deguzman.jpg', 'assets\img\about-estrada.jpg'],   // up to 4 image URLs/paths; empty slots show a wood placeholder
     'about_subtitle' => 'The Pop Cabin',
     'about_text'     => [
         'The Pop Cabin is a Funko Pop collectibles shop.',
@@ -37,7 +37,7 @@ return [
     ],
 
     // ---- About Us: "Where to Find Us" ----
-    'map_embed_url'  => '',   // a Google Maps "Embed a map" URL (src of the iframe)
+    'map_embed_url'  => 'https://www.google.com/maps/embed?pb=!1m14!1m12!1m3!1d1612.290635897228!2d120.26768193017405!3d16.029385505804125!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!5e0!3m2!1sen!2sph!4v1794958763279!5m2!1sen!2sph',   
     'address_lines'  => [],   // e.g. ['Street address', 'City, Province']
 
     // ---- Contact Us ----
