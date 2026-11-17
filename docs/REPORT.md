@@ -1,10 +1,10 @@
 # Card B1 report — home, shop, product + card H header/footer (`slice-b1` redo)
 
 - **Done:** Reran B1 on the existing branch. Rebuilt home to `Mobile/Public`, rechecked shop/product, and added the missing card H header/footer (H was not on `main`; it was built on `slice-h` and merged here).
-- **Files changed:** `includes/header.php`, `includes/footer.php`, `index.php`, `shop.php` / `product.php` (first-run restyle), `assets/css/style.css`, `assets/js/main.js`, 18 files in `assets/img/`.
+- **Files changed:** `includes/header.php`, `includes/footer.php`, `index.php`, `shop.php` / `product.php` (first-run restyle), `assets/css/style.css`, `assets/js/main.js`, 13 files in `assets/img/`.
 - **Git preflight:** Continued on `slice-b1` (no force-push). `main` unchanged at `a5b8c6f`; final fetch clean.
 - **Figma read (MCP):** `Mobile/Public` 243:5030 design context (header, hero, overview, discover, devs, footer) + `Mobile/Collection` 365:6802 and `Mobile/Product Profile` 370:7680 screenshots; PNGs cross-checked.
-- **Exported (`assets/img`):** `bg-hero.jpg`, `bg-devs.jpg`, `object-logo.png` (transparent), `hero-notch-left/right.svg`, `footer-notch.svg`, `logo-mark.svg`, `icon-burger/search/close.svg`, four `team-*.png`, social SVGs. 26–143 KB; product photos were not exported.
+- **Exported (`assets/img`):** `bg-hero.jpg`, `bg-devs.jpg`, `object-logo.png` (transparent), `hero-notch-left/right.svg`, `footer-notch.svg`, `logo-mark.svg`, `icon-burger/search.svg`, four `team-*.png`. 26–143 KB; product photos were not exported.
 - **Home:** dark hero with real background, notch cutouts and a cream tab around the teal pill; overview added with measured 32/24/14 type and the exported sign illustration; Discover Pops 2-up 190×240 cards with arrows and honey View All; Devs band uses `bg-devs.jpg`, 172×135 glass cards, real names/roles/quotes/portraits; “Ready to order”, extra reviews and featured carousel removed (not in Figma).
 - **Home differences left:** stats use real counts (30 / 0), not Figma’s 150+/30+ samples; title is solid cream (Figma has a cream→muted gradient); overview illustration keeps its baked cream background.
 - **Shop:** rechecked at 390; 2-up cream cards, honey Filter & Sort, stock line, pager. Still no Add to Basket / Place Order on cards (needs the cart flow; behaviour kept).
