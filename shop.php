@@ -38,7 +38,7 @@ $pageStyles = ['css/shop.css'];
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<img class="shop-bg" src="<?php echo SITE_URL; ?>/assets/img/shop-bg.jpg" alt="" width="716" height="304">
+<img class="shop-bg" src="<?php echo SITE_URL; ?>/assets/img/shop-bg.webp" alt="" width="716" height="304">
 
 <div class="wrap shop-top">
     <div class="shop-bar">
