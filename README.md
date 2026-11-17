@@ -45,7 +45,7 @@ Abalos, Caburnay, De Guzman, Estrada
 1. **Install XAMPP**, start **Apache** and **MySQL**.
 2. **Copy the project folder** into `xampp/htdocs/` and keep the name `the-pop-cabin`. The folder name is part of the URL.
 3. **Check `config/config.php`:** `SITE_URL` must equal `http://localhost/<folder name>` (default now `http://localhost/the-pop-cabin`). `DB_USER` / `DB_PASS` default to XAMPP's `root` and an empty password.
-4. **Import `sql/popcabdb.sql`** (phpMyAdmin, Import tab). It is the full schema plus data: all tables, 30 products, franchises, categories and one admin account. There are no migration files any more. Known problem: the dump contains `CREATE DATABASE popcabdb;` twice, which can stop the import (see 6.3).
+4. **Import `sql/popcabdb.sql`** (phpMyAdmin, Import tab). It is the full schema plus data: 30 products, 11 franchises, 3 collections, 30 product-collection links, 4 carts and one admin account. There are no migration files any more. Known problem: the dump contains `CREATE DATABASE popcabdb;` twice, which can stop the import (see 6.3).
 5. **Open** `http://localhost/the-pop-cabin/index.php`. Admin login: the `admin` user from the dump (ask the backend member for the password; never write it in a file).
 6. **Writable folders:** `uploads/products/` (exists, 30 photos). `storage/inquiries/` is created automatically by the first contact-form attachment.
 7. After any database change, **export and replace `sql/popcabdb.sql`** (team rule, see "To collaborators").
@@ -141,25 +141,27 @@ Browser asks for shop.php
 
 ## 6. Database
 
-### 6.1 Tables (what the code expects)
+### 6.1 Tables (verified against the current dump)
 
-> The schema now lives in `sql/popcabdb.sql` (phpMyAdmin export, Nov 16 18:32). The table below was written before that and was not re-verified column by column: confirm types against the dump and the ERD before documenting.
+The schema and seed data are in `sql/popcabdb.sql` (phpMyAdmin export generated Nov 16, 2026 at 18:32). Column names and declared nullability below are from that file; PK, unique keys and foreign keys are summarized in 6.2–6.3.
 
-| Table | Purpose | Columns the code uses |
+| Table | Purpose | Columns in `sql/popcabdb.sql` |
 | --- | --- | --- |
-| `users` | Accounts | `user_id` PK, `username`, `email`, `password_hash`, `full_name`, `phone`, `address`, `city`, `postal_code`, `country` (these five are NOT NULL), `user_role` ENUM('customer','admin') |
-| `categories` | **Franchises** (Marvel, DC...). Named "categories" for historical reasons | `category_id` PK, `category_name`, `slug` |
-| `products` | The pops | `product_id` PK, `category_id` FK, `name`, `slug`, `price`, `stock_quantity`, `condition_grade` (kept NULL), `is_authenticated` (kept 0), `is_featured`, `image_url`, `created_at`, `description`, `edition` |
-| `collections` | **Category pills** (Movies, Anime, Games) | `collection_id` PK, `collection_name`, `slug` UNIQUE |
-| `product_collections` | Junction: a product can be in several collections | `product_id` + `collection_id` (composite PK) |
-| `reviews` | Buyer reviews | `review_id` PK, `product_id`, `user_id`, `rating` (1-5), `comment`, `is_anonymous`, `created_at`; UNIQUE (`product_id`, `user_id`) = one review per buyer per pop |
-| `inquiries` | Contact form messages | `inquiry_id` PK, `user_id` (nullable), `first_name`, `last_name`, `email`, `message`, `attachment_path`, `attachment_name`, `created_at` |
-| `carts` | One cart per browser or user | `cart_id` PK, `user_id` (0 = guest), `session_id` |
-| `cart_items` | Lines in a cart | `cart_item_id` PK, `cart_id`, `product_id`, `quantity`, `added_at` |
-| `orders` | Placed orders | `order_id` PK, `order_number`, `user_id`, `order_status`, `subtotal`, `shipping_fee`, `total_amount`, `shipping_name/address/city/postal_code/country`, `created_at` |
-| `order_items` | Lines in an order (a price snapshot) | `order_id`, `product_id` FK, `product_name`, `price`, `quantity` |
+| `users` | Accounts | `user_id`, `username`, `email`, `password_hash`, `full_name`, `phone`, `address`, `city`, `postal_code`, `country`, `user_role` (role defaults to `customer`; all columns are `NOT NULL`) |
+| `categories` | **Franchises** (Marvel, DC...). Named "categories" for historical reasons | `category_id`, `category_name`, `slug`, `description` (`NOT NULL`) |
+| `products` | The pops | `product_id`, `category_id`, `name`, `slug`, `description`, `price`, `stock_quantity`, `condition_grade` (nullable), `is_authenticated`, `is_featured`, `image_url`, `created_at` (nullable, defaults to current time), `updated_at`, `edition` (defaults to `Regular`; other columns are `NOT NULL`) |
+| `collections` | **Category pills** (Movies, Anime, Games) | `collection_id`, `collection_name`, `slug` |
+| `product_collections` | Junction: a product can be in several collections | `product_id`, `collection_id` |
+| `reviews` | Buyer reviews | `review_id`, `product_id`, `user_id`, `rating`, `comment`, `is_anonymous` (defaults to 0), `created_at` |
+| `inquiries` | Contact form messages | `inquiry_id`, `user_id` (nullable), `first_name`, `last_name`, `email`, `message`, `attachment_path` (nullable), `attachment_name` (nullable), `created_at` |
+| `carts` | One cart per browser or user | `cart_id`, `user_id`, `session_id`, `created_at` (`NOT NULL`; guest carts use `user_id = 0`) |
+| `cart_items` | Lines in a cart | `cart_item_id`, `cart_id`, `product_id`, `quantity`, `added_at` |
+| `orders` | Placed orders | `order_id`, `order_number`, `user_id`, `order_status` (nullable), `subtotal`, `shipping_fee`, `total_amount`, `shipping_name`, `shipping_address`, `shipping_city`, `shipping_postal_code`, `shipping_country`, `created_at` |
+| `order_items` | Lines in an order (a price snapshot) | `order_item_id`, `order_id`, `product_id`, `product_name`, `price`, `quantity` |
 
 ### 6.2 Relationships
+
+These are the logical relationships used by the application. The dump only enforces the foreign keys listed in 6.3.
 
 ```
 categories (franchise) 1 ───< products >───< collections       (via product_collections, M:N)
@@ -176,12 +178,12 @@ Two design decisions worth knowing:
 - **`order_items` keeps its own copy of the product name and price**, so an old order stays correct even if the product later changes. Because `order_items` has a foreign key to `products`, a product that appears in any order **cannot be deleted** (the admin delete screen explains this).
 
 
-### 6.3 Dump findings (Nov 17)
+### 6.3 Dump findings (checked against `sql/popcabdb.sql`, generated Nov 16)
 
 - **Data:** 30 products (each with a photo in `uploads/products/`), 11 franchises in `categories` (ids 5-15), 3 collections (Movies, Anime, Games), 30 product-collection links, 1 user (the admin), 4 carts. No orders, reviews, or inquiries yet.
-- **Duplicate `CREATE DATABASE popcabdb;`** (lines 23 and 27, no `IF NOT EXISTS`): the import can fail at the second one or when the database already exists. Fix: keep a single `CREATE DATABASE IF NOT EXISTS popcabdb;`.
+- **Duplicate `CREATE DATABASE popcabdb;`** (lines 23 and 27, no `IF NOT EXISTS`): the import can fail at the second statement or when the database already exists. The dump itself still needs this corrected before it is a reliable repeatable import; this README records the issue and does not alter the SQL file.
 - **Foreign keys present:** `cart_items` (2), `orders` (1), `order_items` (2), `products` (1). **Missing:** `reviews`, `inquiries`, `product_collections`, `carts.user_id` (guests stored as 0).
-- **Naming:** `categories` holds franchises and `collections` holds categories (rename planned after Wednesday).
+- **Naming in this dump:** `categories` holds franchises and `collections` holds category groups.
 - `order_items.product_name` / `price` are a deliberate price snapshot: be ready to explain it for 3NF.
 
 ---
@@ -318,7 +320,7 @@ Nothing here is broken unless marked; these are things to decide or finish.
 
 | # | Item | Why it matters |
 | --- | --- | --- |
-| 1 | **Import risk:** the dump has `CREATE DATABASE` twice; foreign keys missing on `reviews`, `inquiries`, `product_collections`, `carts.user_id` | Wednesday demo on a second laptop; DB project's logical/physical consistency |
+| 1 | **Import risk:** the dump has `CREATE DATABASE` twice; foreign keys are absent on `reviews`, `inquiries`, `product_collections`, and `carts.user_id` | Repeatable import and DB project's logical/physical consistency |
 | 2 | Orders are numbered `RR-...` (`Order.php` line 26), shown on customer screens; **no admin orders screen** | Leftover prefix; orders cannot be seen or updated by an admin |
 | 3 | `display_errors` is on (`config/config.php`) | Turn off before the demo |
 | 4 | Shipping: free over 100, flat fee 15 (in ₱) | Placeholder numbers; confirm with the client or remove |
