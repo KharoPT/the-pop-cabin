@@ -11,8 +11,8 @@ $reviewCount  = (new Review())->countAll();
 // Card B1 rule 10: Figma team names, roles, quotes and portraits are real.
 // Used when config/content.php still holds the generic placeholder rows.
 $teamFallback = [
-    ['name' => 'Caburnay, Rey Alexis',    'role' => 'Leader, Full Stack',   'photo' => 'assets/img/team-caburnay.png', 'quote' => '“Your next move matters more than your previous mistake.”'],
     ['name' => 'Abalos, Jamon Ray',       'role' => 'Database Developer',   'photo' => 'assets/img/team-abalos.png',   'quote' => '“Magic chess is my life.”'],
+    ['name' => 'Caburnay, Rey Alexis',    'role' => 'Leader, Full Stack',   'photo' => 'assets/img/team-caburnay.png', 'quote' => '“Your next move matters more than your previous mistake.”'],
     ['name' => 'Estrada, Gian Ernest',    'role' => 'Backend Developer',    'photo' => 'assets/img/team-estrada.png',  'quote' => '“I was born to make mistakes, not to fake perfection.”'],
     ['name' => 'De Guzman, Chryswynne',   'role' => 'Frontend Developer',   'photo' => 'assets/img/team-deguzman.png', 'quote' => '“Larp it ‘til you make it.”'],
 ];
@@ -27,9 +27,9 @@ $bodyClass       = 'page-home';
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<!-- Hero (Figma Mobile/Public 243:5030) -->
+<!-- Hero (Figma Mobile/Public, 390x2826 frame) -->
 <section class="hero">
-    <img class="hero-bg" src="<?php echo SITE_URL; ?>/assets/img/bg-hero.jpg" alt="" width="1024" height="378">
+    <img class="hero-bg" src="<?php echo SITE_URL; ?>/assets/img/bg-hero.jpg" alt="" width="748" height="1408">
     <img class="hero-notch hero-notch-left" src="<?php echo SITE_URL; ?>/assets/img/hero-notch-left.svg" alt="" width="126" height="54">
     <img class="hero-notch hero-notch-right" src="<?php echo SITE_URL; ?>/assets/img/hero-notch-right.svg" alt="" width="125" height="54">
     <div class="hero-inner">
@@ -42,7 +42,6 @@ require_once __DIR__ . '/includes/header.php';
         </div>
     </div>
     <a class="hero-shop" href="<?php echo SITE_URL; ?>/shop.php">Shop Collection</a>
-    <span class="hero-tab-bg" aria-hidden="true"></span>
 </section>
 
 <!-- Overview (Figma copy is Lorem ipsum; same length/style, real Pop Cabin words) -->
@@ -60,7 +59,7 @@ require_once __DIR__ . '/includes/header.php';
     <p class="discover-sub">Featured Releases</p>
     <?php if ($collections): ?>
         <div class="discover-carousel">
-            <button type="button" class="tile-nav tile-nav-prev" data-tile-nav="tile-row" data-dir="prev" aria-label="Show previous categories">&lsaquo;</button>
+            <button type="button" class="tile-nav tile-nav-prev" data-tile-nav="tile-row" data-dir="prev" aria-label="Show previous categories"><img src="<?php echo SITE_URL; ?>/assets/img/arrow-prev.svg" alt="" width="32" height="32"></button>
             <div class="tile-row" id="tile-row" role="region" aria-label="Categories" tabindex="0">
                 <?php foreach ($collections as $t): ?>
                     <a class="tile" href="<?php echo SITE_URL; ?>/shop.php?collection=<?php echo urlencode($t['slug']); ?>">
@@ -75,7 +74,7 @@ require_once __DIR__ . '/includes/header.php';
                     </a>
                 <?php endforeach; ?>
             </div>
-            <button type="button" class="tile-nav tile-nav-next" data-tile-nav="tile-row" data-dir="next" aria-label="Show more categories">&rsaquo;</button>
+            <button type="button" class="tile-nav tile-nav-next" data-tile-nav="tile-row" data-dir="next" aria-label="Show more categories"><img src="<?php echo SITE_URL; ?>/assets/img/arrow-next.svg" alt="" width="32" height="32"></button>
         </div>
     <?php endif; ?>
     <div class="center"><a class="btn-viewall" href="<?php echo SITE_URL; ?>/shop.php">View All</a></div>

@@ -1,58 +1,79 @@
-# AGENTS.md — The Pop Cabin (frontend / design-to-code)
+# AGENTS.md — The Pop Cabin (design → code)
 
-Updated Nov 17, 2026. Read this first, then `docs/SESSION.md` (status), then your task card in `docs/PROMPTS.md`. `docs/DESIGN.md` only when touching styles. `README.md` = codebase map: read only the section you need. Keep replies short.
+Updated Nov 18, 2026. Read this file, then `docs/DESIGN.md` when touching styles.
+The agent reads the design and builds; the user reviews the branch and merges.
 
-## Roles
-- **Claude chat = orchestrator.** Plans, decides open questions, reviews `docs/REPORT.md`. Edits no repo files. **Agents never ask the user questions**: put them under "Questions" in the report (Claude answers).
-- **DeepSeek = Figma reader AND builder**: reads its one frame through the local Figma MCP, then builds. **Codex = substitute** when DeepSeek runs out. Same rules for both.
-- **Claude unavailable?** (the user says so in the launcher) Do not wait: decide with the bulk rules below and log each guess as `ASSUMED: <what>` in the report. Claude reviews it later.
-- **The user** runs the launcher, uploads `docs/REPORT.md` to Claude, clicks Merge on GitHub.
-- **The chat is not memory.** Every agreed rule or decision lives in the md files.
+## Source of truth
+1. **FigCraft (the design app)** — MCP at `127.0.0.1:45777`. The hi-fi frames live on
+   the `High-Fi` page (`Mobile/Public`, `Mobile/Collection`, `Mobile/Product Profile`,
+   `Mobile/Basket`, `Mobile/Checkout`, `Mobile/Sign In`, `Mobile/Sign Up`,
+   `Mobile/Admin/Dashboard`, `Mobile/Add/Product`). Read sizes, gaps, colors and type
+   from `inspect_document` / `get_node` — never guess from a thumbnail.
+2. **`HTMLREF.md` / `CSSREF.md`** — when the user supplies them, they are the exact
+   translation reference for that frame. Follow them for values and structure, but
+   keep the codebase's PHP flow, data and behaviour. They are references, not files
+   to ship.
+3. **The codebase** — features, pages, data, forms and queries. Never change the flow
+   to fit a mockup.
+4. **`assets/css/tokens.css`** — the design tokens (colors, space, radius, type).
+   Use a token when the measured value matches it exactly; otherwise use the measured
+   raw value. Do not round to the nearest token.
 
-## Figma MCP check (first step of any card that reads a frame)
-Read one small node from `http://127.0.0.1:3845`. If it fails: **STOP**, change nothing, write `MCP DOWN: <error>` (3 lines) in `docs/REPORT.md`, tell the user to open the Figma desktop app / enable the server, and wait. This is the only time an agent talks to the user. Never fall back to guessing layouts.
+## Workflow (one page or one group of frames per run)
+1. **Git.** `git switch main && git pull` → `git switch -c design-<page>`. Never commit
+   to `main`, never force-push. Commit each finished page, push the branch, stop for
+   the user to review and merge.
+2. **Read the frame.** `inspect_document` (tree), `get_node` (sizes/gaps/fills/type),
+   `screenshot` (look), then export the assets the page needs: backgrounds, hero art,
+   illustrations, logos, icons. Product photos stay in `uploads/products/` — never
+   export them.
+3. **Translate, don't transplant.** Keep the existing template, PHP data and form
+   handling; replace the presentation. Section order and copy follow the frame; real
+   data wins over placeholder numbers; lorem ipsum becomes realistic Pop Cabin copy
+   with the same length. Keep behaviour when JS is off.
+4. **Test** the page at `390`, `768` and `1280` px (normal, empty, invalid, success,
+   keyboard focus). Screenshot with headless Chrome and compare section by section.
+5. **Commit + push.** No REPORT.md, no run log. The branch and a short chat summary
+   are the handoff.
 
-## Truth order
-1. **Figma hi-fi** for the 9 screens that exist: `docs/FRAMES.md` (if present) > `docs/DESIGN.md` §7-9 > `assets/css/tokens.css` > PNGs in `docs/figma/` (if you can see images) > local Figma MCP (`http://127.0.0.1:3845`, desktop app must be open; one frame only; record what you read in the report).
-2. **The codebase** for features, pages, data and behavior. Reservations are dropped; cart (UI word "Basket"), checkout, orders stay.
-3. **Cannot see the frame?** Do NOT guess layout. Restyle with tokens, keep the existing structure, and write `LAYOUT NOT VERIFIED: <page>` in the report. Never invent values.
+## Components (used by every public page, admin has its own)
+- Header: `includes/header.php` + `assets/css/header.css`.
+- Footer: `includes/footer.php` + `assets/css/footer.css`.
+- Page sections: `assets/css/style.css` (one block per page, scoped by `body` class).
+- Shared scripts: `assets/js/main.js` (small vanilla JS, commented).
+Changing the header or footer means changing the component files once — never
+override them per page.
 
-## Decisions (bulk rule, set by the orchestrator, replaces the row-by-row COMPARISON.md)
-- **Visuals** (color, type, spacing, radius, shadow, component look, section order, copy of labels) → **change the code to match Figma.** Section presence follows Figma too: on the 9 framed screens, remove marketing sections Figma does not have (e.g. home "Ready to order"). Never remove forms, nav, or other functional parts.
-- **Behavior and data** (form fields, validation, features, real product data, real copy) → **keep the code**, restyle it. **Lorem ipsum = placeholder, but keep the section:** write realistic Pop Cabin mock copy with the same word/sentence count and text style. Repeated products/chips and wrong numbers ("1-16 out of 11 Pops", ₱449 × 2 = ₱800) are placeholder: use real data. **Real names and portraits in Figma (the team / Meet the Devs) are real: use them exactly.**
-- **Figma-only features** needing backend (new fields, new pages) → skip; list under "Backend needs".
-- **Pages without a frame** (contact, about, account, order detail, admin lists, delete confirm, mechanics, terms) and **desktop widths** → restyle from the nearest Figma component and tokens.
-- Wording: "Basket" (not Cart), "Order" (not Reservation), "Update Basket", "Dibs!" keeps its exclamation mark. Lock icons only on the 3 disabled tabs. Keep the "Out of stock" dashboard card. Text only: never rename files, classes, or `name=` attributes. Wording inside `actions/` or `classes/` is out of scope: list it under Backend needs.
-- **Per page, log differences you found and what you did** (max 6 lines per page) in the report. This replaces COMPARISON.md.
-
-## Scope
-- **Allowed:** page templates and their top-of-file input handling (only to add per-field errors), `includes/`, `admin/includes/`, `assets/css/`, `assets/js/`, `assets/fonts/`, `assets/img/`, `docs/`.
-- **Never edit:** `classes/`, `config/`, `actions/`, `sql/`, table/column names. Never remove or rename a page, a form field `name=`, or a `csrf_token` input.
-- **Stack:** HTML, CSS, PHP templates, small vanilla JS. No frameworks, libraries or CDN scripts. CSS first; JS only where CSS cannot; the page must work with JS off; keep JS in `assets/js/main.js`, short and commented, and list additions in the report.
+## Layout rules
+- Mobile-first at **390 px** (the hi-fi width), then **700 px** and **1000 px**; fluid
+  between. The desktop layout is an extrapolation of the mobile frame: same order,
+  same components, wider containers and scaled type.
+- Page padding 16 px mobile, 32 px at 700, 40 px at 1000; content max 1200 px.
+- Section gap: 48 px mobile, 64 px at 700, 80 px at 1000.
+- Every screen covers default, empty, invalid and success. Invalid = per-field error:
+  red border, message under the field, `aria-invalid="true"`, `aria-describedby`, plus
+  the existing top banner. Every input has a `<label>`.
 
 ## Hard rules
-1. **Bound** Figma value → matching token. **Unbound** → exact raw value + one row in `docs/UNBOUND.md`. Where a raw spacing/padding/radius value exactly equals an existing token, use the token. Never round to the nearest token. Gradient/effect rows: simplify per component.
-2. **Do not use** `--space-32` and `--space-48` (they break the 4 px scale). Use `--color-text-muted-aa` and `--color-feedback-success-text` for small TEXT (the base muted/success colors fail 4.5:1). Details: `docs/DESIGN.md` §11.
-3. **States:** where Figma shows one, Figma wins; otherwise use the dynamic rules in `docs/DESIGN.md` §6 (hover 0.08 / pressed 0.12 overlay, disabled 0.4, `:focus-visible` 2px outline, transitions off under `prefers-reduced-motion`).
-4. **Every screen covers default, empty, invalid, success.** Invalid = per-field error: red border, message under the field, `aria-invalid="true"`, `aria-describedby`; keep the existing top banner too. Every input has a `<label>`.
-5. **Safe PHP:** escape output with `e()`, no SQL in pages, every POST form keeps its CSRF token.
-6. **Mobile-first at 390 px**, then 700 px and 1000 px (the code's breakpoints; Figma's 390/768/1280 are frame widths).
-7. Images: product photos in Figma are placeholders (real ones come from `uploads/products/`); never export them. **Everything else is exported from Figma and used in the page:** backgrounds, hero, team portraits, illustrations, and any decorative vector shape. Download the asset URLs that `get_design_context` returns (e.g. `curl` from `http://127.0.0.1:3845/assets/...`) into `assets/img/`, named by use (`bg-hero.webp`, `team-<name>.png`); vectors stay `.svg`; rasters about 150 KB max. Never replace an image or a complex shape with a CSS gradient or a plain box. Cannot download one → list its node id under Questions (the user exports it by hand).
-8. Unsure? Put it under "Questions". Do not guess.
-9. **Measure, do not eyeball.** Read sizes, gaps, padding, radius, colors and text styles from `get_design_context`, not only from screenshots. Before reporting, compare your 390 px render with the frame PNG section by section and list every visible difference left under "Not done". Wrong spacing or a skipped section is a failed card.
-10. **Team data:** use the Figma names and portraits. Keep a fallback array at the top of `index.php` used when `siteContent('team')` is empty; list DB seeding under Backend needs.
+1. **Never edit:** `classes/`, `config/` (read it), `actions/`, `sql/`, table or
+   column names, a form field `name=`, a `csrf_token` input, or a page/route.
+2. **Escape output** with `e()`; every POST form keeps its CSRF token.
+3. **Images:** export from FigCraft and store in `assets/img/` named by use
+   (`bg-hero.jpg`, `logo-mark.svg`). Vectors stay `.svg`; rasters ≈150–250 KB max.
+   Never replace real art with a CSS gradient or a plain box.
+4. **States:** where the frame shows one, the frame wins; otherwise hover 0.08 /
+   pressed 0.12 overlay, disabled 0.4, `:focus-visible` outline, transitions off
+   under `prefers-reduced-motion`.
+5. **Small text** uses `--color-text-muted-aa` and `--color-feedback-success-text`
+   (the base muted/success colors fail 4.5:1 on cream).
+6. **Do not use** `--space-32` or `--space-48` (they break the 4 px scale).
+7. **Team data:** the Figma/FigCraft names, roles, quotes and portraits are real —
+   use them exactly.
+8. Keep the bundle clean: no frameworks, no CDN, self-hosted fonts only.
 
-## Loop per card
-1. **Git preflight** (below). Create the card's branch from up-to-date `main`.
-2. Build. Test each touched page at 390 px: normal data, empty, invalid, keyboard focus. Commit after each finished page/step.
-3. Overwrite `docs/REPORT.md` (**max 30 lines**): Done · Files changed · Differences found and done (per page) · Tokens/unbound added · JS added · Not done · LAYOUT NOT VERIFIED · Questions · Backend needs. Append ONE line to the "Run log" in `docs/SESSION.md`.
-4. Push the branch. **Stop.** The user reviews, merges, and sends the report to Claude.
-- **Running out of quota or time:** commit what is done as `WIP: <what>`, push, list the rest under "Not done". **Resuming** (new agent or new session): read `docs/REPORT.md` "Not done" and the Run log, continue on the same branch.
-
-## Git (the agent runs all of it; the user only clicks Merge)
-- Preflight: `git status` (changes only in `docs/`, `AGENTS.md`, `assets/css/tokens.css`, `assets/fonts/` are the user's handoff files: commit them first on the card branch as `chore: handoff context`; any other change → stop and report) → `git fetch origin` → `git log --oneline HEAD..origin/main` (note in the report if teammates pushed). If `main` moved: `git switch main && git pull && git switch <branch> && git merge main`. Conflict in a frontend file you own: keep both sides' intent and report it. Conflict in `classes/`, `config/`, `actions/`, `sql/`: **stop, change nothing, report.**
-- Branches: `slice-h`, `slice-a`, `slice-f`, `slice-b1`, `slice-b2`, `slice-b3`, `slice-c`, `design-frames`, `design-images`. Never commit to `main`. Never force-push. The PR is squashed on merge, so many small commits are fine.
-- Before finishing: fetch again; if `main` moved, merge it and re-test touched pages; `git push -u origin <branch>`.
-
-## Context hygiene (free-tier limits)
-Cite path + line range; never paste whole files. One card per run. Do not re-read files you already read this run. If `docs/SESSION.md` gets long, compress it.
+## Pages
+Public: `index.php` (Mobile/Public), `shop.php` (Mobile/Collection),
+`product.php` (Mobile/Product Profile), `cart.php` (Mobile/Basket),
+`checkout.php` (Mobile/Checkout), `login.php` (Mobile/Sign In),
+`register.php` (Mobile/Sign Up), plus `about.php`, `contact.php`, `mechanics.php`,
+`terms.php`, `account.php`, `order_detail.php`. Admin: `admin/` (own header/footer).

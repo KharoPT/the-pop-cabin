@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Component: site header
+   One header for every public page (admin has its own). Markup lives in
+   includes/header.php; this file is its only styling. The glass pill floats
+   over a dark top gradient so it reads on both the hero and plain pages.
+   ========================================================================== */
+:root { --site-header-h: 72px; }
+.site-header {
+  position: sticky; top: 0; z-index: 60; padding: 24px 20px 0;
+  background: transparent;
+}
+.header-bar {
+  display: flex; align-items: center; gap: 0; max-width: var(--container-max); margin: 0 auto;
+  height: 48px; padding: 8px 16px 8px 8px; border-radius: 24px;
+  background: rgba(54, 34, 24, .62); border: 1px solid rgba(255, 255, 255, .22);
+  -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+  box-shadow: inset 0 2px 3px rgba(255, 255, 255, .12), inset 0 -2px 3px rgba(36, 24, 18, .35),
+              0 6px 16px rgba(36, 24, 18, .18);
+}
+.menu-btn {
+  flex: none; width: 32px; height: 32px; display: grid; place-items: center;
+  padding: 0; border: 0; background: none; cursor: pointer;
+}
+.menu-btn img {
+  width: 32px; height: 32px; display: block;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .25)) drop-shadow(0 6px 10px rgba(0, 0, 0, .22));
+}
+.menu-btn span { display: none; }
+.menu-btn:hover { transform: scale(1.04); }
+.logo-link { flex: none; width: 32px; height: 32px; margin-left: 13px; }
+.logo-link img { width: 32px; height: 32px; border-radius: 0; box-shadow: none; }
+.search-form { flex: 1 1 auto; min-width: 0; margin-left: 32px; }
+.search-form input {
+  width: 100%; min-width: 0; height: 24px; padding: 0 24px 0 30px;
+  font: 600 10px/16px var(--font-family-body); color: #fff;
+  background-color: rgba(247, 240, 225, .2); border: 0; border-radius: 100px;
+  background-image: url("../img/icon-search.svg"); background-repeat: no-repeat;
+  background-position: 8px center; background-size: 12px;
+  box-shadow: 0 1px 0 rgba(255, 255, 255, .25), inset 0 1px 2px rgba(0, 0, 0, .15);
+}
+.search-form input::placeholder { color: rgba(251, 247, 238, .78); }
+.login-btn {
+  flex: none; width: 56px; height: 32px; margin-left: 4px; padding: 0;
+  display: inline-flex; align-items: center; justify-content: center;
+  background: var(--color-highlight-default); color: var(--color-text-on-highlight);
+  border: 0; border-radius: 21px;
+  font: 600 12px/20px var(--font-family-heading); text-decoration: none;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, .06), inset 0 -1px 1px rgba(31, 85, 96, .25);
+}
+.login-btn:hover { background: var(--color-highlight-hover); color: var(--color-text-on-highlight); }
+
+.site-menu {
+  max-width: var(--container-max); margin: 8px auto 0; padding: 8px; border-radius: 16px;
+  background: var(--color-bg-surface); border: 0; box-shadow: 0 16px 34px rgba(36, 24, 18, .3);
+}
+.site-menu ul { list-style: none; margin: 0; padding: 0; }
+.site-menu li a {
+  display: flex; align-items: center; gap: .5rem; padding: .85rem 1rem; text-decoration: none;
+  color: var(--color-text-primary); font: 600 14px/20px var(--font-family-body); border-left: 0; border-radius: 12px;
+}
+.site-menu li a:hover { background: var(--color-bg-surface-alt); color: var(--color-text-primary); }
+.site-menu li a[aria-current="page"] { background: var(--color-highlight-subtle); border-left: 0; }
+.site-menu-account { border-top: 1px solid var(--color-border-subtle); margin-top: .4rem; padding-top: .4rem; }
+
+@media (min-width: 700px) {
+  :root { --site-header-h: 80px; }
+  .site-header { padding: 24px 32px 0; }
+  .header-bar { height: 56px; padding: 10px 20px 10px 10px; border-radius: 28px; }
+  .menu-btn, .menu-btn img { width: 36px; height: 36px; }
+  .logo-link, .logo-link img { width: 36px; height: 36px; }
+  .logo-link { margin-left: 14px; }
+  .search-form { margin-left: 32px; }
+  .search-form input { height: 32px; padding: 0 28px 0 36px; font-size: 12px; background-size: 14px; background-position: 12px center; }
+  .login-btn { width: 76px; height: 36px; font-size: 14px; }
+  .site-menu { max-width: 640px; }
+}
+
+@media (min-width: 1000px) {
+  :root { --site-header-h: 88px; }
+  .site-header { padding: 28px 40px 0; }
+  .header-bar { height: 60px; border-radius: 30px; max-width: 1120px; }
+  .search-form { max-width: 520px; margin-left: auto; }
+}
