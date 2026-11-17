@@ -9,6 +9,7 @@ $collections  = $productModel->getCollectionTiles();
 $franchises   = $productModel->getFranchiseTiles();
 $popCount     = $productModel->countAll();
 $reviews      = (new Review())->getLatest(6);   // the review section only appears when there are reviews
+$reviewCount  = (new Review())->countAll();
 $team         = siteContent('team', []);
 $facebookUrl  = siteContent('facebook_url');
 
@@ -47,19 +48,15 @@ function renderTileRow(array $tiles, string $param, string $label): void { ?>
         <span class="hero-tab">The</span>
         <h1 class="hero-title">POP CABIN</h1>
         <p class="hero-desc"><?php echo e(siteContent('hero_description')); ?></p>
-        <p class="hero-count"><strong><?php echo number_format($popCount); ?></strong> <?php echo $popCount === 1 ? 'pop' : 'pops'; ?> in the collection</p>
-        <a class="btn btn-light" href="#discover">Discover Pops below</a>
-        <div class="hero-pfp">
-            <img src="<?php echo SITE_URL; ?>/assets/img/logo.svg" alt="The Pop Cabin profile picture" width="190" height="190">
+        <div class="hero-stats">
+            <div class="hero-stat"><strong><?php echo number_format($popCount); ?></strong><span>Funko Pops</span></div>
+            <div class="hero-stat"><strong><?php echo number_format($reviewCount); ?></strong><span>Reviews</span></div>
         </div>
     </div>
     <div class="hero-notch">
-        <a class="btn btn-light" href="<?php echo SITE_URL; ?>/contact.php">Contact</a>
+        <a class="btn-pill-teal" href="<?php echo SITE_URL; ?>/shop.php">Shop Collection</a>
     </div>
 </section>
-<p class="fb-line">
-    <a class="<?php echo $facebookUrl ? '' : 'is-pending'; ?>" <?php if ($facebookUrl): ?>href="<?php echo e($facebookUrl); ?>" target="_blank" rel="noopener"<?php endif; ?>>visit our facebook page</a>
-</p>
 
 <?php if ($featured): ?>
 <!-- Exclusive pops carousel (products marked "Show on home page") -->
@@ -87,15 +84,13 @@ function renderTileRow(array $tiles, string $param, string $label): void { ?>
 
 <!-- Discover pops -->
 <section class="section discover" id="discover" aria-labelledby="discover-title">
-    <h2 class="sign sign-center sign-light" id="discover-title">Discover pops</h2>
+    <h2 class="sign sign-center sign-light" id="discover-title">Discover Pops</h2>
+    <p class="discover-sub">Featured Releases</p>
     <?php if ($collections) renderTileRow($collections, 'collection', 'Categories'); ?>
     <?php if ($collections && $franchises): ?><hr class="stitch"><?php endif; ?>
     <?php if ($franchises) renderTileRow($franchises, 'category', 'Franchises'); ?>
     <div class="center">
-        <a class="btn-shop" href="<?php echo SITE_URL; ?>/shop.php">
-            <span class="btn-shop-label">Shop Collection</span><span class="btn-shop-more" aria-hidden="true">&rarr; View All</span>
-            <span class="sr-only"> (view all)</span>
-        </a>
+        <a class="btn-pill-honey" href="<?php echo SITE_URL; ?>/shop.php">View All</a>
     </div>
 </section>
 
@@ -135,7 +130,7 @@ function renderTileRow(array $tiles, string $param, string $label): void { ?>
 <?php if ($team): ?>
 <section class="section team" aria-labelledby="team-title">
     <div class="wrap">
-        <h2 class="sign sign-center" id="team-title">Meet the team</h2>
+        <h2 class="sign sign-center" id="team-title">Meet the Devs</h2>
         <div class="team-grid">
             <?php foreach ($team as $member): ?>
                 <article class="team-card">
