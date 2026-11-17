@@ -1,16 +1,15 @@
-# Run 1 Report
+# Card A report — re-skin (`slice-a`)
 
-- **Done:** Audited Figma's `High-Fi` page and captured whole-frame PNG references.
-- **Files changed:** `assets/css/tokens.css`; 9 PNGs in `docs/figma/`; `docs/DESIGN.md` sections 7–10; `docs/UNBOUND.md`; this report. No PHP or existing CSS changed.
-- **Git preflight:** Updated `AGENTS.md` was committed first as `60ed938`. Initial and final fetches succeeded; `origin/main` remains `32278a0` with no commits ahead of this branch, so no teammate changes or main updates needed merging. Working branch: `design-setup`.
-- **Figma details used:** Only the `High-Fi` canvas was audited. File-level variable collections: `High-Fi (Wyn)` 252 variables / 1 mode and `Wireframe Colors` 5 variables / 1 mode. High-Fi counts and frame map are in `docs/DESIGN.md`.
-- **Comparison outcome:** Run 1 is the Figma audit; no comparison rows or code implementation were in scope.
-- **Tokens used:** Exported all 252 variables from `High-Fi (Wyn)` to `tokens.css`; aliases and exact Figma values were preserved.
-- **Unbound:** 161 grouped exact-value rows in `docs/UNBOUND.md`; raw values were not rounded.
-- **Derived states:** No dedicated state pages. `Sign In` has Default/Pressed component variants; icon references are components, not screen-state evidence.
-- **JS added:** None.
-- **Not done:** No desktop, empty, invalid, success, blocked, or loading frames were present on `High-Fi`. No decorative image assets were exported; section 10 records them for user decision.
-- **Questions:** Is the extra `Mobile/Collection` frame finished? It repeats cards and says `1-16 out of 11 Pops`. Are the Lorem ipsum home and product-profile copy, repeated related products, basket's two ₱449 items with ₱800 subtotal/total, three repeated `Movies` chips on Add Product, and the sign-in screen's “Already have an account? Sign in” copy intentional sample content?
-- **Questions:** The basket button says “Update Cart”; the product screen says “Dibs” (the UI rule requires “Dibs!”); all four action tabs show lock icons. Are these intended? Should the dashboard omit an Out of stock stat card? Should the non-product backgrounds and other images in section 10 be used in a later implementation?
-- **Questions:** Two bound variables export as `--space-32: 112px` and `--space-48: 161px`; are those exact Figma values intentional? They were preserved as-is.
-- **Backend needs:** None identified in this design-only audit.
+- **Done:** `tokens.css` loaded before `style.css` on public + admin; Google Fonts links removed; Fredoka/Nunito self-hosted (8 static faces, 400/500/600/700); every old `:root` variable aliased to a token by role; all public + admin pages checked at 390 px.
+- **Files changed:** `includes/header.php`, `admin/includes/admin_header.php`, `assets/css/style.css`. Handoff commit `68d009a` carries AGENTS.md, tokens.css, DESIGN.md, SESSION.md, PROMPTS.md and `assets/fonts/`.
+- **Git preflight:** Handoff files committed first. `origin/main` moved to `a6db94c` (duplicate `CREATE DATABASE` fix) — merged clean. `slice-a` was branched from `design-setup` (Run 1: tokens/DESIGN/PNGs), because Run 1 is not on `main` yet; merging `origin/main` brought only the SQL fix.
+- **Mapping (old `:root` → token):** birch→bg-page · pine-100→bg-surface-alt · pine-200→brand-soft · pine-300→border-default · oak→border-strong · bark→action-brand · walnut→action-brand · espresso→bg-inverse · ember→action-primary · moss→feedback-success · cream→bg-surface · ink→text-primary · muted→text-muted-aa · font-body→font-family-body · font-display→font-family-heading · wrap→container-max.
+- **Removed / kept raw:** unused `--cedar` removed (0 usages). `--radius` kept at `6px`: no 6 px token exists (xs 4 / sm 8), not rounded.
+- **Tokens/unbound added:** none. No new raw values in components.
+- **JS added:** none.
+- **Tested (Chrome, 390 px viewport):** index, shop, login, register, cart, contact, about, mechanics, terms → `scrollWidth` 390, no page overflow (home carousel scrolls by design). Admin as seeded admin: dashboard, products, add/edit product, users, delete confirm, oop_demo → no overflow. Checkout/account/order detail redirect guests to login as before. All pages 200, no PHP warnings; `tokens.css`, `style.css` and all 8 fonts return 200.
+- **Differences found and done (per page):** no Figma frame for this card, so no visual compare; alias re-skin only.
+- **Not done:** per-field invalid/empty/success states (card F); per-page Figma restyle (B1–B3); desktop polish.
+- **LAYOUT NOT VERIFIED:** none for A (no frame read).
+- **Questions:** 1) `--wrap` 1100→1200 (`--container-max`) widens desktop; keep? 2) `--ember`→teal action-primary (hover/focus/active), honey left for CTAs — OK? 3) `--radius` has no exact token: keep 6 px or move to 4/8? 4) `.status-shipped` (also the admin-role pill) is still hardcoded purple; restyle in B3?
+- **Backend needs:** none.

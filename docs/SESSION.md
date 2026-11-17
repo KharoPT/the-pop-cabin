@@ -3,7 +3,7 @@
 **Handoff for agents AND Claude chats.** New Claude chat: upload only this file + `docs/REPORT.md` and say "resume". Agents: read `AGENTS.md`, then run the card named in `docs/PROMPTS.md`. Codebase facts: `README.md`. Tags: **Decided** (user), **Delegated** (user told Claude to decide; user does not get asked).
 
 ## Deadlines
-- **OOP panel: Wed Nov 18** (front page 40, paper 30, live demo + Q&A 30). Panel time: _fill in_. **Code freeze = 3 h before the panel.** `main` must always be demoable; a slice that is not merge-ready at freeze is NOT merged.
+- **OOP panel: Wed Nov 18** (front page 40, paper 30, live demo + Q&A 30). Panel time: Wed Nov 18, 1–5 pm (order unknown) → **code freeze = 10:00 AM**. `main` must always be demoable; a slice that is not merge-ready at freeze is NOT merged.
 - Tonight (Tue) + tomorrow morning = design-to-code. DB and DSA presentations: next week (DB uses this same database).
 
 ## Goal
@@ -32,6 +32,7 @@ Adapt the Figma hi-fi onto the existing codebase **without changing major operat
 
 ## Run log (agents append ONE line per run: card · branch · done/partial · date)
 - Run 1 · design-setup · done · Nov 17
+- Run 2 · slice-a · done · Nov 17
 
 ## Next (Claude chat)
 1. `docs/PROMPTS.md` is STALE (old RUN-2 comparison, single SLICE-B): rewrite it with cards A, F, B1, B2, B3, C + the launcher. 2. `README.md` and `docs/REPORT.md` need no change (agents overwrite REPORT). 3. Fill in the panel time above.
