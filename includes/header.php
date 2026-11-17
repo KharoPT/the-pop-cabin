@@ -30,7 +30,7 @@ $menuLinks = [
 <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/tokens.css">
 <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
 </head>
-<body class="<?php echo e($bodyClass ?? ''); ?>">
+<body class="<?php echo e(trim(($bodyClass ?? '') . (!empty($flashMessages) ? ' has-flash' : ''))); ?>">
 <script>
   window.CSRF_TOKEN = <?php echo json_encode(generateCsrfToken()); ?>;
   window.SITE_URL = <?php echo json_encode(SITE_URL); ?>;

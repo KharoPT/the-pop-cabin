@@ -835,6 +835,8 @@ input[type="checkbox"].is-invalid, .check-line.is-invalid input,
   margin-top: -72px;                 /* the glass header floats on the hero */
 }
 .page-home .site-header { padding: 24px 20px 0; }
+.page-home.has-flash main { margin-top: 0; }   /* keep the flash message clear of the hero */
+.page-home.has-flash .header-bar { background: var(--color-glass-bg-dark); border-color: rgba(64, 64, 64, .5); }
 .page-home .header-bar {
   background: rgba(255, 255, 255, .1); border-color: rgba(255, 255, 255, .18);
   box-shadow: inset 0 3px 4px rgba(255, 255, 255, .15), inset 0 -3px 4px rgba(255, 255, 255, .15),
