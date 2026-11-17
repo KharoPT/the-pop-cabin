@@ -21,7 +21,10 @@
   flex: none; width: 32px; height: 32px; display: grid; place-items: center;
   padding: 0; border: 0; background: none; cursor: pointer;
 }
-.menu-btn img { width: 32px; height: 32px; display: block; }
+.menu-btn img {
+  width: 32px; height: 32px; display: block;
+  filter: drop-shadow(0 2px 2px rgba(0, 0, 0, .25)) drop-shadow(0 6px 10px rgba(0, 0, 0, .22));
+}
 .menu-btn span { display: none; }
 .menu-btn:hover { transform: scale(1.04); }
 .logo-link { flex: none; width: 32px; height: 32px; margin-left: 13px; }

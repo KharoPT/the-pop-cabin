@@ -9,6 +9,18 @@ function e($value): string
     return htmlspecialchars((string) ($value ?? ''), ENT_QUOTES, 'UTF-8');
 }
 
+/**
+ * URL of an asset under /assets, versioned with its modification time so a
+ * changed file (CSS, icon, image) is fetched again instead of a cached copy.
+ */
+function assetUrl(string $path): string
+{
+    $rel  = ltrim($path, '/');
+    $file = __DIR__ . '/../assets/' . $rel;
+    $v    = is_file($file) ? filemtime($file) : null;
+    return SITE_URL . '/assets/' . $rel . ($v ? '?v=' . $v : '');
+}
+
 /** Trim and strip tags from raw input before it touches the database. */
 function sanitizeInput($value): string
 {

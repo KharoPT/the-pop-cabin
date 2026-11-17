@@ -26,11 +26,11 @@ $menuLinks = [
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title><?php echo e($pageTitle ?? SITE_NAME); ?></title>
 <meta name="description" content="<?php echo e($metaDescription); ?>">
-<link rel="icon" type="image/svg+xml" href="<?php echo SITE_URL; ?>/assets/img/favicon.svg">
-<link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/tokens.css">
-<link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
-<link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/header.css">
-<link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/footer.css">
+<link rel="icon" type="image/svg+xml" href="<?php echo assetUrl('img/favicon.svg'); ?>">
+<link rel="stylesheet" href="<?php echo assetUrl('css/tokens.css'); ?>">
+<link rel="stylesheet" href="<?php echo assetUrl('css/style.css'); ?>">
+<link rel="stylesheet" href="<?php echo assetUrl('css/header.css'); ?>">
+<link rel="stylesheet" href="<?php echo assetUrl('css/footer.css'); ?>">
 </head>
 <body class="<?php echo e(trim(($bodyClass ?? '') . (!empty($flashMessages) ? ' has-flash' : ''))); ?>">
 <script>
@@ -42,11 +42,11 @@ $menuLinks = [
 <header class="site-header" id="top">
     <div class="header-bar">
         <button type="button" class="menu-btn" id="menu-btn" aria-label="Open menu" aria-expanded="false" aria-controls="site-menu">
-            <img src="<?php echo SITE_URL; ?>/assets/img/icon-burger.svg" alt="" width="32" height="32">
+            <img src="<?php echo assetUrl('img/icon-menu.svg'); ?>" alt="" width="32" height="32">
         </button>
 
         <a href="<?php echo SITE_URL; ?>/index.php" class="logo-link" aria-label="<?php echo e(SITE_NAME); ?> home">
-            <img src="<?php echo SITE_URL; ?>/assets/img/logo-mark.svg" alt="" width="32" height="32">
+            <img src="<?php echo assetUrl('img/logo-mark.svg'); ?>" alt="" width="32" height="32">
         </a>
 
         <form class="search-form" role="search" action="<?php echo SITE_URL; ?>/shop.php" method="get">
