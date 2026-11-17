@@ -27,9 +27,7 @@ $menuLinks = [
 <title><?php echo e($pageTitle ?? SITE_NAME); ?></title>
 <meta name="description" content="<?php echo e($metaDescription); ?>">
 <link rel="icon" type="image/svg+xml" href="<?php echo SITE_URL; ?>/assets/img/logo.svg">
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cabin:wght@400;500;600;700&family=Zilla+Slab:wght@500;600;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/tokens.css">
 <link rel="stylesheet" href="<?php echo SITE_URL; ?>/assets/css/style.css">
 </head>
 <body class="<?php echo e($bodyClass ?? ''); ?>">
