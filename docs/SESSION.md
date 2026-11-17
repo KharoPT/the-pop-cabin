@@ -24,6 +24,10 @@ Adapt the Figma hi-fi onto the existing codebase **without changing major operat
 - Backgrounds/images stay CSS tonight; export is optional (EXPORT card, Codex, only if time).
 - Admin orders screen: not built (frontend-only); backend member's call. Do not use `--space-32` / `--space-48`; use the AA-safe text tokens.
 - Cards are built in this order: **A (re-skin) → F (per-field errors) → B1 (home, shop, product) → B2 (sign in/up, basket, checkout) → B3 (admin) → C (rest)**. `design-frames` is skipped unless reading a frame through the MCP proves too heavy for DeepSeek.
+- Card A answers (Nov 17): `--wrap` = `--container-max` (1200) stays. `--ember` = `action-primary` (teal) stays; honey is for CTAs only.
+- Old `--radius` (6px) is retired page by page: each component takes its radius from Figma or the nearest token in B1–B3. Never round.
+- `.status-shipped`: `--color-brand-soft` bg + `--color-edition-regular-text` text. Admin-role pill: `--color-edition-limited-bg`/`-text`. Both in B3, replacing the hardcoded purple.
+- Success as small TEXT = `--color-feedback-success-text` (never `--color-feedback-success`). Fix any existing text usages touched in the card.
 
 ## Done
 - Codebase re-read (commit 837c734); `BaseModel` added (OOP complete). Detail: `README.md`.
@@ -33,6 +37,7 @@ Adapt the Figma hi-fi onto the existing codebase **without changing major operat
 ## Run log (agents append ONE line per run: card · branch · done/partial · date)
 - Run 1 · design-setup · done · Nov 17
 - Run 2 · slice-a · done · Nov 17
+- Run 3 · slice-f · done · Nov 17
 
 ## Next (Claude chat)
 1. `docs/PROMPTS.md` is STALE (old RUN-2 comparison, single SLICE-B): rewrite it with cards A, F, B1, B2, B3, C + the launcher. 2. `README.md` and `docs/REPORT.md` need no change (agents overwrite REPORT). 3. Fill in the panel time above.

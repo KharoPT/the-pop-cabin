@@ -593,6 +593,16 @@ select { appearance: none; -webkit-appearance: none; padding-right: 2.2rem; back
 .stock-note { font-weight: 600; }
 .stock-out { color: #9b2f1d; }
 
+/* Invalid field state (card F): red border + message under the field. */
+input.is-invalid, select.is-invalid, textarea.is-invalid,
+.dropzone.is-invalid, .photo-drop.is-invalid { border-color: var(--color-feedback-error); }
+input[type="checkbox"].is-invalid, .check-line.is-invalid input,
+.pill input.is-invalid + span { outline: 2px solid var(--color-feedback-error); outline-offset: 2px; }
+.field-error {
+  margin: .4rem 0 0; font-size: .875rem; font-weight: 600;
+  color: var(--color-feedback-error);
+}
+
 /* ==========================================================================
    Pages kept from the original build (cart, checkout, account, order detail)
    ========================================================================== */

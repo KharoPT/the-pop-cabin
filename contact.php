@@ -10,8 +10,9 @@ if (isLoggedIn() && ($u = (new User())->getById((int) currentUserId()))) {
     $prefill = ['first_name' => $parts[0] ?? '', 'last_name' => $parts[1] ?? '', 'email' => $u['email']];
 }
 
-$errors = [];
-$old    = $prefill + ['message' => ''];
+$errors      = [];
+$fieldErrors = [];
+$old         = $prefill + ['message' => ''];
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $old = [
@@ -28,23 +29,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Your session expired. Please try again.';
     } else {
         if ($old['message'] === '' || strlen($old['message']) > 5000) {
-            $errors[] = 'Please tell us your feedback, comment or request (up to 5000 characters).';
+            $fieldErrors['message'] = 'Please tell us your feedback, comment or request (up to 5000 characters).';
         }
         if ($old['first_name'] === '' || strlen($old['first_name']) > 100) {
-            $errors[] = 'Please enter your first name.';
+            $fieldErrors['first_name'] = 'Please enter your first name.';
         }
         if ($old['last_name'] === '' || strlen($old['last_name']) > 100) {
-            $errors[] = 'Please enter your last name.';
+            $fieldErrors['last_name'] = 'Please enter your last name.';
         }
         if (!filter_var($old['email'], FILTER_VALIDATE_EMAIL) || strlen($old['email']) > 255) {
-            $errors[] = 'Please enter a valid email address.';
+            $fieldErrors['email'] = 'Please enter a valid email address.';
         }
+        $errors = array_merge($errors, array_values($fieldErrors));
 
         $attachment = [];
         if (empty($errors)) {
             $attachment = Inquiry::saveAttachment($_FILES['attachment'] ?? []);
             if (isset($attachment['error'])) {
                 $errors[] = $attachment['error'];
+                $fieldErrors['attachment'] = $attachment['error'];
             }
         }
 
@@ -85,7 +88,9 @@ require_once __DIR__ . '/includes/header.php';
 
         <div class="field">
             <label class="sign sign-label" for="message">Comment/Description/Inquiry</label>
-            <textarea id="message" name="message" rows="7" maxlength="5000" required placeholder="Enter your feedback, comment, or details of your request."><?php echo e($old['message']); ?></textarea>
+            <?php $err = $fieldErrors['message'] ?? null; ?>
+            <textarea id="message" name="message" rows="7" maxlength="5000" required placeholder="Enter your feedback, comment, or details of your request."<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="message-error"' : ''; ?>><?php echo e($old['message']); ?></textarea>
+            <?php if ($err): ?><p class="field-error" id="message-error"><?php echo e($err); ?></p><?php endif; ?>
             <p class="field-note">We will respond as soon as possible.</p>
         </div>
 
@@ -94,24 +99,32 @@ require_once __DIR__ . '/includes/header.php';
                 <label class="sign sign-label" for="attachment">Upload a file (optional)</label>
                 <span class="field-max">Maximum size: <?php echo MAX_CONTACT_FILE_MB; ?> MB</span>
             </div>
-            <label class="dropzone" for="attachment" data-dropzone>
+            <?php $err = $fieldErrors['attachment'] ?? null; ?>
+            <label class="dropzone<?php echo $err ? ' is-invalid' : ''; ?>" for="attachment" data-dropzone>
                 <span class="dz-title" data-dz-title>Choose a file or drop it here.</span>
                 <span class="dz-hint">PNG, JPG, JPEG, DOCX, TXT or MD only</span>
-                <input type="file" id="attachment" name="attachment" accept=".png,.jpg,.jpeg,.docx,.txt,.md">
+                <input type="file" id="attachment" name="attachment" accept=".png,.jpg,.jpeg,.docx,.txt,.md"<?php echo $err ? ' aria-invalid="true" aria-describedby="attachment-error"' : ''; ?>>
             </label>
+            <?php if ($err): ?><p class="field-error" id="attachment-error"><?php echo e($err); ?></p><?php endif; ?>
         </div>
 
         <div class="field">
             <label class="sign sign-label" for="first_name">First Name</label>
-            <input type="text" id="first_name" name="first_name" required maxlength="100" autocomplete="given-name" placeholder="Your First Name..." value="<?php echo e($old['first_name']); ?>">
+            <?php $err = $fieldErrors['first_name'] ?? null; ?>
+            <input type="text" id="first_name" name="first_name" required maxlength="100" autocomplete="given-name" placeholder="Your First Name..." value="<?php echo e($old['first_name']); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="first_name-error"' : ''; ?>>
+            <?php if ($err): ?><p class="field-error" id="first_name-error"><?php echo e($err); ?></p><?php endif; ?>
         </div>
         <div class="field">
             <label class="sign sign-label" for="last_name">Last Name</label>
-            <input type="text" id="last_name" name="last_name" required maxlength="100" autocomplete="family-name" placeholder="Your Last Name..." value="<?php echo e($old['last_name']); ?>">
+            <?php $err = $fieldErrors['last_name'] ?? null; ?>
+            <input type="text" id="last_name" name="last_name" required maxlength="100" autocomplete="family-name" placeholder="Your Last Name..." value="<?php echo e($old['last_name']); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="last_name-error"' : ''; ?>>
+            <?php if ($err): ?><p class="field-error" id="last_name-error"><?php echo e($err); ?></p><?php endif; ?>
         </div>
         <div class="field">
             <label class="sign sign-label" for="email">Email</label>
-            <input type="email" id="email" name="email" required maxlength="255" autocomplete="email" placeholder="Your Valid Email..." value="<?php echo e($old['email']); ?>">
+            <?php $err = $fieldErrors['email'] ?? null; ?>
+            <input type="email" id="email" name="email" required maxlength="255" autocomplete="email" placeholder="Your Valid Email..." value="<?php echo e($old['email']); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="email-error"' : ''; ?>>
+            <?php if ($err): ?><p class="field-error" id="email-error"><?php echo e($err); ?></p><?php endif; ?>
         </div>
 
         <button type="submit" class="btn btn-dark btn-block btn-lg">Submit</button>
