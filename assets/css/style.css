@@ -7,7 +7,7 @@
    ========================================================================== */
 
 /* Self-hosted fonts: Fredoka (headings) + Nunito (body). Weights 400-700,
-   one static @font-face per file, no network dependency (docs/DESIGN.md §3). */
+   one static @font-face per file, no network dependency (docs/DESIGN.md Â§3). */
 @font-face {
   font-family: "Fredoka";
   src: url("../fonts/Fredoka/Fredoka-Regular.ttf") format("truetype");
@@ -50,7 +50,7 @@
 }
 
 /* Temporary aliases: old names point at the matching token by role.
-   Remove each alias once no page uses it (docs/DESIGN.md §4). */
+   Remove each alias once no page uses it (docs/DESIGN.md Â§4). */
 :root {
   --birch: var(--color-bg-page);              /* page background */
   --pine-100: var(--color-bg-surface-alt);    /* light surface */
@@ -817,7 +817,7 @@ input[type="checkbox"].is-invalid, .check-line.is-invalid input,
 }
 
 /* ==========================================================================
-   B1 — Home re-skin (Figma Mobile/Public 243:5030)
+   B1 â€” Home re-skin (Figma Mobile/Public 243:5030)
    Structure and copy stay; the wooden sign/hero look becomes the hi-fi look.
    ========================================================================== */
 .page-home .section { padding: 2rem 0; }
@@ -985,7 +985,7 @@ input[type="checkbox"].is-invalid, .check-line.is-invalid input,
 }
 
 /* ==========================================================================
-   B1 — Shop re-skin (Figma Mobile/Collection 365:6802)
+   B1 â€” Shop re-skin (Figma Mobile/Collection 365:6802)
    ========================================================================== */
 .page-shop { background-color: var(--color-bg-page); background-image: none; }
 .page-shop .shop-top { padding-top: 12px; }
@@ -1035,7 +1035,7 @@ input[type="checkbox"].is-invalid, .check-line.is-invalid input,
 .page-shop .empty-state p { color: var(--color-text-muted-aa); }
 
 /* ==========================================================================
-   B1 — Product profile re-skin (Figma Mobile/Product Profile 370:7680)
+   B1 â€” Product profile re-skin (Figma Mobile/Product Profile 370:7680)
    ========================================================================== */
 .page-product { background-color: var(--color-bg-page); background-image: none; }
 .page-product .sign::before, .page-product .sign::after { display: none; }
@@ -1124,3 +1124,85 @@ input[type="checkbox"].is-invalid, .check-line.is-invalid input,
   font: 600 18px/24px var(--font-family-body); padding-block: 1rem;
 }
 
+/* ==========================================================================
+   Card H — shared header + footer (Figma Mobile/Public 243:5030)
+   ========================================================================== */
+.site-header { position: sticky; top: 0; z-index: 60; padding: 24px 16px 0; background: transparent; }
+.header-bar {
+  display: flex; align-items: center; gap: 8px; max-width: var(--container-max); margin: 0 auto;
+  height: 48px; padding: 8px 16px; border-radius: 24px;
+  background: var(--color-glass-bg-dark); border: 1px solid rgba(64, 64, 64, .5);
+  -webkit-backdrop-filter: blur(10px); backdrop-filter: blur(10px);
+  box-shadow: inset 0 1px 1px rgba(255, 255, 255, .25), inset 0 -1px 1px rgba(255, 255, 255, .15);
+}
+.menu-btn { flex: none; width: 32px; height: 32px; display: grid; place-items: center; padding: 0; border: 0; background: none; cursor: pointer; }
+.menu-btn img { width: 32px; height: 32px; display: block; }
+.menu-btn span { display: none; }
+.logo-link { flex: none; width: 32px; height: 32px; }
+.logo-link img { width: 32px; height: 32px; border-radius: 0; box-shadow: none; }
+.search-form { flex: 1 1 auto; min-width: 0; }
+.search-form input {
+  width: 100%; min-width: 0; height: 32px; padding: 0 12px 0 34px;
+  font: 600 12px/16px var(--font-family-body); color: #fff;
+  background-color: rgba(247, 240, 225, .2); border: 0; border-radius: 100px;
+  background-image: url("../img/icon-search.svg"); background-repeat: no-repeat;
+  background-position: 12px center; background-size: 14px;
+  box-shadow: inset 0 1px 2px rgba(0, 0, 0, .15);
+}
+.search-form input::placeholder { color: rgba(251, 247, 238, .6); }
+.login-btn {
+  flex: none; height: 32px; padding: 0 12px; display: inline-flex; align-items: center; justify-content: center;
+  background: var(--color-highlight-default); color: var(--color-text-on-highlight); border: 0; border-radius: 21px;
+  font: 600 12px/20px var(--font-family-heading); text-decoration: none;
+}
+.login-btn:hover { background: var(--color-highlight-hover); color: var(--color-text-on-highlight); }
+.site-menu {
+  max-width: var(--container-max); margin: 8px auto 0; padding: 8px; border-radius: 16px;
+  background: var(--color-bg-surface); border: 0; box-shadow: 0 16px 34px rgba(36, 24, 18, .3);
+}
+.site-menu li a { color: var(--color-text-primary); font: 600 14px/20px var(--font-family-body); border-left: 0; border-radius: 12px; }
+.site-menu li a:hover { background: var(--color-bg-surface-alt); color: var(--color-text-primary); }
+.site-menu li a[aria-current="page"] { background: var(--color-highlight-subtle); border-left: 0; }
+.site-menu-account { border-top: 1px solid var(--color-border-subtle); }
+
+/* Footer */
+.site-footer {
+  position: relative; margin-top: 48px; padding: 67px 32px 32px;
+  color: var(--color-text-on-dark); background: var(--color-bg-footer); background-image: none;
+  border-radius: 12px 12px 0 0;
+}
+.footer-notch {
+  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
+  width: 226px; height: 27px; min-width: 0; max-width: none; border-radius: 0; box-shadow: none;
+  background: var(--color-bg-page) url("../img/footer-notch.svg") no-repeat center / 226px 27px;
+}
+.footer-inner { max-width: var(--container-max); margin: 0 auto; padding: 0; }
+.footer-brand { display: block; }
+.footer-logo { display: inline-flex; align-items: center; gap: 8px; text-decoration: none; }
+.footer-logo img { width: 32px; height: 32px; border-radius: 0; box-shadow: none; }
+.footer-wordmark { display: flex; flex-direction: column; line-height: 12px; }
+.footer-wordmark span { color: var(--color-text-highlight-on-dark); font: 600 12px/12px var(--font-family-heading); }
+.footer-wordmark strong { color: var(--color-text-on-dark); font: 600 18px/1 var(--font-family-heading); }
+.socials { display: flex; gap: 19px; margin: 20px 0 0; }
+.social-link { color: var(--color-text-on-dark); }
+.social-link svg { width: 20px; height: 20px; }
+a.social-link:hover { color: var(--color-text-highlight-on-dark); }
+.footer-cols { display: flex; flex-direction: column; gap: 24px; margin-top: 32px; grid-area: auto; }
+.footer-col { margin: 0; }
+.footer-col h2 {
+  color: var(--color-text-on-dark); margin: 0 0 12px;
+  font: 500 22px/28px var(--font-family-heading);
+}
+.footer-col a { color: var(--color-text-on-dark); padding: 2px 0; font: 400 14px/20px var(--font-family-body); }
+.footer-col a:hover { color: var(--color-text-highlight-on-dark); }
+.footer-legal { margin-top: 32px; color: var(--color-text-on-dark); font: 400 10px/20px var(--font-family-body); }
+.footer-legal p { margin: 0; }
+.ph-flag { display: none; }
+
+@media (min-width: 700px) {
+  .footer-inner { display: grid; grid-template-columns: 1fr 2.4fr; grid-template-areas: "brand cols" "legal legal"; column-gap: 3rem; }
+  .footer-brand { grid-area: brand; }
+  .footer-cols { grid-area: cols; flex-direction: row; gap: 32px; margin-top: 0; }
+  .footer-col { flex: 1 1 0; }
+  .footer-legal { grid-area: legal; margin-top: 1.5rem; }
+}

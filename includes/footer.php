@@ -15,7 +15,8 @@ $tiktokUrl   = siteContent('tiktok_url');
     <div class="footer-inner">
         <div class="footer-brand">
             <a href="<?php echo SITE_URL; ?>/index.php" class="footer-logo" aria-label="<?php echo e(SITE_NAME); ?> home">
-                <img src="<?php echo SITE_URL; ?>/assets/img/logo.svg" alt="" width="64" height="64">
+                <img src="<?php echo SITE_URL; ?>/assets/img/logo-mark.svg" alt="" width="32" height="32">
+                <span class="footer-wordmark"><span>THE</span><strong>POP CABIN</strong></span>
             </a>
             <div class="socials">
                 <?php foreach ($socials as $label => [$key, $icon]): ?>
