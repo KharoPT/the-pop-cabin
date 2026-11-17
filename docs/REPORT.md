@@ -7,7 +7,7 @@
 - **Removed / kept raw:** unused `--cedar` removed (0 usages). `--radius` kept at `6px`: no 6 px token exists (xs 4 / sm 8), not rounded.
 - **Tokens/unbound added:** none. No new raw values in components.
 - **JS added:** none.
-- **Tested (Chrome, 390 px viewport):** index, shop, login, register, cart, contact, about, mechanics, terms → `scrollWidth` 390, no page overflow (home carousel scrolls by design). Admin as seeded admin: dashboard, products, add/edit product, users, delete confirm, oop_demo → no overflow. Checkout/account/order detail redirect guests to login as before. All pages 200, no PHP warnings; `tokens.css`, `style.css` and all 8 fonts return 200.
+- **Tested (Chrome, 390 px viewport):** index, shop, login, register, cart (empty), contact, about, mechanics, terms → `scrollWidth` 390, no page overflow (home carousel scrolls by design); empty shop search renders. Admin as seeded admin: dashboard, products, add/edit product, users, delete confirm, oop_demo → no overflow. Focus outline on header search + admin photo input = 3 px teal `rgb(31,85,96)`. Checkout/account/order detail redirect guests as before. All pages 200, no PHP warnings; `tokens.css`, `style.css` and all 8 fonts return 200.
 - **Differences found and done (per page):** no Figma frame for this card, so no visual compare; alias re-skin only.
 - **Not done:** per-field invalid/empty/success states (card F); per-page Figma restyle (B1–B3); desktop polish.
 - **LAYOUT NOT VERIFIED:** none for A (no frame read).
