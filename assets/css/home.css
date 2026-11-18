@@ -105,6 +105,7 @@ html { overflow-x: hidden; }
 .page-home .btn-team:hover { background: var(--color-bg-surface-alt); color: var(--color-text-primary); }
 .page-home .overview-art {
   display: block; width: 100%; height: auto; max-width: 358px; margin-top: 32px;
+  align-self: flex-end;
   padding: 8px; border-radius: 12px; background: var(--color-bg-surface);
   box-shadow: 0 4px 10px rgba(0, 0, 0, .4); mix-blend-mode: darken;
 }
@@ -256,9 +257,14 @@ html { overflow-x: hidden; }
 @media (min-width: 700px) {
   .page-home main { max-width: 1200px; margin: calc(-1 * var(--site-header-h, 80px)) auto 0; padding: 24px 32px 0; gap: 64px; }
 
-  /* Hero: full-width card, copy and stats side by side, no notch tab */
-  .page-home .hero { height: auto; min-height: 560px; padding: 96px 48px 48px; border-radius: 16px; }
-  .page-home .hero-bg { top: 0; left: 0; width: 100%; height: 100%; border-radius: 16px; }
+  /* Hero: slightly wider than the header, lifted above it, notch kept */
+  .page-home .hero {
+    width: calc(100% + 32px); margin: -12px -16px 0;
+    height: auto; min-height: 560px; padding: 96px 48px 48px; border-radius: 24px;
+  }
+  .page-home .hero-bg { top: 0; left: 0; width: 100%; height: 100%; border-radius: 24px; }
+  /* The notch art bleeds off a square mobile edge; on the rounded card it cuts
+     the bottom corners, so it stays out of the tablet/desktop layout. */
   .page-home .hero-notch { display: none; }
   .page-home .hero-inner {
     height: auto; display: grid; grid-template-columns: minmax(0, 1fr) auto;
@@ -268,8 +274,7 @@ html { overflow-x: hidden; }
   .page-home .hero-title { grid-column: 1; font-size: 64px; line-height: 58px; }
   .page-home .hero-desc { grid-column: 1; max-width: 46ch; margin-top: 28px; font-size: 16px; line-height: 24px; }
   .page-home .hero-stats { grid-column: 2; grid-row: 1 / span 3; margin-top: 8px; }
-  .page-home .hero-shop { position: relative; left: auto; bottom: auto; transform: none; z-index: 4; margin-top: 40px; }
-  .page-home .hero-shop:hover { transform: none; }
+  .page-home .hero-shop { width: 220px; bottom: 20px; }
 
   /* Overview: copy left, sign right */
   .page-home .overview {
@@ -281,7 +286,7 @@ html { overflow-x: hidden; }
   .page-home .overview-sub { grid-area: sub; font-size: 28px; line-height: 32px; }
   .page-home .overview-body { grid-area: body; margin-top: 20px; padding-right: 0; max-width: 54ch; font-size: 16px; line-height: 26px; }
   .page-home .btn-team { grid-area: btn; justify-self: start; margin-top: 28px; }
-  .page-home .overview-art { grid-area: art; align-self: center; max-width: none; margin-top: 0; }
+  .page-home .overview-art { grid-area: art; align-self: center; justify-self: end; max-width: none; margin-top: 0; }
 
   /* Discover: all categories in one row, no arrows */
   .page-home .discover-title { font-size: 48px; line-height: 54px; }
@@ -301,6 +306,9 @@ html { overflow-x: hidden; }
   .page-home .dev-name { font-size: 12px; line-height: 15px; }
   .page-home .dev-role { font-size: 10px; line-height: 16px; }
 
+  /* Home only: the footer follows the hero width, not the content column. */
+  .page-home .site-footer { width: calc(100% - 32px); }
+
   /* CTA */
   .home-cta-card { width: calc(100% - 32px); gap: 22px; padding: 40px 48px; }
   .home-cta-title { font-size: 40px; line-height: 44px; }
@@ -316,7 +324,7 @@ html { overflow-x: hidden; }
   .page-home .hero-desc { font-size: 18px; line-height: 28px; }
   .page-home .hero-stat { width: 160px; height: 116px; }
   .page-home .hero-stat strong { font-size: 34px; line-height: 38px; }
-  .page-home .hero-shop { width: 176px; height: 64px; font-size: 18px; }
+  .page-home .hero-shop { width: 260px; height: 64px; font-size: 18px; }
   .page-home .overview-title { font-size: 48px; line-height: 54px; }
   .page-home .overview-sub { font-size: 32px; line-height: 38px; }
   .page-home .discover-title { font-size: 56px; line-height: 62px; }
@@ -331,6 +339,9 @@ html { overflow-x: hidden; }
   .home-cta-card { width: calc(100% - 64px); padding: 48px 56px; }
   .home-cta-title { font-size: 48px; line-height: 52px; }
   .home-cta-text { font-size: 17px; line-height: 28px; }
+
+  /* Home only: the footer follows the hero width, not the content column. */
+  .page-home .site-footer { width: calc(100% - 48px); max-width: 1152px; }
 }
 
 @media (min-width: 1200px) {
