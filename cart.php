@@ -58,86 +58,111 @@ foreach ($items as $line) {
     }
 }
 
-$pageTitle = 'Your Cart — ' . SITE_NAME;
+$pageTitle  = 'Your Cart — ' . SITE_NAME;
+$bodyClass  = 'page-cart';
+$pageStyles = ['css/cart.css'];
+
+// Icons used by the quantity pill and the remove action.
+$minusIcon = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8h10"/></svg>';
+$plusIcon  = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M8 3v10M3 8h10"/></svg>';
+$trashIcon = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 7h16M9.5 7V5.2c0-.7.6-1.2 1.3-1.2h2.4c.7 0 1.3.5 1.3 1.2V7"/><path d="M6.5 7l.9 11.1c.1.9.8 1.6 1.7 1.6h5.8c.9 0 1.6-.7 1.7-1.6L17.5 7"/><path d="M10.4 10.6v5.6M13.6 10.6v5.6"/></svg>';
+
 require_once __DIR__ . '/includes/header.php';
 ?>
 
-<section class="page-header">
-    <div class="container"><h1>Your Cart</h1></div>
-</section>
+<img class="cart-bg" src="<?php echo assetUrl('img/cart-bg.webp'); ?>" width="716" height="304" alt="">
 
-<section class="section">
-    <div class="container">
+<div class="wrap cart-shell">
+    <h1 class="cart-title">Your Cart</h1>
+
     <?php if (empty($items)): ?>
-        <p class="empty-note">Your cart is empty.</p>
-        <p><a class="btn btn-primary" href="<?php echo SITE_URL; ?>/shop.php">Start Shopping</a></p>
+        <div class="cart-empty">
+            <p class="cart-empty-title">Your cart is empty</p>
+            <p class="cart-empty-text">Pick a pop from the collection and it will show up here.</p>
+            <a class="cart-btn cart-btn-continue cart-empty-cta" href="<?php echo SITE_URL; ?>/shop.php">Start Shopping</a>
+        </div>
     <?php else: ?>
-        <div class="cart-layout">
-            <form class="cart-items" method="post" action="<?php echo SITE_URL; ?>/cart.php">
+        <div class="cart-body">
+            <form class="cart-form" method="post" action="<?php echo SITE_URL; ?>/cart.php">
                 <input type="hidden" name="csrf_token" value="<?php echo e(generateCsrfToken()); ?>">
                 <input type="hidden" name="action" value="update">
 
-                <?php foreach ($items as $item): ?>
-                    <?php
-                        $stock   = (int) $item['stock_quantity'];
-                        $over    = (int) $item['quantity'] > $stock;
-                        $imgSrc  = imgSrc($item['image_url'] ?? '');
-                        $itemUrl = SITE_URL . '/product.php?slug=' . urlencode($item['slug']);
-                    ?>
-                    <div class="cart-row">
-                        <a href="<?php echo e($itemUrl); ?>" class="cart-row-image">
-                            <?php if ($imgSrc): ?>
-                                <img src="<?php echo e($imgSrc); ?>" alt="<?php echo e($item['name']); ?>" loading="lazy">
-                            <?php else: ?>
-                                <span class="img-ph" role="img" aria-label="<?php echo e($item['name']); ?>"></span>
-                            <?php endif; ?>
-                        </a>
-                        <div class="cart-row-info">
-                            <a class="cart-item-name" href="<?php echo e($itemUrl); ?>"><?php echo e($item['name']); ?></a>
-                            <p class="cart-item-price"><?php echo formatPrice($item['price']); ?> each</p>
-                            <?php if ($stock <= 0): ?>
-                                <p class="stock-note stock-out">Sold out &mdash; remove it to continue.</p>
-                            <?php elseif ($over): ?>
-                                <p class="stock-note stock-out">Only <?php echo $stock; ?> available &mdash; update the quantity.</p>
-                            <?php endif; ?>
-                        </div>
-                        <div class="cart-row-qty">
-                            <label for="qty-<?php echo (int) $item['cart_item_id']; ?>" class="visually-hidden">Quantity</label>
-                            <input type="number" id="qty-<?php echo (int) $item['cart_item_id']; ?>"
-                                   name="quantities[<?php echo (int) $item['cart_item_id']; ?>]"
-                                   value="<?php echo (int) $item['quantity']; ?>" min="0" max="<?php echo max(0, $stock); ?>">
-                        </div>
-                        <p class="cart-row-total"><?php echo formatPrice($item['price'] * $item['quantity']); ?></p>
-                        <button type="submit" name="remove_item" value="<?php echo (int) $item['cart_item_id']; ?>"
-                                class="link-danger cart-remove" aria-label="Remove <?php echo e($item['name']); ?>">Remove</button>
-                    </div>
-                <?php endforeach; ?>
+                <div class="cart-list">
+                    <?php foreach ($items as $item): ?>
+                        <?php
+                            $itemId  = (int) $item['cart_item_id'];
+                            $stock   = (int) $item['stock_quantity'];
+                            $over    = (int) $item['quantity'] > $stock;
+                            $imgSrc  = imgSrc($item['image_url'] ?? '');
+                            $itemUrl = SITE_URL . '/product.php?slug=' . urlencode($item['slug']);
+                        ?>
+                        <article class="cart-card">
+                            <a class="cart-card-thumb" href="<?php echo e($itemUrl); ?>" tabindex="-1" aria-hidden="true">
+                                <?php if ($imgSrc): ?>
+                                    <img src="<?php echo e($imgSrc); ?>" alt="" loading="lazy">
+                                <?php else: ?>
+                                    <span class="img-ph" role="img" aria-label="No photo yet"></span>
+                                <?php endif; ?>
+                            </a>
 
-                <div class="cart-actions">
-                    <button type="submit" class="btn btn-ghost">Update Cart</button>
-                    <a class="btn btn-ghost" href="<?php echo SITE_URL; ?>/shop.php">Continue Shopping</a>
+                            <div class="cart-card-text">
+                                <a class="cart-card-name" href="<?php echo e($itemUrl); ?>"><?php echo e($item['name']); ?></a>
+                                <p class="cart-card-each"><?php echo formatPrice($item['price']); ?> each</p>
+                                <?php if ($stock <= 0): ?>
+                                    <p class="cart-card-note">Sold out &mdash; remove it to continue.</p>
+                                <?php elseif ($over): ?>
+                                    <p class="cart-card-note">Only <?php echo $stock; ?> available &mdash; update the quantity.</p>
+                                <?php endif; ?>
+                            </div>
+
+                            <div class="cart-qty">
+                                <button type="button" class="qty-step" data-step="-1" aria-label="Decrease quantity of <?php echo e($item['name']); ?>"><?php echo $minusIcon; ?></button>
+                                <label class="visually-hidden" for="qty-<?php echo $itemId; ?>">Quantity of <?php echo e($item['name']); ?></label>
+                                <input type="number" class="qty-value" id="qty-<?php echo $itemId; ?>"
+                                       name="quantities[<?php echo $itemId; ?>]"
+                                       value="<?php echo (int) $item['quantity']; ?>" min="0" max="<?php echo max(0, $stock); ?>">
+                                <button type="button" class="qty-step" data-step="1" aria-label="Increase quantity of <?php echo e($item['name']); ?>"><?php echo $plusIcon; ?></button>
+                            </div>
+
+                            <div class="cart-card-foot">
+                                <p class="cart-line-total"><?php echo formatPrice($item['price'] * $item['quantity']); ?></p>
+                                <button type="submit" name="remove_item" value="<?php echo $itemId; ?>"
+                                        class="cart-remove" aria-label="Remove <?php echo e($item['name']); ?> from your cart"><?php echo $trashIcon; ?>Remove</button>
+                            </div>
+                        </article>
+                    <?php endforeach; ?>
+                </div>
+
+                <div class="cart-bar">
+                    <button type="submit" class="cart-btn cart-btn-update">Update Cart</button>
+                    <a class="cart-btn cart-btn-continue" href="<?php echo SITE_URL; ?>/shop.php">Continue Shopping</a>
                 </div>
             </form>
 
-            <aside class="cart-summary">
-                <h3>Summary</h3>
-                <div class="summary-line"><span>Subtotal</span><span><?php echo formatPrice($subtotal); ?></span></div>
-                <div class="summary-line"><span>Shipping</span><span><?php echo $shippingFee > 0 ? formatPrice($shippingFee) : 'Free'; ?></span></div>
-                <div class="summary-line summary-total"><span>Total</span><span><?php echo formatPrice($total); ?></span></div>
+            <aside class="receipt-card" aria-labelledby="summary-title">
+                <h2 id="summary-title">Summary</h2>
+
+                <dl class="receipt-lines">
+                    <div class="receipt-row"><dt>Subtotal</dt><dd><?php echo formatPrice($subtotal); ?></dd></div>
+                    <div class="receipt-row"><dt>Shipping</dt><dd><?php echo $shippingFee > 0 ? formatPrice($shippingFee) : 'Free'; ?></dd></div>
+                </dl>
 
                 <?php if ($shippingFee > 0): ?>
-                    <p class="form-hint">Add <?php echo formatPrice(FREE_SHIPPING_THRESHOLD - $subtotal); ?> more for free shipping.</p>
+                    <p class="receipt-hint">Add <?php echo formatPrice(FREE_SHIPPING_THRESHOLD - $subtotal); ?> more for free shipping.</p>
                 <?php endif; ?>
 
+                <hr class="receipt-divider">
+
+                <div class="receipt-row receipt-total"><span>Total</span><span><?php echo formatPrice($total); ?></span></div>
+
                 <?php if ($hasBlocked): ?>
-                    <button type="button" class="btn btn-disabled btn-block" disabled>Fix quantities to check out</button>
+                    <span class="checkout-btn is-blocked" aria-disabled="true">Fix quantities to check out</span>
                 <?php else: ?>
-                    <a class="btn btn-primary btn-block" href="<?php echo SITE_URL; ?>/checkout.php">Proceed to Checkout</a>
+                    <a class="checkout-btn" href="<?php echo SITE_URL; ?>/checkout.php">Proceed to Checkout</a>
                 <?php endif; ?>
             </aside>
         </div>
     <?php endif; ?>
-    </div>
-</section>
+</div>
 
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
