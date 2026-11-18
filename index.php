@@ -24,6 +24,7 @@ if (!$team || (($team[0]['name'] ?? '') === 'Team member')) {
 $pageTitle       = SITE_NAME . ' — Funko Pop collectibles';
 $metaDescription = siteContent('hero_description');
 $bodyClass       = 'page-home';
+$pageStyles      = ['css/home.css'];
 require_once __DIR__ . '/includes/header.php';
 ?>
 

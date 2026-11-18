@@ -4,6 +4,7 @@ require_once __DIR__ . '/classes/Order.php';
 
 requireLogin();
 
+$pageStyles  = ['css/order-detail.css'];
 $orderNumber = $_GET['order'] ?? '';
 $orderModel  = new Order();
 

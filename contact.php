@@ -72,6 +72,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 $pageTitle = 'Contact Us — ' . SITE_NAME;
 $bodyClass = 'page-contact';
+$pageStyles = ['css/contact.css'];
 require_once __DIR__ . '/includes/header.php';
 ?>
 

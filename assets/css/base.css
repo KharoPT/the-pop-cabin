@@ -1,0 +1,260 @@
+/* ==========================================================================
+   The Pop Cabin — base
+   Shared foundations loaded on every page (public + admin): self-hosted
+   fonts, the temporary legacy aliases, the reset, buttons, wooden signs,
+   image placeholders, flash/toast, form controls, page chrome and the
+   status pill. Page-specific rules live in the page stylesheets.
+   ========================================================================== */
+
+/* Self-hosted fonts: Fredoka (headings) + Nunito (body). Weights 400-700,
+   one static @font-face per file, no network dependency (docs/DESIGN.md §3). */
+@font-face {
+  font-family: "Fredoka";
+  src: url("../fonts/Fredoka/Fredoka-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("../fonts/Fredoka/Fredoka-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("../fonts/Fredoka/Fredoka-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Fredoka";
+  src: url("../fonts/Fredoka/Fredoka-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-Light.ttf") format("truetype");
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-Regular.ttf") format("truetype");
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-Medium.ttf") format("truetype");
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-SemiBold.ttf") format("truetype");
+  font-weight: 600; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: "Nunito";
+  src: url("../fonts/Nunito/Nunito-Bold.ttf") format("truetype");
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+/* Temporary aliases: old names point at the matching token by role.
+   Remove each alias once no page uses it (docs/DESIGN.md §4). */
+:root {
+  --birch: var(--color-bg-page);              /* page background */
+  --pine-100: var(--color-bg-surface-alt);    /* light surface */
+  --pine-200: var(--color-brand-soft);        /* soft brand surface */
+  --pine-300: var(--color-border-default);    /* mid wood border/fill */
+  --oak: var(--color-border-strong);          /* stronger wood border */
+  --bark: var(--color-action-brand);          /* dark brand outline/text */
+  --walnut: var(--color-action-brand);        /* dark blocks / brand fill */
+  --espresso: var(--color-bg-inverse);        /* darkest block */
+  --ember: var(--color-action-primary);       /* interactive accent (hover/focus) */
+  --moss: var(--color-feedback-success);      /* success */
+  --cream: var(--color-bg-surface);           /* card surface */
+  --ink: var(--color-text-primary);           /* body text */
+  --muted: var(--color-text-muted-aa);        /* muted text, AA-safe */
+
+  --font-body: var(--font-family-body);
+  --font-display: var(--font-family-heading);
+
+  --wrap: var(--container-max);
+  --radius: 6px; /* no 6px token exists (xs 4 / sm 8); kept raw, see report */
+
+  /* wood textures */
+  --grain: repeating-linear-gradient(0deg, rgba(120, 80, 40, .05) 0 1px, transparent 1px 6px);
+  --planks: repeating-linear-gradient(90deg, rgba(90, 55, 25, .06) 0 2px, transparent 2px 130px);
+  --plank-dark: repeating-linear-gradient(0deg, rgba(255, 255, 255, .03) 0 1px, transparent 1px 5px),
+                linear-gradient(180deg, #47331f, #38271b);
+  --log-wall: repeating-linear-gradient(180deg, transparent 0 50px, rgba(0, 0, 0, .4) 50px 52px),
+              repeating-linear-gradient(180deg, #4d3728 0, #40301f 12px, #34251a 26px, #40301f 40px, #4d3728 52px);
+}
+
+/* ---------- Reset & base ---------- */
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
+body {
+  margin: 0;
+  background-color: var(--birch);
+  background-image: var(--planks), var(--grain);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.6;
+}
+img, svg { max-width: 100%; }
+img { display: block; }
+a { color: var(--bark); text-underline-offset: .18em; }
+a:hover { color: var(--ember); }
+h1, h2, h3, h4 { font-family: var(--font-display); line-height: 1.15; margin: 0 0 .5em; color: var(--walnut); }
+p { margin: 0 0 1em; }
+:focus-visible { outline: 3px solid var(--ember); outline-offset: 2px; }
+::selection { background: var(--pine-300); }
+
+.sr-only, .visually-hidden {
+  position: absolute !important; width: 1px; height: 1px; overflow: hidden;
+  clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap; margin: -1px; padding: 0; border: 0;
+}
+.skip-link { position: absolute; left: 12px; top: -60px; z-index: 200; background: var(--cream); padding: .6rem 1rem; border-radius: var(--radius); }
+.skip-link:focus { top: 12px; }
+.wrap, .container { width: 100%; max-width: var(--wrap); margin: 0 auto; padding: 0 20px; }
+.center { text-align: center; }
+.is-pending { cursor: default; }
+.is-pending:hover { color: inherit; }
+
+/* ---------- Buttons ---------- */
+.btn {
+  display: inline-block; border: 2px solid transparent; border-radius: var(--radius);
+  padding: .7rem 1.4rem; font: 600 1rem/1.2 var(--font-body); text-align: center; text-decoration: none;
+  cursor: pointer; transition: background .15s, color .15s, border-color .15s, transform .1s;
+}
+.btn:hover { text-decoration: none; }
+.btn:active { transform: translateY(1px); }
+.btn-dark, .btn-primary { background-color: var(--walnut); background-image: var(--plank-dark); color: var(--cream); border-color: var(--walnut); }
+.btn-dark:hover, .btn-primary:hover { background: var(--ember); border-color: var(--ember); color: #fff; }
+.btn-light { background: var(--pine-100); color: var(--ink); border-color: var(--pine-300); }
+.btn-light:hover { background: var(--cream); color: var(--ink); border-color: var(--cream); }
+.btn-outline, .btn-ghost { background: var(--cream); color: var(--ink); border-color: var(--bark); }
+.btn-outline:hover, .btn-ghost:hover { background: var(--pine-200); color: var(--ink); }
+.btn-strong { border-color: var(--walnut); }
+.btn-block { display: block; width: 100%; }
+.btn-lg { padding: 1.15rem 1.4rem; font-size: 1.1rem; }
+.btn-wide { min-width: min(100%, 300px); padding-block: 1rem; }
+.btn-disabled, .btn:disabled { background: var(--pine-300); color: var(--muted); border-color: var(--pine-300); cursor: not-allowed; }
+.btn svg { vertical-align: -4px; margin-right: .4rem; }
+.link-danger { background: none; border: 0; padding: 0; font: inherit; color: #9b2f1d; cursor: pointer; text-decoration: underline; }
+
+/* ---------- Wooden signs (the wireframes' dark label bars) ---------- */
+.sign {
+  position: relative; display: inline-block; margin: 0;
+  background-color: var(--walnut); background-image: var(--plank-dark); color: var(--cream);
+  font: 600 1.35rem/1.15 var(--font-display); padding: .85rem 1.9rem; border-radius: 4px;
+  box-shadow: inset 0 0 0 2px rgba(255, 255, 255, .07), 0 3px 0 rgba(30, 20, 12, .35);
+}
+.sign::before, .sign::after {
+  content: ""; position: absolute; top: 50%; width: 7px; height: 7px; border-radius: 50%; transform: translateY(-50%);
+  background: radial-gradient(circle at 35% 30%, #ecd7b0, #7a5a3a); box-shadow: 0 1px 0 rgba(0, 0, 0, .45);
+}
+.sign::before { left: 9px; }
+.sign::after { right: 9px; }
+.sign-center { display: block; width: fit-content; max-width: 100%; margin-inline: auto; text-align: center; }
+.sign-left { display: block; width: fit-content; max-width: 100%; }
+.sign-light { background-color: var(--oak); background-image: var(--grain); color: var(--ink); }
+.sign-btn { text-decoration: none; font-size: 1.05rem; cursor: pointer; transition: background .15s; }
+a.sign-btn:hover { background: var(--ember); color: #fff; }
+.sign-btn.is-disabled { opacity: .6; cursor: default; }
+.sign-label { display: inline-block; font-size: .95rem; padding: .55rem 1.3rem; margin-bottom: .6rem; }
+.sign-label::before, .sign-label::after { display: none; }
+.sign-stack { margin: 0 0 1.5rem; }
+.sign-stack span {
+  display: block; width: fit-content; background: var(--pine-100); color: var(--ink);
+  font: 600 1.5rem/1.2 var(--font-display); padding: .6rem 1.4rem; border-radius: 4px; margin-bottom: .55rem;
+  box-shadow: 0 3px 0 rgba(0, 0, 0, .3);
+}
+.sign-stack span + span { padding-right: 2.6rem; }
+.stitch { border: 0; border-top: 3px dashed var(--oak); margin: 1.6rem 0; opacity: .85; }
+.chip { display: inline-block; background: var(--pine-300); color: var(--ink); padding: .35rem 1rem; border-radius: 999px; font-size: .9rem; font-weight: 600; }
+.tag {
+  display: inline-block; background: var(--walnut); color: var(--cream); font-size: .85rem; font-weight: 600;
+  padding: .3rem .9rem; border-radius: 3px; text-decoration: none;
+}
+a.tag:hover { background: var(--ember); color: #fff; }
+
+/* ---------- Image placeholder (no photo yet) ---------- */
+.img-ph {
+  display: block; width: 100%; height: 100%; min-height: 100%;
+  background-color: var(--pine-200);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Cpath d='M8 94l32-46 22 30 14-19 36 35z' fill='%23d2b88b'/%3E%3Cpath d='M28 94l10-26 10 26zM46 94l11-32 11 32zM66 94l9-22 9 22z' fill='%238d5f3a' opacity='.5'/%3E%3Ccircle cx='94' cy='28' r='9' fill='%23c9a46c'/%3E%3C/svg%3E"),
+                    var(--grain);
+  background-repeat: no-repeat, repeat; background-position: center, 0 0; background-size: 52%, auto;
+}
+.img-ph-person {
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 120 120'%3E%3Ccircle cx='60' cy='46' r='18' fill='%23c9a46c'/%3E%3Cpath d='M22 104c2-22 18-34 38-34s36 12 38 34z' fill='%23c9a46c'/%3E%3C/svg%3E"), var(--grain);
+}
+.img-ph-map { background-size: 30%, auto; }
+/* ---------- Flash messages & toast ---------- */
+/* z-index keeps the banner above the full-bleed photo bands the redesigned pages
+   pull up behind the header with a negative margin. */
+.flash-wrap { position: relative; z-index: 2; max-width: var(--wrap); margin: 1rem auto 0; padding: 0 20px; }
+.flash-message {
+  margin: 0 0 8px; padding: 12px 16px; border-radius: 12px;
+  border: 1px solid var(--color-border-strong); border-left: 4px solid var(--color-feedback-success-text);
+  background: var(--color-bg-surface); color: var(--color-text-primary);
+  font: 600 13px/18px var(--font-family-body);
+  box-shadow: 0 6px 16px rgba(36, 24, 18, .12);
+}
+.flash-error { border-left-color: var(--color-feedback-error); }
+.toast {
+  position: fixed; left: 50%; bottom: 22px; z-index: 300; transform: translate(-50%, 24px);
+  max-width: calc(100% - 32px); padding: .85rem 1.2rem; border-radius: var(--radius);
+  background: var(--walnut); color: var(--cream); border-left: 6px solid var(--moss);
+  box-shadow: 0 12px 30px rgba(0, 0, 0, .4); opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s;
+}
+.toast a { color: var(--pine-300); font-weight: 700; }
+.toast-error { border-left-color: var(--ember); }
+.toast.show { opacity: 1; transform: translate(-50%, 0); pointer-events: auto; }
+
+.check-line { display: flex; align-items: center; gap: .6rem; font-size: .95rem; margin-bottom: 1rem; cursor: pointer; }
+.check-line input { width: 20px; height: 20px; accent-color: var(--walnut); flex: none; }
+.empty-note { color: var(--muted); }
+
+/* ---------- Form fields (shared) ---------- */
+input[type="text"], input[type="email"], input[type="password"], input[type="number"], input[type="search"], select, textarea {
+  width: 100%; font: inherit; color: var(--ink); background-color: var(--cream); border: 2px solid var(--bark); border-radius: 4px; padding: .8rem .9rem;
+}
+input::placeholder, textarea::placeholder { color: #8d7a68; }
+input:focus, select:focus, textarea:focus { outline: 3px solid var(--ember); outline-offset: 1px; border-color: var(--walnut); }
+textarea { resize: vertical; min-height: 120px; }
+select { appearance: none; -webkit-appearance: none; padding-right: 2.2rem; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' fill='none' stroke='%235f3f29' stroke-width='2' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right .8rem center; background-size: 12px; }
+.form-row { margin-bottom: 1.1rem; }
+.form-row > label, .form-row legend { display: block; font-weight: 600; font-size: .9rem; margin-bottom: .3rem; }
+.form-row-split { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+.form-row-split > div > label { display: block; font-weight: 600; font-size: .9rem; margin-bottom: .3rem; }
+.form-hint { font-size: .85rem; color: var(--muted); margin: .3rem 0 0; }
+.field { margin-bottom: 1.5rem; }
+
+/* Invalid field state (card F): red border + message under the field. */
+input.is-invalid, select.is-invalid, textarea.is-invalid,
+.dropzone.is-invalid, .photo-drop.is-invalid { border-color: var(--color-feedback-error); }
+input[type="checkbox"].is-invalid, .check-line.is-invalid input,
+.pill input.is-invalid + span { outline: 2px solid var(--color-feedback-error); outline-offset: 2px; }
+.field-error {
+  margin: .4rem 0 0; font-size: .875rem; font-weight: 600;
+  color: var(--color-feedback-error);
+}
+
+.section { padding: 2.6rem 0; }
+.page-header { padding: 1.8rem 0 .6rem; }
+.page-header h1 { display: inline-block; margin: 0; background-color: var(--walnut); background-image: var(--plank-dark); color: var(--cream); font-size: 1.6rem; padding: .75rem 1.8rem; border-radius: 4px; box-shadow: 0 3px 0 rgba(30, 20, 12, .35); }
+.page-header + .section { padding-top: 1.6rem; }
+.shell-page { padding: 2.4rem 0 3rem; min-height: 40vh; }
+.shell-note { text-align: center; color: var(--muted); margin-top: 1.6rem; }
+
+/* Status pills (customer + admin) */
+.status-pill { display: inline-block; padding: .15rem .8rem; border-radius: 999px; font-size: .8rem; font-weight: 600; background: var(--pine-100); color: var(--muted); border: 2px solid var(--pine-300); white-space: nowrap; }
+.status-pending { color: var(--ink); border-color: var(--bark); background: var(--pine-100); }
+.status-processing { color: #3d5a73; border-color: #6f93b1; background: #e6eef4; }
+.status-shipped { color: #5a4373; border-color: #9b84b8; background: #efe9f5; }
+.status-delivered { color: #3f5426; border-color: var(--moss); background: #e8eedb; }
+.status-cancelled { color: #8a2f1f; border-color: #c0705f; background: #f6e3de; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}

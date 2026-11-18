@@ -2,6 +2,43 @@
    Shop collections — FigCraft "Mobile/Collection"
    Real products come from the DB; this file is presentation only.
    ========================================================================== */
+
+/* ---------- Base layout (the page-scoped re-skin follows) ---------- */
+.shop-top { padding-top: 1.4rem; }
+.shop-bar { position: relative; display: flex; align-items: stretch; justify-content: space-between; gap: .8rem; }
+.filter-panel { flex: 1 1 auto; min-width: 0; max-width: 62%; }
+.filter-summary { display: flex; align-items: center; gap: .8rem; width: 100%; height: 100%; cursor: pointer; list-style: none; padding: .8rem 1.1rem; font-size: 1.05rem; }
+.filter-summary::-webkit-details-marker { display: none; }
+.filter-summary::before, .filter-summary::after { display: none; }
+.filter-icon { display: grid; place-items: center; width: 40px; height: 36px; border-radius: 4px; background: var(--pine-100); color: var(--ink); flex: none; }
+.filter-panel[open] .filter-summary { background: var(--ember); }
+.filter-form {
+  position: absolute; left: 0; right: 0; top: calc(100% + 10px); z-index: 30; padding: 1.2rem;
+  background: var(--cream); border: 3px solid var(--walnut); border-radius: 8px; box-shadow: 0 16px 34px rgba(40, 28, 20, .4);
+}
+.filter-actions { display: flex; gap: .7rem; margin-top: .4rem; }
+.shop-total { display: flex; align-items: center; justify-content: center; font-size: .95rem; padding: .8rem 1.1rem; text-align: center; }
+.shop-total::before, .shop-total::after { display: none; }
+.shop-total-n { font-size: 1.25rem; margin-right: .3rem; }
+.shop-top .stitch { margin: 1.3rem 0 0; }
+.shop-results { padding-top: 1.4rem; }
+
+.pager { margin: 2.4rem 0 0; text-align: center; }
+.pager-count { font-size: .85rem; color: var(--muted); margin-bottom: .9rem; }
+.pager-links { display: flex; justify-content: center; align-items: center; gap: .5rem; flex-wrap: wrap; }
+.pager-pages { display: flex; align-items: center; gap: .35rem; }
+.pager-btn, .pager-num { min-width: 42px; height: 42px; padding: 0 .9rem; display: inline-flex; align-items: center; justify-content: center; gap: .3rem; border-radius: 4px; font-weight: 600; text-decoration: none; }
+.pager-btn { background-color: var(--walnut); background-image: var(--plank-dark); color: var(--cream); }
+a.pager-btn:hover { background: var(--ember); color: #fff; }
+.pager-btn.is-disabled { opacity: .4; }
+.pager-num { background: var(--pine-100); color: var(--ink); border: 2px solid var(--pine-300); padding: 0; }
+a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
+.pager-num.is-current { background: var(--walnut); color: var(--cream); border-color: var(--walnut); }
+.pager-gap { color: var(--muted); padding: 0 .1rem; }
+.empty-state { text-align: center; padding: 3rem 0; }
+.empty-state p { color: var(--muted); margin-bottom: 1.2rem; }
+.empty-state h1 { margin-bottom: 1.4rem; }
+
 .page-shop { background: var(--color-bg-page); background-image: none; }
 
 /* No position:relative here on purpose: the band below is anchored to the page
@@ -124,6 +161,8 @@
   .page-shop .shop-top { padding: 0 32px; }
   .page-shop .shop-results { padding: 20px 32px 0; }
   .page-shop .pop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
+  .filter-panel { max-width: 340px; }
+  .filter-form { right: auto; width: 420px; }
 }
 @media (min-width: 1000px) {
   .page-shop main { padding: 216px 0 0; }

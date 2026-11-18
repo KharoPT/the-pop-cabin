@@ -1,0 +1,24 @@
+/* ==========================================================================
+   Order detail — the read-only receipt of one past order.
+   Reuses the same two-column shape as the old basket page: line items on the
+   left, the summary card on the right. The page header, section spacing and
+   status pills come from base.css.
+   ========================================================================== */
+.cart-layout { display: grid; grid-template-columns: 1fr; gap: 1.6rem; align-items: start; }
+.cart-items { display: flex; flex-direction: column; gap: .8rem; }
+.cart-row { display: grid; grid-template-columns: 70px minmax(0, 1fr) 76px; align-items: center; gap: .8rem; padding: .8rem; background: var(--cream); border: 2px solid var(--bark); border-radius: 6px; }
+.cart-row-static { grid-template-columns: minmax(0, 1fr) auto; }
+.cart-item-name { font-weight: 700; color: var(--ink); text-decoration: none; }
+.cart-item-name:hover { color: var(--ember); }
+.cart-item-price { color: var(--muted); font-size: .9rem; margin: .1rem 0 0; }
+.cart-row-total { margin: 0; font-weight: 700; }
+.cart-summary { background: var(--cream); border: 3px solid var(--bark); border-radius: 8px; padding: 1.3rem; }
+.cart-summary h3 { font-size: 1.3rem; }
+.summary-line { display: flex; justify-content: space-between; gap: 1rem; padding: .35rem 0; }
+.summary-total { border-top: 2px dashed var(--oak); margin-top: .5rem; padding-top: .8rem; font-weight: 700; font-size: 1.15rem; }
+
+@media (min-width: 700px) {
+  .cart-layout { grid-template-columns: minmax(0, 1fr) 340px; }
+  .cart-row { grid-template-columns: 80px minmax(0, 1fr) 90px 100px auto; }
+  .cart-row-static { grid-template-columns: minmax(0, 1fr) auto; }
+}

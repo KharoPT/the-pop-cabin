@@ -3,7 +3,7 @@
 Updated Nov 17, 2026. Sections 1-6 are rules; sections 7-10 record the Run 1 audit of the Figma `High-Fi` page.
 
 ## 1. Source of truth
-Figma hi-fi (file "Pop Cabin Design": https://www.figma.com/design/VoPylafW12yk2UBAoHnZsJ/Pop-Cabin-Design, variable collection "High-Fi (Wyn)") wins for the screens it covers, over the old `style.css` (from the wireframe pass). Differences between Figma and the code are resolved by the bulk rule in `AGENTS.md` "Decisions" (no row-by-row `COMPARISON.md`; the agent logs differences in `docs/REPORT.md`). Agents that cannot open Figma work from this file, `tokens.css`, and the PNGs in `docs/figma/`.
+Figma hi-fi (file "Pop Cabin Design": https://www.figma.com/design/VoPylafW12yk2UBAoHnZsJ/Pop-Cabin-Design, variable collection "High-Fi (Wyn)") wins for the screens it covers, over the wireframe-era rules (now `base.css` plus the per-page stylesheets). Differences between Figma and the code are resolved by the bulk rule in `AGENTS.md` "Decisions" (no row-by-row `COMPARISON.md`; the agent logs differences in `docs/REPORT.md`). Agents that cannot open Figma work from this file, `tokens.css`, and the PNGs in `docs/figma/`.
 
 ## 2. The binding rule
 | Figma element | CSS to write |
@@ -25,7 +25,7 @@ Never round a raw value to the "closest" token. The user decides later whether t
 | Background | Cream | `#F3E8D3` |
 | Error / success | Figma variables `--color-feedback-error` / `--color-feedback-success` | `#B3261E` / `#3E7B4F` (verify contrast with a checker) |
 
-**Fonts:** Fredoka (headings) + Nunito (body). Weights in the Figma tokens: 400, 500, 600, 700. Figma text styles: Fredoka 21, Nunito 19, **Inter 8** (Inter is not a decided font: see `docs/SESSION.md` Open). **Self-host** the font files in `assets/fonts/` (`.ttf` is fine; `.woff2` is only smaller). In `@font-face` use `format("truetype")` for `.ttf`. Static files = one `@font-face` per weight (400/500/600/700); a variable file = one `@font-face` with `font-weight: 400 700` (the demo runs on localhost and must not depend on Wi-Fi). Remove the old Google Fonts links (Cabin, Zilla Slab) from BOTH `includes/header.php` and `admin/includes/admin_header.php`; `--font-body` and `--font-display` in `style.css` still name the old fonts.
+**Fonts:** Fredoka (headings) + Nunito (body). Weights in the Figma tokens: 400, 500, 600, 700. Figma text styles: Fredoka 21, Nunito 19, **Inter 8** (Inter is not a decided font: see `docs/SESSION.md` Open). **Self-host** the font files in `assets/fonts/` (`.ttf` is fine; `.woff2` is only smaller). In `@font-face` use `format("truetype")` for `.ttf`. Static files = one `@font-face` per weight (400/500/600/700); a variable file = one `@font-face` with `font-weight: 400 700` (the demo runs on localhost and must not depend on Wi-Fi). Remove the old Google Fonts links (Cabin, Zilla Slab) from BOTH `includes/header.php` and `admin/includes/admin_header.php`; `--font-body` and `--font-display` in `base.css` still name the old fonts.
 
 **Contrast (hand-calculated, verify with a checker; WCAG AA needs 4.5:1 for normal text):**
 | Pair | Approx. ratio | Use |
@@ -41,12 +41,12 @@ Never round a raw value to the "closest" token. The user decides later whether t
 **Main combo:** honey fill + dark brown text. Use Ink `#241812` on honey (about 7.7:1). Walnut `#5A3A29` on honey is about 4.5:1, so large or bold text only.
 
 ## 4. Token plan (`assets/css/tokens.css`)
-- Loaded **before** `style.css`; the only place token values live.
+- Loaded **before** `base.css` and the page stylesheets; the only place token values live.
 - **Name = Figma variable name**: `color/surface/page` → `--color-surface-page` (slash to hyphen, lowercase).
 - Two layers: **primitives** (raw palette) → **semantic** (purpose). Components use semantic tokens only.
 - Final names are in `assets/css/tokens.css` (exported from Figma Nov 17, then cleaned): primitives `--primitive-walnut-600`, `--primitive-honey-400`, `--primitive-teal-500`, `--primitive-cream-200`, `--primitive-walnut-900`; semantic `--color-bg-page`, `--color-text-primary`, `--color-action-primary`, `--color-action-brand`, `--color-highlight-default`, `--color-text-link`, `--color-feedback-error`, `--color-feedback-success`. A few ad-hoc names are flagged in the file for review in Figma. `--font-family-heading` and `--font-family-body` were added by hand (Figma has no font-family variable).
 - Groups: color, space, radius, font-size/weight/line-height, stroke, shadow, z-index, motion.
-- Old `:root` names in `style.css` today: `--birch`, `--pine-100/200/300`, `--oak`, `--cedar`, `--bark`, `--walnut` (`#3b2a1f`), `--espresso`, `--ember`, `--moss`, `--cream`, `--ink`, `--muted`, plus `--font-body`, `--font-display`, `--wrap`, `--radius` and the wood textures `--grain`, `--planks`, `--plank-dark`, `--log-wall`. They stay as **temporary aliases** pointing at new tokens. Note: old `--walnut` was `#3b2a1f`; it will shift to the new walnut. Delete aliases once no page uses them.
+- Old `:root` names in `base.css` today: `--birch`, `--pine-100/200/300`, `--oak`, `--cedar`, `--bark`, `--walnut` (`#3b2a1f`), `--espresso`, `--ember`, `--moss`, `--cream`, `--ink`, `--muted`, plus `--font-body`, `--font-display`, `--wrap`, `--radius` and the wood textures `--grain`, `--planks`, `--plank-dark`, `--log-wall`. They stay as **temporary aliases** pointing at new tokens. Note: old `--walnut` was `#3b2a1f`; it will shift to the new walnut. Delete aliases once no page uses them.
 - Dark theme only if Figma has modes.
 
 ## 5. Naming (Figma and CSS)

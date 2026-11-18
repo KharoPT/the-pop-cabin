@@ -34,7 +34,7 @@ $pageUrl   = fn(int $p): string => SITE_URL . '/shop.php?' . http_build_query($q
 
 $pageTitle = 'Shop Collections — ' . SITE_NAME;
 $bodyClass = 'page-shop';
-$pageStyles = ['css/shop.css'];
+$pageStyles = ['css/product-card.css', 'css/shop.css'];
 require_once __DIR__ . '/includes/header.php';
 ?>
 
