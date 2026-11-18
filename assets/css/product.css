@@ -1,0 +1,354 @@
+/* ==========================================================================
+   Product profile — FigCraft "Mobile/Product Profile"
+   The pop, its reviews and the related grid come from the DB; this file is
+   presentation only. One column on the phone, media + info side by side from
+   700px up.
+   ========================================================================== */
+.page-product { background: var(--color-bg-page); background-image: none; }
+
+.page-product main {
+  position: relative;
+  margin-top: calc(-1 * var(--site-header-h, 72px));
+  padding: 96px 0 64px;
+}
+.page-product .wrap { position: relative; padding-inline: 16px; }
+
+/* Photo band behind the header, same geometry as the collection page */
+.product-bg {
+  position: absolute; top: -69px; left: 16px; z-index: 0;
+  width: calc(100% - 32px); height: 152px; max-width: none;
+  border-radius: 12px; object-fit: cover;
+}
+
+/* ---------- Pop not found ---------- */
+.product-missing {
+  display: grid; justify-items: center; gap: 16px;
+  margin-top: 24px; padding: 32px 16px; text-align: center;
+  background: var(--color-bg-surface); border-radius: 16px;
+  box-shadow: 0 12px 26px rgba(36, 24, 18, .12);
+}
+.product-missing-title { margin: 0; color: var(--color-text-primary); font: 600 28px/34px var(--font-family-heading); }
+.product-missing-text { margin: 0; color: var(--color-text-muted-aa); font: 400 14px/22px var(--font-family-body); }
+
+/* ---------- Media ---------- */
+.product-hero { display: grid; gap: 24px; }
+.product-media {
+  padding: 16px; border-radius: 16px;
+  background: var(--color-bg-surface);
+  box-shadow: 0 12px 26px rgba(36, 24, 18, .12);
+}
+.product-photo {
+  position: relative; overflow: hidden; border-radius: 8px;
+  aspect-ratio: 326 / 413; background: var(--color-bg-surface-alt);
+}
+.product-photo img { width: 100%; height: 100%; object-fit: cover; }
+.media-btn {
+  position: absolute; top: 10px; z-index: 2; width: 55px; height: 55px; padding: 0;
+  display: grid; place-items: center; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, .34); border-radius: 999px;
+  background: rgba(255, 255, 255, .14); color: var(--primitive-cream-100);
+  backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  box-shadow: 0 8px 20px rgba(36, 24, 18, .28);
+  transition: background .15s;
+}
+.media-btn:hover { background: rgba(255, 255, 255, .3); }
+.media-btn:active { transform: scale(.96); }
+.media-btn svg { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
+.media-fav { left: 10px; }
+.media-zoom { right: 10px; }
+.media-fav[aria-pressed="true"] svg { fill: var(--color-highlight-default); stroke: var(--color-highlight-default); }
+
+/* ---------- Overview ---------- */
+.product-info { display: grid; gap: 24px; align-content: start; }
+.product-overview { display: grid; gap: 24px; }
+.product-heading { display: grid; gap: 8px; justify-items: start; }
+.product-title {
+  margin: 0; color: var(--color-text-primary);
+  font: 600 32px/38px var(--font-family-heading); letter-spacing: -.5px;
+  overflow-wrap: anywhere;
+}
+.product-cat {
+  color: var(--color-text-primary); text-decoration: none;
+  font: 600 18px/28px var(--font-family-body);
+}
+.product-cat:hover { color: var(--color-text-link); }
+.product-meta { display: grid; gap: 7px; }
+.product-prices { display: grid; gap: 10px; }
+.product-stock { margin: 0; color: var(--color-text-muted-aa); font: 600 14px/20px var(--font-family-body); }
+.product-price { margin: 0; color: var(--color-text-primary); font: 600 28px/32px var(--font-family-heading); }
+.product-rating { margin: 0; display: flex; align-items: center; flex-wrap: wrap; gap: 8px; }
+.product-rating .stars { gap: 6px; }
+.product-rating .star { width: 16px; height: 16px; stroke-width: 1.5; }
+.rating-count { color: var(--color-text-muted-aa); font: 600 12px/16px var(--font-family-body); }
+
+/* Honey stars everywhere on this page (header rating + review cards) */
+.page-product .star { stroke: var(--color-highlight-default); stroke-width: 1.5; }
+.page-product .star.is-on { fill: var(--color-highlight-default); stroke: var(--color-highlight-default); }
+
+/* ---------- Buy row: mechanic chips + the one action ---------- */
+.product-buy { margin: 0; display: block; }
+.mech-tabs { display: flex; flex-wrap: wrap; gap: 4px; margin: 0 0 16px; }
+.mech-tab {
+  flex: 1 1 0; display: inline-flex; align-items: center; justify-content: center; gap: 4px;
+  min-height: 31px; padding: 0 3px; cursor: pointer; white-space: nowrap;
+  border: 1px solid var(--primitive-teal-500); border-radius: 999px;
+  background: var(--color-bg-surface); color: var(--primitive-teal-500);
+  font: 400 12px/20px var(--font-family-heading);
+  transition: background .15s;
+}
+.mech-tab:hover { background: var(--primitive-teal-50); }
+.mech-tab.is-active { box-shadow: inset 0 0 0 1px var(--primitive-teal-500); }
+.mech-tab .lock { flex: none; }
+.mech-action {
+  display: block; width: 100%; min-height: 58px; padding: 0 24px; cursor: pointer; border: 0;
+  border-radius: 12px; background: var(--primitive-walnut-600); color: var(--primitive-white);
+  font: 600 18px/24px var(--font-family-heading);
+  box-shadow: 0 10px 18px rgba(36, 24, 18, .16);
+  transition: background .15s, transform .1s;
+}
+.mech-action:hover:not(:disabled) { background: var(--primitive-walnut-700); }
+.mech-action:active:not(:disabled) { transform: translateY(1px); }
+.mech-action:disabled {
+  background: var(--color-bg-disabled); color: var(--color-text-disabled);
+  box-shadow: none; cursor: not-allowed;
+}
+.mech-note { margin: 8px 0 0; color: var(--color-feedback-error); font: 600 12px/16px var(--font-family-body); }
+.mech-learn {
+  display: flex; align-items: center; justify-content: flex-end; gap: 4px;
+  margin: 4px 0 0; color: var(--color-text-link);
+  font: 600 12px/16px var(--font-family-body); text-decoration: none;
+}
+.mech-learn:hover { color: var(--color-text-link-hover); text-decoration: underline; }
+
+/* ---------- Details ---------- */
+.product-details { margin-top: 48px; }
+.product-details h2 {
+  margin: 0; color: var(--color-text-primary);
+  font: 500 22px/28px var(--font-family-heading);
+}
+.details-text {
+  margin: 12px 0 0; max-width: 70ch;
+  color: var(--primitive-walnut-800); font: 400 14px/22px var(--font-family-body);
+}
+.details-text.is-empty { color: var(--color-text-muted-aa); }
+
+/* ---------- Reviews ---------- */
+.product-reviews { margin-top: 48px; }
+.reviews-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+.reviews-head h2 {
+  margin: 0; color: var(--color-text-primary);
+  font: 600 16px/24px var(--font-family-body);
+}
+.review-cta {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 174px; min-height: 44px; padding: 10px 24px;
+  border-radius: 24px; background: var(--color-highlight-default); color: var(--color-text-primary);
+  font: 600 16px/24px var(--font-family-heading); text-decoration: none;
+  box-shadow: 0 6px 14px rgba(191, 138, 43, .35);
+  transition: background .15s;
+}
+.review-cta:hover { background: var(--color-highlight-hover); color: var(--color-text-primary); }
+.review-cta.is-disabled {
+  background: var(--color-bg-disabled); color: var(--color-text-disabled);
+  box-shadow: none; cursor: default;
+}
+
+.review-form {
+  display: none; margin: 12px 0 16px; padding: 16px;
+  background: var(--color-bg-surface); border-radius: 16px;
+  box-shadow: 0 8px 20px rgba(36, 24, 18, .08); scroll-margin-top: 96px;
+}
+.review-form:target, .review-form.is-open { display: block; }
+.review-form .form-row > label, .review-form legend { font-size: 12px; color: var(--color-text-muted-aa); }
+.review-form input[type="text"], .review-form input[type="email"], .review-form input[type="password"],
+.review-form input[type="number"], .review-form textarea {
+  padding: 11px 12px; border: 1px solid var(--color-border-strong); border-radius: 8px;
+  background: var(--primitive-cream-50); color: var(--color-text-primary);
+  font: 400 14px/20px var(--font-family-body);
+}
+.review-form textarea { min-height: 104px; }
+.review-form input:focus, .review-form textarea:focus {
+  outline: 2px solid var(--color-focus-ring); outline-offset: 1px; border-color: var(--color-focus-ring);
+}
+.review-form .btn-dark {
+  width: 100%; min-height: 48px; padding: 12px 20px; border: 0; border-radius: 12px;
+  background: var(--primitive-walnut-600); color: var(--primitive-white);
+  font: 600 16px/24px var(--font-family-heading);
+}
+.review-form .btn-dark:hover { background: var(--primitive-walnut-700); }
+.review-form .check-line { margin-bottom: 14px; font-size: 14px; color: var(--color-text-secondary); }
+.review-form .check-line input { accent-color: var(--primitive-walnut-600); }
+.rating-input {
+  display: flex; flex-wrap: wrap; flex-direction: row-reverse; justify-content: flex-end;
+  align-items: center; gap: 2px; margin: 0 0 12px; padding: 0; border: 0;
+}
+.rating-input legend { flex: 0 0 100%; float: none; width: auto; margin: 0 0 4px; }
+.rating-input input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.rating-input label { cursor: pointer; line-height: 0; }
+.rating-input .star { width: 28px; height: 28px; stroke-width: 1.5; stroke: var(--color-highlight-default); }
+.rating-input input:checked ~ label .star,
+.rating-input label:hover .star,
+.rating-input label:hover ~ label .star { fill: var(--color-highlight-default); }
+.rating-input input:focus-visible + label { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; border-radius: 4px; }
+
+.review-list { display: grid; gap: 12px; margin-top: 12px; }
+.review-item {
+  display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 0 12px; align-items: center;
+  margin: 0; padding: 16px 20px; border: 0; border-radius: 8px;
+  background: var(--primitive-walnut-800); color: var(--color-text-on-dark);
+  box-shadow: 0 8px 18px rgba(36, 24, 18, .16);
+}
+.review-item .avatar {
+  width: 46px; height: 46px; border-radius: 50%;
+  background: var(--primitive-honey-400); color: var(--primitive-walnut-900);
+  font: 600 18px/1 var(--font-family-heading);
+}
+.review-meta { min-width: 0; display: grid; gap: 2px; }
+.review-name { margin: 0; color: var(--color-text-on-dark); font: 600 16px/22px var(--font-family-heading); }
+.review-date { margin: 0; color: var(--primitive-walnut-200); font: 400 12px/16px var(--font-family-body); }
+.review-stars { justify-self: end; display: inline-flex; }
+.review-stars .stars { gap: 4px; }
+.review-stars .star { width: 12px; height: 12px; stroke-width: 1.5; }
+.review-body {
+  grid-column: 1 / -1; margin: 16px 0 0;
+  color: var(--primitive-walnut-200); font: 400 12px/16px var(--font-family-body);
+  overflow-wrap: anywhere;
+}
+.see-more { margin: 12px 0 0; text-align: center; }
+.see-more a { color: var(--primitive-teal-800); font: 700 14px/17px var(--font-family-body); text-decoration: underline; }
+.see-more a:hover { color: var(--color-text-link-hover); }
+.empty-note { margin: 12px 0 0; color: var(--color-text-muted-aa); font: 400 14px/22px var(--font-family-body); }
+
+/* ---------- You may also like ---------- */
+.product-related { margin-top: 48px; }
+.product-related h2 {
+  margin: 0 0 24px; text-align: center; color: var(--color-text-primary);
+  font: 600 32px/38px var(--font-family-heading);
+}
+.product-related .pop-grid { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.page-product .pop-card {
+  display: flex; flex-direction: column;
+  background: var(--color-bg-surface); background-image: none; color: var(--color-text-primary);
+  padding: 16px; border-radius: 16px; box-shadow: 0 6px 16px rgba(36, 24, 18, .07);
+  transition: transform .15s, box-shadow .15s;
+}
+.page-product .pop-card:hover { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(36, 24, 18, .12); }
+.page-product .pop-card-media {
+  position: relative; aspect-ratio: 139 / 165; border: 0; border-radius: 8px; overflow: hidden;
+  background: var(--color-bg-surface-alt);
+}
+.page-product .pop-card-media img { width: 100%; height: 100%; object-fit: cover; }
+.page-product .fav-btn {
+  top: 8px; left: 8px; width: 28px; height: 28px; border-radius: 999px;
+  background: rgba(251, 247, 238, .9); color: var(--color-text-primary);
+}
+.page-product .fav-btn svg { width: 16px; height: 16px; }
+.page-product .fav-btn:hover { background: var(--color-bg-surface); }
+.page-product .fav-btn[aria-pressed="true"] svg { fill: var(--color-highlight-default); stroke: var(--color-highlight-default); }
+.page-product .pop-card-ribbon {
+  right: 8px; bottom: 8px; padding: 3px 8px; border-radius: 999px;
+  background: var(--color-bg-inverse); color: var(--color-text-on-dark);
+  font: 600 10px/14px var(--font-family-body);
+}
+.page-product .pop-card-body { padding: 8px 0 0; display: flex; flex-direction: column; gap: 0; flex: 1; }
+.page-product .pop-name {
+  margin: 0; color: var(--color-text-primary); font: 600 16px/24px var(--font-family-heading);
+  -webkit-line-clamp: 2; line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+}
+.page-product .pop-name a { color: inherit; }
+.page-product .pop-name a:hover { color: var(--color-text-link); }
+.page-product .pop-cat {
+  margin: 0; padding: 0; background: none; color: var(--color-text-secondary);
+  font: 400 12px/16px var(--font-family-body);
+}
+.page-product .pop-stock { margin: 8px 0 0; color: var(--color-text-muted-aa); font: 600 12px/16px var(--font-family-body); }
+.page-product .pop-price { margin: 0; padding: 0; background: none; color: var(--color-text-primary); font: 600 20px/24px var(--font-family-heading); }
+
+/* ---------- Back to the collection ---------- */
+.back-row { margin-top: 48px; text-align: center; }
+.back-row.is-tight { margin-top: 24px; }
+.back-link {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-width: 246px; min-height: 70px; padding: 20px 40px;
+  border-radius: 999px; background: var(--color-highlight-default); color: var(--color-text-primary);
+  font: 600 20px/24px var(--font-family-heading); text-decoration: none;
+  box-shadow: 0 8px 16px rgba(191, 138, 43, .28);
+  transition: background .15s;
+}
+.back-link:hover { background: var(--color-highlight-hover); color: var(--color-text-primary); }
+
+/* ---------- Zoom lightbox ---------- */
+.lightbox {
+  border: 0; padding: 0; border-radius: 16px; background: var(--color-bg-surface);
+  max-width: min(94vw, 900px); box-shadow: 0 24px 60px rgba(36, 24, 18, .45);
+}
+.lightbox::backdrop { background: rgba(36, 24, 18, .82); }
+.lightbox img { max-width: 100%; max-height: 82vh; height: auto; margin: 0 auto; border-radius: 16px; }
+.lightbox-close {
+  position: absolute; top: 8px; right: 8px; width: 44px; height: 44px;
+  border: 0; border-radius: 50%; background: rgba(36, 24, 18, .72);
+  color: var(--primitive-cream-50); font-size: 24px; line-height: 1; cursor: pointer;
+}
+.lightbox-close:hover { background: var(--primitive-walnut-800); }
+
+/* ==========================================================================
+   Tablet — media and info side by side
+   ========================================================================== */
+@media (min-width: 700px) {
+  .page-product main { padding: 176px 0 80px; }
+  .product-bg { top: -24px; left: 0; width: 100%; height: 180px; border-radius: 0; }
+  .page-product .wrap { padding-inline: 32px; }
+  .product-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
+  .product-media { padding: 16px; }
+  /* Four pills do not fit one row beside the photo until the desktop column */
+  .mech-tabs { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 6px; }
+  .mech-tab { padding: 0 10px; }
+  .product-title { font-size: 28px; line-height: 34px; }
+  .product-cat { font-size: 16px; line-height: 24px; }
+  .product-details, .product-reviews, .product-related { margin-top: 64px; }
+  .details-text { font-size: 15px; line-height: 24px; }
+  .review-item { padding: 18px 22px; }
+  .review-body { font-size: 13px; line-height: 19px; }
+  .review-stars .star { width: 14px; height: 14px; }
+  .product-related .pop-grid { gap: 20px; }
+  .back-row { margin-top: 64px; }
+  .back-row.is-tight { margin-top: 32px; }
+}
+
+/* ==========================================================================
+   Desktop — wider band, bigger media, four related pops
+   ========================================================================== */
+@media (min-width: 1000px) {
+  .page-product main { padding: 216px 0 96px; }
+  .product-bg { height: 220px; }
+  .page-product .wrap { padding-inline: 40px; }
+  .product-hero { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 48px; }
+  .product-media { padding: 20px; }
+  .mech-tabs { display: flex; gap: 4px; }
+  .mech-tab { flex: 1 1 0; padding: 0 8px; }
+  /* The photo column would otherwise be far taller than the copy beside it */
+  .product-photo { max-height: 500px; }
+  .product-title { font-size: 36px; line-height: 42px; }
+  .product-price { font-size: 30px; line-height: 34px; }
+  /* Long-form copy reads better on a narrower measure than the hero */
+  .product-details, .product-reviews { max-width: 900px; }
+  .product-details h2 { font-size: 24px; line-height: 30px; }
+  .details-text { font-size: 16px; line-height: 26px; margin-top: 14px; }
+  .reviews-head h2 { font-size: 18px; line-height: 26px; }
+  .review-item { padding: 20px 24px; }
+  .review-name { font-size: 17px; line-height: 24px; }
+  .review-body { font-size: 14px; line-height: 21px; }
+  .product-related { margin-top: 96px; }
+  .product-related .pop-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
+  .page-product .pop-name { font-size: 18px; line-height: 26px; }
+  .page-product .pop-cat { font-size: 13px; line-height: 18px; }
+  .page-product .pop-stock { font-size: 13px; line-height: 18px; }
+  .page-product .pop-price { font-size: 24px; line-height: 28px; }
+  .back-row { margin-top: 96px; }
+  .back-row.is-tight { margin-top: 48px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .media-btn, .mech-tab, .mech-action, .review-cta, .back-link,
+  .page-product .pop-card { transition: none; }
+}
