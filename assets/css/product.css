@@ -60,7 +60,7 @@
 .media-btn svg { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .media-fav { left: 10px; }
 .media-zoom { right: 10px; }
-.media-fav[aria-pressed="true"] svg { fill: var(--color-highlight-default); stroke: var(--color-highlight-default); }
+.media-fav[aria-pressed="true"] svg { fill: var(--primitive-teal-500); stroke: var(--primitive-teal-500); }
 
 /* ---------- Overview ---------- */
 .product-info { display: grid; gap: 24px; align-content: start; }
@@ -270,7 +270,7 @@
 }
 .page-product .fav-btn:hover { background: rgba(255, 255, 255, .3); }
 .page-product .fav-btn:active { transform: scale(.96); }
-.page-product .fav-btn[aria-pressed="true"] svg { fill: var(--color-highlight-default); stroke: var(--color-highlight-default); }
+.page-product .fav-btn[aria-pressed="true"] svg { fill: var(--primitive-teal-500); stroke: var(--primitive-teal-500); }
 .page-product .pop-card-ribbon {
   right: 8px; bottom: 8px; padding: 3px 8px; border-radius: 999px;
   background: var(--color-bg-inverse); color: var(--color-text-on-dark);
