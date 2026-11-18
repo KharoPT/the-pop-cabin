@@ -163,7 +163,13 @@ html { overflow-x: hidden; }
 .page-home .btn-viewall:hover { background: var(--color-highlight-hover); color: var(--color-text-on-highlight); }
 
 /* Meet the Devs */
-.page-home .team-band { position: relative; margin: 0; padding: 0; overflow: visible; background: none; }
+/* The header floats above the page, so an anchor jump to #team would otherwise
+   park its title underneath the search bar. Offset the scroll by the header
+   height plus one step of breathing room to land the section just below it. */
+.page-home .team-band {
+  position: relative; margin: 0; padding: 0; overflow: visible; background: none;
+  scroll-margin-top: calc(var(--site-header-h, 68px) + 16px);
+}
 .page-home .team-bg {
   position: absolute; top: -21px; left: 50%; z-index: 0;
   width: 100vw; height: calc(100% + 47px);
