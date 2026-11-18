@@ -1,0 +1,83 @@
+/* ==========================================================================
+   Checkout — FigCraft "Mobile/Checkout"
+   Shipping form + the order receipt. The receipt card itself is shared with
+   the cart in css/receipt.css; this file is the page around it.
+   ========================================================================== */
+.page-checkout { background: var(--color-bg-page); background-image: none; }
+
+/* No position:relative here on purpose: the band below is anchored to the page
+   top, so a flash banner (which pushes this block down) can never leave a gap
+   above the photo or show its top corners. */
+.page-checkout main {
+  margin-top: calc(-1 * var(--site-header-h, 72px));
+  padding: 96px 0 64px;
+}
+.page-checkout .wrap { position: relative; padding-inline: 16px; }
+.page-checkout .flash-wrap { padding-inline: 16px; }
+
+/* Same photo band as the cart page (the frame reuses that image) */
+.checkout-bg {
+  position: absolute; top: -69px; left: 16px; z-index: 0;
+  width: calc(100% - 32px); height: 152px; max-width: none;
+  border-radius: 12px; object-fit: cover;
+}
+
+.checkout-shell { display: grid; gap: 24px; }
+.checkout-title {
+  margin: 0; color: var(--color-text-primary);
+  font: 600 26px/32px var(--font-family-heading);
+}
+
+/* ---------- Shipping form ---------- */
+.checkout-body { display: grid; gap: 24px; }
+.checkout-form { display: grid; gap: 24px; margin: 0; }
+.checkout-sub {
+  margin: 0; color: var(--color-text-primary);
+  font: 600 16px/24px var(--font-family-body);
+}
+.checkout-fields { display: grid; gap: 10px; }
+.field { display: grid; gap: 8px; }
+.field > label { color: var(--color-text-secondary); font: 500 12px/16px var(--font-family-heading); }
+.checkout-form .field input {
+  width: 100%; height: 44px; padding: 0 16px; border: 0; border-radius: 8px;
+  background: rgb(36 24 18 / .14); color: var(--color-text-primary);
+  font: 400 14px/20px var(--font-family-body);
+}
+.checkout-form .field input::placeholder { color: var(--placeholder-muted); }
+.checkout-form .field input:hover { background: rgb(36 24 18 / .18); }
+.checkout-form .field input:focus {
+  outline: 2px solid var(--color-focus-ring); outline-offset: 1px;
+  background: var(--color-bg-surface);
+}
+/* Invalid: red ring (the field has no border to colour) */
+.checkout-form .field input.is-invalid { box-shadow: 0 0 0 2px var(--color-feedback-error); }
+.checkout-form .field-error {
+  margin: 0; color: var(--color-feedback-error);
+  font: 600 12px/16px var(--font-family-body);
+}
+/* City + postal code share a row */
+.field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+
+/* ==========================================================================
+   Tablet
+   ========================================================================== */
+@media (min-width: 700px) {
+  .page-checkout main { padding: 176px 0 80px; }
+  .checkout-bg { top: -24px; left: 0; width: 100%; height: 180px; border-radius: 0; }
+  .page-checkout .wrap { padding-inline: 32px; }
+  .page-checkout .flash-wrap { padding-inline: 32px; }
+  .checkout-title { font-size: 30px; line-height: 36px; }
+}
+
+/* ==========================================================================
+   Desktop — form on the left, receipt beside it
+   ========================================================================== */
+@media (min-width: 1000px) {
+  .page-checkout main { padding: 216px 0 96px; }
+  .checkout-bg { height: 220px; }
+  .page-checkout .wrap { padding-inline: 40px; }
+  .page-checkout .flash-wrap { padding-inline: 40px; }
+  .checkout-title { font-size: 32px; line-height: 38px; }
+  .checkout-body { grid-template-columns: minmax(0, 1fr) 380px; gap: 40px; align-items: start; }
+  .receipt-card { position: sticky; top: calc(var(--site-header-h, 72px) + 24px); }
+}

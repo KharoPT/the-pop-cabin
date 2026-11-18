@@ -60,7 +60,7 @@ foreach ($items as $line) {
 
 $pageTitle  = 'Your Cart — ' . SITE_NAME;
 $bodyClass  = 'page-cart';
-$pageStyles = ['css/cart.css'];
+$pageStyles = ['css/receipt.css', 'css/cart.css'];
 
 // Icons used by the quantity pill and the remove action.
 $minusIcon = '<svg viewBox="0 0 16 16" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path d="M3 8h10"/></svg>';
