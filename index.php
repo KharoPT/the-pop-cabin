@@ -106,13 +106,20 @@ require_once __DIR__ . '/includes/header.php';
 </section>
 
 <!-- Call to action: the last nudge before the footer -->
+<?php $isMember = isLoggedIn(); ?>
 <section class="home-cta" aria-labelledby="cta-title">
     <div class="home-cta-card">
         <p class="home-cta-status"><span class="home-cta-status-dot" aria-hidden="true"></span>Online 24/7</p>
         <h2 class="home-cta-title" id="cta-title">Ready to Order Your Pop?</h2>
-        <p class="home-cta-text">Create an account to check out faster, follow your orders, and keep your details ready for the next drop.</p>
+        <p class="home-cta-text"><?php echo $isMember
+            ? 'Your cart is waiting. Pick up where you left off, or keep browsing the collection.'
+            : 'Create an account to check out faster, follow your orders, and keep your details ready for the next drop.'; ?></p>
         <div class="home-cta-actions">
-            <a class="home-cta-btn" href="<?php echo SITE_URL; ?>/register.php">Create an Account</a>
+            <?php if ($isMember): ?>
+                <a class="home-cta-btn" href="<?php echo SITE_URL; ?>/cart.php">View your cart</a>
+            <?php else: ?>
+                <a class="home-cta-btn" href="<?php echo SITE_URL; ?>/register.php">Create an Account</a>
+            <?php endif; ?>
             <a class="home-cta-alt" href="<?php echo SITE_URL; ?>/shop.php">Browse the collection</a>
         </div>
     </div>
