@@ -55,6 +55,9 @@ require_once __DIR__ . '/includes/admin_header.php';
             $statusKey  = array_key_exists($status, $statusOptions) ? $status : 'pending';
             $customer   = trim((string) ($o['customer_name'] ?? '')) !== '' ? $o['customer_name'] : 'Customer #' . (int) $o['user_id'];
             $itemCount  = (int) ($o['item_count'] ?? 0);
+            $items      = $orderModel->getItemsByOrderId((int) $o['order_id']);
+            usort($items, fn(array $a, array $b): int => (int) $a['order_item_id'] <=> (int) $b['order_item_id']);
+            $shippingFee = (float) $o['shipping_fee'];
         ?>
         <article class="admin-res">
             <div class="admin-res-top">
@@ -65,8 +68,43 @@ require_once __DIR__ . '/includes/admin_header.php';
                 <span class="status-pill status-<?php echo e($statusKey); ?>"><?php echo e($statusOptions[$statusKey]); ?></span>
             </div>
 
+            <?php $itemsLabelId = 'order-items-' . (int) $o['order_id']; ?>
+            <div class="order-detail">
+                <div class="order-detail-items">
+                    <p class="order-detail-label" id="<?php echo $itemsLabelId; ?>">Products</p>
+                    <?php if ($items): ?>
+                        <ul class="order-lines" aria-labelledby="<?php echo $itemsLabelId; ?>">
+                            <?php foreach ($items as $item): ?>
+                                <li class="order-line">
+                                    <span class="order-line-name"><?php echo e($item['product_name']); ?></span>
+                                    <span class="order-line-qty"><?php echo formatPrice($item['price']); ?> &times; <?php echo (int) $item['quantity']; ?></span>
+                                    <span class="order-line-total"><?php echo formatPrice($item['price'] * $item['quantity']); ?></span>
+                                </li>
+                            <?php endforeach; ?>
+                        </ul>
+                    <?php else: ?>
+                        <p class="order-lines-empty">No products were recorded for this order.</p>
+                    <?php endif; ?>
+                </div>
+
+                <div class="order-detail-side">
+                    <p class="order-detail-label">Summary</p>
+                    <dl class="order-totals">
+                        <div class="order-total-row"><dt>Subtotal</dt><dd><?php echo formatPrice($o['subtotal']); ?></dd></div>
+                        <div class="order-total-row"><dt>Shipping</dt><dd><?php echo $shippingFee > 0 ? formatPrice($shippingFee) : 'Free'; ?></dd></div>
+                    </dl>
+                    <p class="order-detail-label">Ship to</p>
+                    <p class="order-ship-to">
+                        <?php echo e($o['shipping_name']); ?><br>
+                        <?php echo e($o['shipping_address']); ?><br>
+                        <?php echo e($o['shipping_city']); ?>, <?php echo e($o['shipping_postal_code']); ?><br>
+                        <?php echo e($o['shipping_country']); ?>
+                    </p>
+                </div>
+            </div>
+
             <div class="admin-res-actions">
-                <span class="admin-price"><?php echo formatPrice($o['total_amount']); ?></span>
+                <span class="admin-price"><span class="sr-only">Order total </span><?php echo formatPrice($o['total_amount']); ?></span>
                 <form class="status-form" method="post" action="<?php echo SITE_URL; ?>/admin/orders.php">
                     <input type="hidden" name="csrf_token" value="<?php echo e(generateCsrfToken()); ?>">
                     <input type="hidden" name="order_id" value="<?php echo (int) $o['order_id']; ?>">
