@@ -472,6 +472,7 @@
 .order-total-row dt { color: var(--color-text-muted-aa); font: 400 13px/20px var(--font-family-body); }
 .order-total-row dd { margin: 0; color: var(--color-text-primary); font: 600 14px/20px var(--font-family-body); }
 .order-ship-to { margin: 0; color: var(--color-text-muted-aa); font: 400 13px/22px var(--font-family-body); overflow-wrap: anywhere; }
+.order-ship-label { color: var(--color-text-secondary); font-weight: 600; }
 
 /* ---------- Pager ---------- */.admin-pager { margin-top: 16px; text-align: center; }
 .admin-pager .pager-count { margin: 0 0 8px; color: var(--color-text-muted-aa); font: 600 12px/16px var(--font-family-body); }

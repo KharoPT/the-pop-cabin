@@ -95,10 +95,11 @@ require_once __DIR__ . '/includes/admin_header.php';
                     </dl>
                     <p class="order-detail-label">Ship to</p>
                     <p class="order-ship-to">
-                        <?php echo e($o['shipping_name']); ?><br>
-                        <?php echo e($o['shipping_address']); ?><br>
-                        <?php echo e($o['shipping_city']); ?>, <?php echo e($o['shipping_postal_code']); ?><br>
-                        <?php echo e($o['shipping_country']); ?>
+                        <span class="order-ship-label">Name:</span> <?php echo e($o['shipping_name']); ?><br>
+                        <span class="order-ship-label">Address:</span> <?php echo e($o['shipping_address']); ?><br>
+                        <span class="order-ship-label">City:</span> <?php echo e($o['shipping_city']); ?><br>
+                        <span class="order-ship-label">Postal code:</span> <?php echo e($o['shipping_postal_code']); ?><br>
+                        <span class="order-ship-label">Country:</span> <?php echo e($o['shipping_country']); ?>
                     </p>
                 </div>
             </div>
