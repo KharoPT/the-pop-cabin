@@ -8,6 +8,7 @@ $address  = siteContent('address_lines', []);
 
 $pageTitle = 'About Us — ' . SITE_NAME;
 $bodyClass = 'page-about';
+$pageStyles = ['css/about.css'];
 require_once __DIR__ . '/includes/header.php';
 ?>
 

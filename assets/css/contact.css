@@ -1,0 +1,15 @@
+/* ==========================================================================
+   Contact Us — the inquiry form and the optional file dropzone.
+   Posts to contact.php; this file is presentation only.
+   ========================================================================== */
+.contact { padding-top: 1.6rem; max-width: 720px; }
+.contact-intro { margin: 1.4rem 0 1.8rem; }
+.field-head { display: flex; align-items: center; justify-content: space-between; gap: 1rem; flex-wrap: wrap; }
+.field-max { font-size: .9rem; margin-bottom: .6rem; }
+.field-note { font-size: .78rem; color: var(--muted); margin: .4rem 0 0; }
+.dropzone { position: relative; display: block; text-align: center; padding: 1.6rem 1rem; background: var(--cream); border: 2px dashed var(--bark); border-radius: 4px; cursor: pointer; transition: background .15s, border-color .15s; }
+.dropzone:hover, .dropzone.is-over, .dropzone:focus-within { background: var(--pine-100); border-color: var(--ember); }
+.dz-title { display: block; font-size: 1.05rem; overflow-wrap: anywhere; }
+.dz-hint { display: block; font-size: .75rem; color: var(--muted); }
+.dropzone input { position: absolute; inset: 0; width: 100%; height: 100%; opacity: 0; cursor: pointer; }
+.submit-note { text-align: center; font-size: .85rem; color: var(--muted); max-width: 32ch; margin: 1rem auto 0; }
