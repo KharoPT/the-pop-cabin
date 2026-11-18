@@ -5,10 +5,6 @@
    ========================================================================== */
 
 
-.cart-badge {
-  display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px;
-  background: var(--ember); color: #fff; font-size: .78rem; font-weight: 700;
-}
 /* ==========================================================================
    Home
    ========================================================================== */

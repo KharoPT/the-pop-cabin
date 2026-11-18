@@ -62,6 +62,12 @@
 .site-menu li a[aria-current="page"] { background: var(--color-highlight-subtle); border-left: 0; }
 .site-menu-account { border-top: 1px solid var(--color-border-subtle); margin-top: .4rem; padding-top: .4rem; }
 
+/* Cart count shown next to the Cart link in the menu sheet. */
+.cart-badge {
+  display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px;
+  background: var(--ember); color: #fff; font-size: .78rem; font-weight: 700;
+}
+
 @media (min-width: 700px) {
   :root { --site-header-h: 80px; }
   .site-header { padding: 24px 32px 0; }
