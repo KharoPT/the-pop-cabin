@@ -31,7 +31,7 @@ $tiktokUrl   = siteContent('tiktok_url');
             <nav class="footer-col" aria-labelledby="f-assist">
                 <h2 id="f-assist">Assistance</h2>
                 <a href="<?php echo SITE_URL; ?>/index.php">Home</a>
-                <a href="<?php echo SITE_URL; ?>/shop.php">Shop Collections</a>
+                <a href="<?php echo SITE_URL; ?>/shop.php">Shop Collection</a>
                 <a href="<?php echo SITE_URL; ?>/mechanics.php">System Mechanics</a>
             </nav>
             <nav class="footer-col" aria-labelledby="f-about">

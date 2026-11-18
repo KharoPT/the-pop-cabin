@@ -12,7 +12,7 @@ $flashMessages = getFlashMessages();
 $metaDescription = $metaDescription ?? 'The Pop Cabin: Funko Pop collectibles.';
 
 $menuLinks = [
-    ['shop.php',      'Shop Collections'],
+    ['shop.php',      'Shop Collection'],
     ['mechanics.php', 'System Mechanics'],
     ['about.php',     'About us'],
     ['contact.php',   'Contact Us'],

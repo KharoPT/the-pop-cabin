@@ -32,7 +32,7 @@ $collections = $productModel->getCollections();
 $queryBase = $activeFilters + ($filters['sort'] !== '' ? ['sort' => $filters['sort']] : []);
 $pageUrl   = fn(int $p): string => SITE_URL . '/shop.php?' . http_build_query($queryBase + ['page' => $p]);
 
-$pageTitle = 'Shop Collections — ' . SITE_NAME;
+$pageTitle = 'Shop Collection — ' . SITE_NAME;
 $bodyClass = 'page-shop';
 $pageStyles = ['css/product-card.css', 'css/shop.css'];
 require_once __DIR__ . '/includes/header.php';
