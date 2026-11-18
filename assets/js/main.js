@@ -29,6 +29,17 @@
     });
   }
 
+  // ---------- Shop filter panel: dismiss from outside ----------
+  document.addEventListener('click', function (e) {
+    $$('details.filter-panel[open]').forEach(function (panel) {
+      if (!panel.contains(e.target)) panel.open = false;
+    });
+  });
+  document.addEventListener('keydown', function (e) {
+    if (e.key !== 'Escape') return;
+    $$('details.filter-panel[open]').forEach(function (panel) { panel.open = false; });
+  });
+
   // ---------- Admin menu ----------
   var aBtn = $('#admin-menu-btn');
   var aMenu = $('#admin-menu');
