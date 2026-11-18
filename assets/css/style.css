@@ -198,7 +198,9 @@ a.tag:hover { background: var(--ember); color: #fff; }
 
 
 /* ---------- Flash messages & toast ---------- */
-.flash-wrap { max-width: var(--wrap); margin: 1rem auto 0; padding: 0 20px; }
+/* z-index keeps the banner above the full-bleed photo bands the redesigned pages
+   pull up behind the header with a negative margin. */
+.flash-wrap { position: relative; z-index: 2; max-width: var(--wrap); margin: 1rem auto 0; padding: 0 20px; }
 .flash-message {
   background: var(--cream); border: 2px solid var(--bark); border-left-width: 8px; border-radius: var(--radius);
   padding: .8rem 1rem; margin-bottom: .8rem; font-weight: 500;
