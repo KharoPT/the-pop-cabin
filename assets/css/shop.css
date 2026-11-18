@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Shop collections — FigCraft "Mobile/Collection"
+   Shop collections â€” FigCraft "Mobile/Collection"
    Real products come from the DB; this file is presentation only.
    ========================================================================== */
 
@@ -59,15 +59,24 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
 .page-shop .shop-bar { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
 .page-shop .filter-panel { flex: 0 0 auto; max-width: none; margin: 0; }
 .page-shop .filter-summary {
-  display: inline-flex; align-items: center; gap: 12px;
+  display: inline-flex; align-items: center; gap: 16px;
   width: 170px; height: 42px; padding: 0 12px; border-radius: 24px;
-  background: var(--primitive-honey-500); color: var(--color-text-on-highlight);
+  background: var(--button-second, var(--primitive-honey-500)); color: var(--color-text-on-highlight);
   font: 600 18px/24px var(--font-family-heading);
-  box-shadow: none; list-style: none; cursor: pointer;
+  box-shadow:
+    -0.5px -0.5px 0px 0px rgba(217, 164, 65, 0.50),
+    10px 10px 21.21px -3.75px rgba(0, 0, 0, 0.23),
+    5.9px 5.9px 8.35px -3px rgba(0, 0, 0, 0.19),
+    2.66px 2.66px 3.76px -2.25px rgba(0, 0, 0, 0.23),
+    1.21px 1.21px 1.71px -1.5px rgba(0, 0, 0, 0.25),
+    0.44px 0.44px 0.63px -1px rgba(0, 0, 0, 0.26),
+    inset -1px -1px 1px 0px rgba(0, 0, 0, 0.23),
+    inset 1px 1px 1px 0px rgba(255, 255, 255, 0.83);
+  list-style: none; cursor: pointer;
 }
 .page-shop .filter-summary::-webkit-details-marker { display: none; }
 .page-shop .filter-summary::before, .page-shop .filter-summary::after { display: none; }
-.page-shop .filter-summary .filter-icon { width: 12px; height: 20px; flex: none; background: none; }
+.page-shop .filter-summary .filter-icon { width: 10px; height: 18px; flex: none; background: none; }
 .page-shop .filter-panel[open] .filter-summary { background: var(--primitive-honey-600); }
 .page-shop .filter-form {
   background: var(--color-bg-surface); border: 0; border-radius: 16px;
@@ -101,11 +110,21 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
 }
 .page-shop .pop-card-media img { width: 100%; height: 100%; object-fit: cover; }
 .page-shop .fav-btn {
-  top: 8px; left: 8px; width: 28px; height: 28px; border-radius: 999px;
-  background: rgba(251, 247, 238, .9); color: var(--color-text-primary);
+  top: 8px; left: 8px; width: 32px; height: 32px; padding: 0;
+  display: grid; place-items: center; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, .34); border-radius: 999px;
+  background: rgba(255, 255, 255, .14); color: var(--primitive-cream-100);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: 0 8px 20px rgba(36, 24, 18, .28);
+  transition: background .15s;
 }
-.page-shop .fav-btn svg { width: 16px; height: 16px; }
-.page-shop .fav-btn:hover { background: var(--color-bg-surface); }
+.page-shop .fav-btn svg {
+  display: block; width: 16px; height: 16px;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.page-shop .fav-btn:hover { background: rgba(255, 255, 255, .3); }
+.page-shop .fav-btn:active { transform: scale(.96); }
+.page-shop .fav-btn[aria-pressed="true"] svg { fill: var(--primitive-teal-500); stroke: var(--primitive-teal-500); }
 .page-shop .pop-card-ribbon {
   right: 8px; bottom: 8px; padding: 3px 8px; border-radius: 999px;
   background: var(--color-bg-inverse); color: var(--color-text-on-dark);
@@ -157,7 +176,7 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
 /* Tablet / desktop */
 @media (min-width: 700px) {
   .page-shop main { padding: 176px 0 0; }
-  .shop-bg { left: 0; width: 100%; top: -24px; height: 180px; border-radius: 0; }
+  .shop-bg { left: 50%; width: calc(100% - 56px); top: -24px; height: 180px; border-radius: 16px; transform: translateX(-50%); }
   .page-shop .shop-top { padding: 0 32px; }
   .page-shop .shop-results { padding: 20px 32px 0; }
   .page-shop .pop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
@@ -166,7 +185,7 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
 }
 @media (min-width: 1000px) {
   .page-shop main { padding: 216px 0 0; }
-  .shop-bg { height: 220px; }
+  .shop-bg { width: calc(100% - 72px); max-width: calc(var(--container-max) - 72px); height: 220px; }
   .page-shop .shop-top { padding: 0 40px; }
   .page-shop .shop-results { padding: 24px 40px 0; }
   .page-shop .pop-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
@@ -175,3 +194,4 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
   .page-shop .pop-stock { font-size: 13px; line-height: 18px; }
   .page-shop .pop-price { font-size: 24px; line-height: 28px; }
 }
+

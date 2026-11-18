@@ -1,5 +1,5 @@
-/* ==========================================================================
-   Cart — FigCraft "Mobile/Basket"
+﻿/* ==========================================================================
+   Cart â€” FigCraft "Mobile/Basket"
    Line items, the update/continue bar and the receipt. The cart itself lives
    in the database; this file is presentation only.
    ========================================================================== */
@@ -36,7 +36,7 @@
   font: 600 26px/32px var(--font-family-heading);
 }
 
-/* Flash banner ("item removed", stock capped) — the card look is shared in
+/* Flash banner ("item removed", stock capped) â€” the card look is shared in
    base.css, only the page padding has to follow this page's grid. */
 .page-cart .flash-wrap { padding-inline: 16px; }
 
@@ -147,7 +147,7 @@
    ========================================================================== */
 @media (min-width: 700px) {
   .page-cart main { padding: 176px 0 80px; }
-  .cart-bg { top: -24px; left: 0; width: 100%; height: 180px; border-radius: 0; }
+  .cart-bg { top: -24px; left: 50%; width: calc(100% - 56px); height: 180px; border-radius: 16px; transform: translateX(-50%); }
   .page-cart .wrap { padding-inline: 32px; }
   .page-cart .flash-wrap { padding-inline: 32px; }
   .cart-title { font-size: 30px; line-height: 36px; }
@@ -158,11 +158,11 @@
 }
 
 /* ==========================================================================
-   Desktop — items on the left, receipt beside them
+   Desktop â€” items on the left, receipt beside them
    ========================================================================== */
 @media (min-width: 1000px) {
   .page-cart main { padding: 216px 0 96px; }
-  .cart-bg { height: 220px; }
+  .cart-bg { width: calc(100% - 72px); max-width: calc(var(--container-max) - 72px); height: 220px; }
   .page-cart .wrap { padding-inline: 40px; }
   .page-cart .flash-wrap { padding-inline: 40px; }
   .cart-title { font-size: 32px; line-height: 38px; }
@@ -177,3 +177,4 @@
 @media (prefers-reduced-motion: reduce) {
   .cart-btn { transition: none; }
 }
+

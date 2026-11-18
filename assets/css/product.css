@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Product profile — FigCraft "Mobile/Product Profile"
+   Product profile â€” FigCraft "Mobile/Product Profile"
    The pop, its reviews and the related grid come from the DB; this file is
    presentation only. One column on the phone, media + info side by side from
    700px up.
@@ -60,7 +60,7 @@
 .media-btn svg { display: block; fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round; }
 .media-fav { left: 10px; }
 .media-zoom { right: 10px; }
-.media-fav[aria-pressed="true"] svg { fill: var(--color-highlight-default); stroke: var(--color-highlight-default); }
+.media-fav[aria-pressed="true"] svg { fill: var(--primitive-teal-500); stroke: var(--primitive-teal-500); }
 
 /* ---------- Overview ---------- */
 .product-info { display: grid; gap: 24px; align-content: start; }
@@ -85,7 +85,7 @@
 .product-rating .star { width: 16px; height: 16px; stroke-width: 1.5; }
 .rating-count { color: var(--color-text-muted-aa); font: 600 12px/16px var(--font-family-body); }
 
-/* Star rating markup (renderStars()) — honey everywhere on this page */
+/* Star rating markup (renderStars()) â€” honey everywhere on this page */
 .stars { display: inline-flex; gap: 2px; vertical-align: middle; }
 .star { fill: none; stroke: var(--walnut); stroke-width: 1.6; stroke-linejoin: round; }
 .star.is-on { fill: var(--ember); stroke: var(--walnut); }
@@ -256,12 +256,21 @@
 }
 .page-product .pop-card-media img { width: 100%; height: 100%; object-fit: cover; }
 .page-product .fav-btn {
-  top: 8px; left: 8px; width: 28px; height: 28px; border-radius: 999px;
-  background: rgba(251, 247, 238, .9); color: var(--color-text-primary);
+  top: 8px; left: 8px; width: 32px; height: 32px; padding: 0;
+  display: grid; place-items: center; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, .34); border-radius: 999px;
+  background: rgba(255, 255, 255, .14); color: var(--primitive-cream-100);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: 0 8px 20px rgba(36, 24, 18, .28);
+  transition: background .15s;
 }
-.page-product .fav-btn svg { width: 16px; height: 16px; }
-.page-product .fav-btn:hover { background: var(--color-bg-surface); }
-.page-product .fav-btn[aria-pressed="true"] svg { fill: var(--color-highlight-default); stroke: var(--color-highlight-default); }
+.page-product .fav-btn svg {
+  display: block; width: 16px; height: 16px;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.page-product .fav-btn:hover { background: rgba(255, 255, 255, .3); }
+.page-product .fav-btn:active { transform: scale(.96); }
+.page-product .fav-btn[aria-pressed="true"] svg { fill: var(--primitive-teal-500); stroke: var(--primitive-teal-500); }
 .page-product .pop-card-ribbon {
   right: 8px; bottom: 8px; padding: 3px 8px; border-radius: 999px;
   background: var(--color-bg-inverse); color: var(--color-text-on-dark);
@@ -309,11 +318,11 @@
 .lightbox-close:hover { background: var(--primitive-walnut-800); }
 
 /* ==========================================================================
-   Tablet — media and info side by side
+   Tablet â€” media and info side by side
    ========================================================================== */
 @media (min-width: 700px) {
   .page-product main { padding: 176px 0 80px; }
-  .product-bg { top: -24px; left: 0; width: 100%; height: 180px; border-radius: 0; }
+  .product-bg { top: -24px; left: 50%; width: calc(100% - 56px); height: 180px; border-radius: 16px; transform: translateX(-50%); }
   .page-product .wrap { padding-inline: 32px; }
   .product-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 32px; align-items: start; }
   .product-media { padding: 16px; }
@@ -333,11 +342,11 @@
 }
 
 /* ==========================================================================
-   Desktop — wider band, bigger media, four related pops
+   Desktop â€” wider band, bigger media, four related pops
    ========================================================================== */
 @media (min-width: 1000px) {
   .page-product main { padding: 216px 0 96px; }
-  .product-bg { height: 220px; }
+  .product-bg { width: calc(100% - 72px); max-width: calc(var(--container-max) - 72px); height: 220px; }
   .page-product .wrap { padding-inline: 40px; }
   .product-hero { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); gap: 48px; }
   .product-media { padding: 20px; }
@@ -369,3 +378,4 @@
   .media-btn, .mech-tab, .mech-action, .review-cta, .back-link,
   .page-product .pop-card { transition: none; }
 }
+
