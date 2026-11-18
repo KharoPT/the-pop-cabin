@@ -159,16 +159,19 @@
   font: 400 10px/16px var(--font-family-body); white-space: nowrap;
 }
 .admin-sidebar, .admin-sidebar-toggle, .admin-header-links { display: none; }
-.admin-header-links { align-items: center; gap: 16px; margin-left: auto; }
+.admin-header-links { align-items: center; gap: 18px; margin-left: auto; }
 .admin-header-links a {
   display: inline-flex; align-items: center; gap: 8px;
   color: var(--primitive-cream-50); text-decoration: none;
   font: 600 13px/20px var(--font-family-heading);
 }
 .admin-header-links a:hover { color: var(--primitive-honey-300); }
+.admin-header-links a.admin-logout-link { color: var(--primitive-teal-300); }
+.admin-header-links a.admin-logout-link:hover { color: var(--primitive-teal-200); }
 .admin-header-links svg { flex: none; opacity: .75; }
+.admin-header-links a.admin-logout-link svg { opacity: .9; }
 .admin-sidebar-toggle {
-  flex: none; width: 36px; height: 36px; margin-left: 0; padding: 0;
+  flex: none; width: 36px; height: 36px; margin-left: 18px; padding: 0;
   align-items: center; justify-content: center; cursor: pointer;
   border: 1px solid rgba(255, 255, 255, .28); border-radius: 12px;
   background: rgba(255, 255, 255, .08); color: var(--primitive-cream-50);
@@ -493,6 +496,7 @@
   /* Header-to-sidebar layout: compact rail on tablet, full sidebar on desktop. */
   .admin-body { --admin-sidebar-w: 64px; }
   .admin-header-links { display: flex; }
+  .admin-sidebar-toggle { display: inline-flex; }
   .admin-menu-btn, .admin-menu, .admin-scrim { display: none; }
   .admin-sidebar {
     display: flex; position: fixed; top: 56px; bottom: 0; left: 0; z-index: 60;
@@ -516,6 +520,14 @@
   }
   .admin-sidebar-link.is-active svg { opacity: 1; }
   .admin-sidebar-label { display: none; }
+
+  /* Tablet: compact by default, the header toggle expands it in place. */
+  .admin-body.is-sidebar-expanded { --admin-sidebar-w: 220px; }
+  .admin-body.is-sidebar-expanded .admin-sidebar-link {
+    justify-content: flex-start; min-height: 40px; padding: 0 16px;
+  }
+  .admin-body.is-sidebar-expanded .admin-sidebar-label { display: block; }
+
   .admin-main {
     width: calc(100% - var(--admin-sidebar-w)); max-width: 1100px;
     margin: 0 0 0 var(--admin-sidebar-w); transition: margin-left .2s ease;
@@ -541,7 +553,6 @@
 @media (min-width: 1000px) {
   .admin-body { --admin-sidebar-w: 220px; }
   .admin-body.is-sidebar-collapsed { --admin-sidebar-w: 64px; }
-  .admin-sidebar-toggle { display: inline-flex; }
   .admin-sidebar-link { justify-content: flex-start; min-height: 40px; padding: 0 16px; }
   .admin-sidebar-label { display: block; }
   .admin-body.is-sidebar-collapsed .admin-sidebar-link { justify-content: center; min-height: 48px; padding: 0; }

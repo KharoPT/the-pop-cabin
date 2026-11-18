@@ -62,26 +62,54 @@
     });
   }
 
-  // ---------- Admin sidebar (desktop) ----------
+  // ---------- Admin sidebar (tablet rail / desktop full) ----------
   var sidebarToggle = $('#admin-sidebar-toggle');
   var adminBody = $('.admin-body');
+  var desktopSidebar = window.matchMedia('(min-width: 1000px)');
   var SIDEBAR_KEY = 'popcabin-admin-sidebar-collapsed';
-  function setSidebarCollapsed(collapsed) {
+
+  function storedSidebarCollapsed() {
+    try { return localStorage.getItem(SIDEBAR_KEY) === '1'; } catch (e) { return false; }
+  }
+  function sidebarIsCompact() {
+    if (!adminBody) return true;
+    return desktopSidebar.matches
+      ? adminBody.classList.contains('is-sidebar-collapsed')
+      : !adminBody.classList.contains('is-sidebar-expanded');
+  }
+  function updateSidebarToggle() {
+    if (!sidebarToggle) return;
+    var label = sidebarIsCompact() ? 'Expand sidebar' : 'Collapse sidebar';
+    sidebarToggle.setAttribute('aria-expanded', sidebarIsCompact() ? 'false' : 'true');
+    sidebarToggle.setAttribute('aria-label', label);
+    sidebarToggle.setAttribute('title', label);
+  }
+  function resetSidebarForViewport() {
     if (!adminBody) return;
-    adminBody.classList.toggle('is-sidebar-collapsed', collapsed);
-    if (sidebarToggle) {
-      var label = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
-      sidebarToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
-      sidebarToggle.setAttribute('aria-label', label);
-      sidebarToggle.setAttribute('title', label);
+    if (desktopSidebar.matches) {
+      adminBody.classList.remove('is-sidebar-expanded');
+      adminBody.classList.toggle('is-sidebar-collapsed', storedSidebarCollapsed());
+    } else {
+      adminBody.classList.remove('is-sidebar-expanded');
+      adminBody.classList.remove('is-sidebar-collapsed');
     }
-    try { localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0'); } catch (e) { /* storage unavailable */ }
+    updateSidebarToggle();
   }
   if (sidebarToggle && adminBody) {
-    setSidebarCollapsed(adminBody.classList.contains('is-sidebar-collapsed'));
+    resetSidebarForViewport();
     sidebarToggle.addEventListener('click', function () {
-      setSidebarCollapsed(!adminBody.classList.contains('is-sidebar-collapsed'));
+      if (desktopSidebar.matches) {
+        var collapsed = !adminBody.classList.contains('is-sidebar-collapsed');
+        adminBody.classList.toggle('is-sidebar-collapsed', collapsed);
+        try { localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0'); } catch (e) { /* storage unavailable */ }
+      } else {
+        adminBody.classList.toggle('is-sidebar-expanded');
+      }
+      updateSidebarToggle();
     });
+    if (desktopSidebar.addEventListener) {
+      desktopSidebar.addEventListener('change', resetSidebarForViewport);
+    }
   }
 
   // ---------- Dismissible admin banners ----------
