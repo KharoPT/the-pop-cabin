@@ -98,7 +98,7 @@
   /* Desktop: inline links replace the burger. */
   .menu-btn { display: none; }
   .header-nav { display: block; margin-left: 16px; margin-right: 28px; min-width: 0; }
-  .header-nav ul { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; list-style: none; }
+  .header-nav ul { display: flex; align-items: center; gap: 8px; margin: 0; padding: 0; list-style: none; }
   .header-nav a {
     display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 9px;
     border-radius: 999px; color: var(--color-text-on-dark);

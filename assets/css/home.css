@@ -10,7 +10,7 @@
 html { overflow-x: hidden; }
 .page-home { background: var(--color-bg-page); }
 .page-home main {
-  display: flex; flex-direction: column; gap: 48px;
+  display: flex; flex-direction: column; gap: var(--section-gap-mobile);
   padding: 24px 16px 0;
   margin-top: calc(-1 * var(--site-header-h, 72px)); /* the header floats on the hero */
 }
@@ -255,7 +255,7 @@ html { overflow-x: hidden; }
 .home-cta-alt:focus-visible { outline: 2px solid var(--color-text-on-dark); outline-offset: 3px; border-radius: 4px; }
 
 @media (min-width: 700px) {
-  .page-home main { max-width: var(--container-max); margin: calc(-1 * var(--site-header-h, 80px)) auto 0; padding: 24px 32px 0; gap: 64px; }
+  .page-home main { max-width: var(--container-max); margin: calc(-1 * var(--site-header-h, 80px)) auto 0; padding: 24px 32px 0; gap: var(--section-gap-tablet); }
 
   /* Hero: slightly wider than the header, lifted above it, notch kept */
   .page-home .hero {
@@ -314,7 +314,7 @@ html { overflow-x: hidden; }
 }
 
 @media (min-width: 1000px) {
-  .page-home main { padding: 24px 40px 0; gap: 80px; }
+  .page-home main { padding: 24px 40px 0; gap: var(--section-gap-desktop); }
   .page-home .hero { min-height: 620px; padding: 120px 64px 64px; }
   .page-home .hero-tab { font-size: 36px; line-height: 42px; }
   .page-home .hero-title { font-size: 96px; line-height: 86px; }
@@ -342,4 +342,8 @@ html { overflow-x: hidden; }
 @media (min-width: 1200px) {
   .page-home .hero-title { font-size: 120px; line-height: 104px; }
   .page-home .hero-stats { flex-direction: row; gap: 20px; }
+}
+
+@media (min-width: 1400px) {
+  .page-home main { gap: var(--section-gap-wide); }
 }
