@@ -42,7 +42,7 @@ The current code implements search, genre/price filtering, price/name sorting, s
 ### Admin
 
 - **Dashboard:** product, user, order, and out-of-stock counts.
-- **Products:** list with search, franchise/stock filters, pagination, edit/delete, and low/out-of-stock pills; create/edit form covers image, name, franchise, edition, price, stock, collections, description, and a stored featured flag (edit only; not currently rendered on the home page).
+- **Products:** list with search, franchise/stock filters, pagination, edit/delete, and low/out-of-stock pills; create/edit form covers image, name, franchise (pick one or add a new one inline), edition, price, stock, collections (tick pills or add a new category inline), description, and a stored featured flag (edit only; not currently rendered on the home page).
 - **Delete safety:** confirmation screen; deletion is blocked when an existing order references the product, and the UI suggests setting stock to 0 instead.
 - **Orders:** list with customer, date, item count, total, and status updates (`pending`, `processing`, `shipped`, `delivered`, `cancelled`).
 - **Users:** read-only list with role pill and pagination.

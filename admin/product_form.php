@@ -20,6 +20,7 @@ $fieldErrors = [];
 $posted      = null;
 $franchiseChoice = '';
 $newFranchiseValue = '';
+$newCategoryValue = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST) && empty($_FILES) && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
@@ -30,6 +31,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $edition = $_POST['edition'] ?? 'Regular';
         $franchiseChoice = trim((string) ($_POST['category_id'] ?? ''));
         $newFranchiseValue = sanitizeInput($_POST['new_franchise'] ?? '');
+        $newCategoryValue = sanitizeInput($_POST['new_category'] ?? '');
         $posted = [
             'name'           => sanitizeInput($_POST['name'] ?? ''),
             'category_id'    => ctype_digit($franchiseChoice) ? (int) $franchiseChoice : 0,
@@ -85,6 +87,53 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                     $message = 'The new franchise could not be added. Please try again.';
                     $errors[] = $message;
                     $fieldErrors['new_franchise'] = $message;
+                }
+            }
+        }
+
+        // The field under the category pills does the same job for collections: an
+        // existing category is reused, a new one is added to the table, and either
+        // way it ends up ticked for this product. The name is matched ignoring case
+        // so "anime" does not become a second pill next to "Anime".
+        if ($newCategoryValue !== '') {
+            $newCategoryLength = function_exists('mb_strlen') ? mb_strlen($newCategoryValue, 'UTF-8') : strlen($newCategoryValue);
+            if ($newCategoryLength > 100) {
+                $message = 'The category name is too long (100 characters at most).';
+                $errors[] = $message;
+                $fieldErrors['new_category'] = $message;
+            } else {
+                try {
+                    $categoryDb = Database::getInstance()->getConnection();
+                    $findCategory = $categoryDb->prepare('SELECT collection_id FROM collections WHERE LOWER(collection_name) = LOWER(?) LIMIT 1');
+                    $findCategory->execute([$newCategoryValue]);
+                    $newCategoryId = (int) $findCategory->fetchColumn();
+
+                    if ($newCategoryId === 0) {
+                        $baseSlug  = slugify($newCategoryValue);
+                        $slug      = $baseSlug;
+                        $suffix    = 2;
+                        $slugTaken = $categoryDb->prepare('SELECT 1 FROM collections WHERE slug = ? LIMIT 1');
+                        while (true) {
+                            $slugTaken->execute([$slug]);
+                            if (!$slugTaken->fetchColumn()) {
+                                break;
+                            }
+                            $slug = $baseSlug . '-' . $suffix++;
+                        }
+
+                        $insertCategory = $categoryDb->prepare('INSERT INTO collections (collection_name, slug) VALUES (?, ?)');
+                        $insertCategory->execute([$newCategoryValue, $slug]);
+                        $newCategoryId = (int) $categoryDb->lastInsertId();
+                    }
+
+                    if (!in_array($newCategoryId, $posted['collection_ids'], true)) {
+                        $posted['collection_ids'][] = $newCategoryId;
+                    }
+                    $collections = $productModel->getCollections();   // keep the pills complete
+                } catch (PDOException $e) {
+                    $message = 'The new category could not be added. Please try again.';
+                    $errors[] = $message;
+                    $fieldErrors['new_category'] = $message;
                 }
             }
         }
@@ -157,6 +206,7 @@ if ($posted !== null) {
 }
 $currentImage = imgSrc($product['image_url'] ?? '');
 $newFranchiseOpen = $franchiseChoice === 'new' || $newFranchiseValue !== '';
+$newCategoryOpen  = $newCategoryValue !== '';
 
 $pageTitle   = ($product ? 'Edit' : 'Add') . ' product — ' . SITE_NAME . ' Admin';
 $adminCrumbs = [['Products', 'admin/products.php'], [$product ? 'Edit' : 'Add', null]];
@@ -217,7 +267,7 @@ require_once __DIR__ . '/includes/admin_header.php';
         </div>
     </div>
 
-    <details class="new-franchise" id="new-franchise-field" <?php echo $newFranchiseOpen ? 'open' : ''; ?>>
+    <details class="add-entry" id="new-franchise-field" <?php echo $newFranchiseOpen ? 'open' : ''; ?>>
         <summary>Add a new franchise</summary>
         <div class="form-row">
             <label for="new_franchise">New franchise name</label>
@@ -254,6 +304,23 @@ require_once __DIR__ . '/includes/admin_header.php';
                 </label>
             <?php endforeach; ?>
         </div>
+        <?php if (empty($collections)): ?>
+            <p class="field-hint">There are no categories yet. Open &ldquo;Add a new category&rdquo; below and type the first one.</p>
+        <?php endif; ?>
+
+        <details class="add-entry" id="new-category-field" <?php echo $newCategoryOpen ? 'open' : ''; ?>>
+            <summary>Add a new category</summary>
+            <div class="form-row">
+                <label for="new_category">New category name</label>
+                <?php
+                    $err = $fieldErrors['new_category'] ?? null;
+                    $describedBy = 'new_category-hint' . ($err ? ' new_category-error' : '');
+                ?>
+                <input type="text" id="new_category" name="new_category" maxlength="100" placeholder="e.g. Comics" aria-describedby="<?php echo e($describedBy); ?>" value="<?php echo e($newCategoryValue); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true"' : ''; ?>>
+                <p class="field-hint" id="new_category-hint">This adds the category to the list and uses it for this pop. If the name already exists, the existing category is used.</p>
+                <?php if ($err): ?><p class="field-error" id="new_category-error"><?php echo e($err); ?></p><?php endif; ?>
+            </div>
+        </details>
     </fieldset>
 
     <div class="form-row">
