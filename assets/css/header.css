@@ -134,7 +134,6 @@
 }
 .site-menu li a:hover { background: var(--color-bg-surface-alt); color: var(--color-text-primary); }
 .site-menu li a[aria-current="page"] { background: var(--color-highlight-subtle); border-left: 0; }
-.site-menu-account { border-top: 1px solid var(--color-border-subtle); margin-top: .4rem; padding-top: .4rem; }
 
 /* Cart count shown next to the Cart link in the menu sheet. */
 .cart-badge {

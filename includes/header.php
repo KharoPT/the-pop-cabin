@@ -100,17 +100,6 @@ $menuLinks = [
                 <li><a href="<?php echo SITE_URL . '/' . $file; ?>" <?php echo $currentPage === $file ? 'aria-current="page"' : ''; ?>><?php echo e($label); ?></a></li>
             <?php endforeach; ?>
         </ul>
-        <ul class="site-menu-account">
-            <li>
-                <a href="<?php echo SITE_URL; ?>/cart.php" <?php echo $currentPage === 'cart.php' ? 'aria-current="page"' : ''; ?>>Cart
-                    <span class="cart-badge" style="<?php echo $cartCountForHeader > 0 ? '' : 'display:none;'; ?>"><?php echo (int) $cartCountForHeader; ?></span>
-                </a>
-            </li>
-            <?php if (!isLoggedIn()): ?>
-                <li><a href="<?php echo SITE_URL; ?>/login.php">Login</a></li>
-                <li><a href="<?php echo SITE_URL; ?>/register.php">Sign Up</a></li>
-            <?php endif; ?>
-        </ul>
     </nav>
 </header>
 
