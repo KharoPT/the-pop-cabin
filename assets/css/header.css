@@ -42,7 +42,7 @@
 }
 .search-form input::placeholder { color: rgba(251, 247, 238, .78); }
 .login-btn {
-  flex: none; width: 56px; height: 32px; margin-left: 4px; padding: 0;
+  flex: none; width: 56px; height: 32px; margin-left: 12px; padding: 0;
   display: inline-flex; align-items: center; justify-content: center;
   background: var(--color-highlight-default); color: var(--color-text-on-highlight);
   border: 0; border-radius: 21px;
@@ -84,7 +84,7 @@
   .logo-link { margin-left: 14px; }
   .search-form { margin-left: 32px; }
   .search-form input { height: 32px; padding: 0 28px 0 36px; font-size: 12px; background-size: 14px; background-position: 12px center; }
-  .login-btn { width: 76px; height: 36px; font-size: 14px; }
+  .login-btn { width: 76px; height: 36px; margin-left: 16px; font-size: 14px; }
   .site-menu { left: 32px; right: 32px; max-width: 640px; }
 }
 
@@ -107,6 +107,7 @@
   .header-nav a:hover { background: rgba(255, 255, 255, .12); color: var(--color-text-on-dark); }
   .header-nav a[aria-current="page"] { background: rgba(255, 255, 255, .16); color: var(--color-text-highlight-on-dark); }
   .header-nav .cart-badge { margin-left: 2px; }
+  .login-btn { margin-left: 18px; }
 }
 
 @media (min-width: 1200px) {
