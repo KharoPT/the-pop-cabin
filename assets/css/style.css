@@ -86,15 +86,9 @@
 .review-text { font-size: 1.05rem; margin-bottom: .6rem; }
 .review-about { font-size: .85rem; color: var(--muted); }
 .review-by { display: flex; align-items: center; gap: .9rem; margin-top: auto; }
-.avatar { flex: none; width: 52px; height: 52px; display: grid; place-items: center; border-radius: 50%; background: var(--walnut); color: var(--cream); font: 700 1.3rem var(--font-display); }
 .review-who { display: flex; flex-direction: column; gap: .15rem; }
 .dots-lg { justify-content: center; margin-top: 1.6rem; gap: 1rem; }
 .dots-lg .dot { width: 18px; height: 18px; }
-
-/* Stars */
-.stars { display: inline-flex; gap: 2px; vertical-align: middle; }
-.star { fill: none; stroke: var(--walnut); stroke-width: 1.6; stroke-linejoin: round; }
-.star.is-on { fill: var(--ember); stroke: var(--walnut); }
 
 /* Team */
 .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin: 1.8rem 0 1.6rem; }
@@ -330,13 +324,6 @@
 @media (min-width: 1000px) {
   .discover .tile-row { justify-content: center; padding-inline: 20px; }
   .hero-title { font-size: 4.4rem; }
-}
-
-@media (max-width: 520px) {
-  /* keep "Review & Comment" and "Write a Review" on one row, as in the wireframe */
-  .reviews-head { flex-wrap: nowrap; gap: .6rem; }
-  .reviews-head .sign { font-size: .98rem; padding: .8rem .9rem; white-space: nowrap; }
-  .reviews-head .sign::before, .reviews-head .sign::after { display: none; }
 }
 
 @media (prefers-reduced-motion: reduce) {
