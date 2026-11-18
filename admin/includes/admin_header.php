@@ -62,6 +62,9 @@ foreach ($adminErrors as $message) { $banners[] = ['error', $message]; }
 
 <header class="admin-header">
     <div class="admin-bar">
+        <button type="button" class="admin-sidebar-toggle" id="admin-sidebar-toggle" aria-expanded="true" aria-controls="admin-sidebar" aria-label="Collapse sidebar" title="Collapse sidebar">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M9 4.5v15"/></svg>
+        </button>
         <a href="<?php echo SITE_URL; ?>/admin/index.php" class="admin-id" aria-label="<?php echo e(SITE_NAME); ?> admin — dashboard">
             <img class="admin-logo" src="<?php echo assetUrl('img/logo-mark.svg'); ?>" alt="" width="32" height="32">
             <span class="admin-wordmark" aria-hidden="true">
@@ -70,9 +73,10 @@ foreach ($adminErrors as $message) { $banners[] = ['error', $message]; }
             </span>
             <span class="admin-badge">Admin</span>
         </a>
-        <button type="button" class="admin-sidebar-toggle" id="admin-sidebar-toggle" aria-expanded="true" aria-controls="admin-sidebar" aria-label="Collapse sidebar" title="Collapse sidebar">
-            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M9 4.5v15"/></svg>
-        </button>
+        <div class="admin-header-links">
+            <a href="<?php echo SITE_URL; ?>/index.php"><?php echo $ico['external']; ?><span>View public site</span></a>
+            <a href="<?php echo SITE_URL; ?>/logout.php"><?php echo $ico['logout']; ?><span>Log out</span></a>
+        </div>
         <button type="button" class="admin-menu-btn" id="admin-menu-btn" aria-expanded="false" aria-controls="admin-menu">
             <span class="admin-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
             Menu
@@ -103,14 +107,6 @@ foreach ($adminErrors as $message) { $banners[] = ['error', $message]; }
             <?php endforeach; ?>
         </ul>
     </nav>
-    <div class="admin-sidebar-foot">
-        <a href="<?php echo SITE_URL; ?>/index.php" class="admin-sidebar-link" aria-label="View public site" title="View public site">
-            <?php echo $ico['external']; ?><span class="admin-sidebar-label">View public site</span>
-        </a>
-        <a href="<?php echo SITE_URL; ?>/logout.php" class="admin-sidebar-link" aria-label="Log out" title="Log out">
-            <?php echo $ico['logout']; ?><span class="admin-sidebar-label">Log out</span>
-        </a>
-    </div>
 </aside>
 <div class="admin-scrim" id="admin-scrim" hidden></div>
 
