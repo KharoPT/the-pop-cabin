@@ -206,6 +206,24 @@
     });
   });
 
+  // ---------- Cart quantity steppers ----------
+  // The number input is what the form posts; the pill buttons only step it, so
+  // "Update Cart" stays the one place that saves the cart.
+  $$('[data-step]').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var box = btn.closest('.cart-qty');
+      var input = box ? $('input[type="number"]', box) : null;
+      if (!input) return;
+      var step = parseInt(btn.getAttribute('data-step'), 10) || 0;
+      var min  = parseInt(input.getAttribute('min'), 10);
+      var max  = parseInt(input.getAttribute('max'), 10);
+      var next = (parseInt(input.value, 10) || 0) + step;
+      if (!isNaN(min) && next < min) next = min;
+      if (!isNaN(max) && next > max) next = max;
+      input.value = next;
+    });
+  });
+
   // ---------- Toast + AJAX add-to-cart ----------
   var toastTimer = null;
   function showToast(message, type, withCartLink) {
