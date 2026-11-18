@@ -36,6 +36,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && ($_POST['form'] ?? '') === 'profile
 $orders = $orderModel->getByUserId($user['user_id']);
 
 $pageTitle = 'My Account — ' . SITE_NAME;
+$pageStyles = ['css/account.css'];
 require_once __DIR__ . '/includes/header.php';
 ?>
 

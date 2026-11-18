@@ -7,33 +7,6 @@
 
 
 
-/* ==========================================================================
-   Pages kept from the original build (cart, checkout, account, order detail)
-   ========================================================================== */
-.cart-layout { display: grid; grid-template-columns: 1fr; gap: 1.6rem; align-items: start; }
-.cart-items { display: flex; flex-direction: column; gap: .8rem; }
-.cart-row { display: grid; grid-template-columns: 70px minmax(0, 1fr) 76px; align-items: center; gap: .8rem; padding: .8rem; background: var(--cream); border: 2px solid var(--bark); border-radius: 6px; }
-.cart-row-static { grid-template-columns: minmax(0, 1fr) auto; }
-.cart-row-image img { width: 70px; height: 70px; object-fit: cover; border-radius: 4px; background: var(--pine-200); }
-.cart-row-image .img-ph { width: 70px; height: 70px; min-height: 0; border-radius: 4px; }
-.cart-item-name { font-weight: 700; color: var(--ink); text-decoration: none; }
-.cart-item-name:hover { color: var(--ember); }
-.cart-item-price { color: var(--muted); font-size: .9rem; margin: .1rem 0 0; }
-.cart-row-info .stock-note { font-size: .85rem; margin: .3rem 0 0; }
-.cart-row-qty input { text-align: center; padding: .5rem .3rem; }
-.cart-row-total { margin: 0; font-weight: 700; }
-.cart-remove { justify-self: start; }
-.cart-actions { display: flex; flex-wrap: wrap; gap: .7rem; margin-top: .4rem; }
-.cart-summary { background: var(--cream); border: 3px solid var(--bark); border-radius: 8px; padding: 1.3rem; }
-.cart-summary h3, .checkout-form h3 { font-size: 1.3rem; }
-.summary-line { display: flex; justify-content: space-between; gap: 1rem; padding: .35rem 0; }
-.summary-total { border-top: 2px dashed var(--oak); margin-top: .5rem; padding-top: .8rem; font-weight: 700; font-size: 1.15rem; }
-.cart-summary .btn-block { margin-top: 1rem; }
-.account-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
-.order-list { display: flex; flex-direction: column; gap: .6rem; }
-.order-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 1rem; background: var(--cream); border: 2px solid var(--bark); border-radius: 6px; color: var(--ink); text-decoration: none; }
-.order-row:hover { border-color: var(--ember); color: var(--ink); }
-.order-total { font-weight: 700; }
 
 /* ==========================================================================
    Admin

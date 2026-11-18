@@ -1,0 +1,14 @@
+/* ==========================================================================
+   My Account — profile form and order history.
+   The page header, section spacing, form rows and status pills come from
+   base.css; this file only lays out the two columns.
+   ========================================================================== */
+.account-layout { display: grid; grid-template-columns: 1fr; gap: 2rem; align-items: start; }
+.order-list { display: flex; flex-direction: column; gap: .6rem; }
+.order-row { display: flex; align-items: center; justify-content: space-between; gap: 1rem; padding: .9rem 1rem; background: var(--cream); border: 2px solid var(--bark); border-radius: 6px; color: var(--ink); text-decoration: none; }
+.order-row:hover { border-color: var(--ember); color: var(--ink); }
+.order-total { font-weight: 700; }
+
+@media (min-width: 700px) {
+  .account-layout { grid-template-columns: 1fr 1fr; gap: 3rem; }
+}
