@@ -53,6 +53,11 @@ foreach ($adminErrors as $message) { $banners[] = ['error', $message]; }
 <script>
   window.CSRF_TOKEN = <?php echo json_encode(generateCsrfToken()); ?>;
   window.SITE_URL = <?php echo json_encode(SITE_URL); ?>;
+  try {
+    if (localStorage.getItem('popcabin-admin-sidebar-collapsed') === '1') {
+      document.body.classList.add('is-sidebar-collapsed');
+    }
+  } catch (e) { /* storage unavailable */ }
 </script>
 
 <header class="admin-header">
@@ -65,6 +70,9 @@ foreach ($adminErrors as $message) { $banners[] = ['error', $message]; }
             </span>
             <span class="admin-badge">Admin</span>
         </a>
+        <button type="button" class="admin-sidebar-toggle" id="admin-sidebar-toggle" aria-expanded="true" aria-controls="admin-sidebar" aria-label="Collapse sidebar" title="Collapse sidebar">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3.5" y="4.5" width="17" height="15" rx="2"/><path d="M9 4.5v15"/></svg>
+        </button>
         <button type="button" class="admin-menu-btn" id="admin-menu-btn" aria-expanded="false" aria-controls="admin-menu">
             <span class="admin-menu-icon" aria-hidden="true"><span></span><span></span><span></span></span>
             Menu
@@ -82,6 +90,28 @@ foreach ($adminErrors as $message) { $banners[] = ['error', $message]; }
         </ul>
     </nav>
 </header>
+
+<aside class="admin-sidebar" id="admin-sidebar" aria-label="Admin sidebar">
+    <nav class="admin-sidebar-nav" aria-label="Admin navigation">
+        <ul>
+            <?php foreach ($adminNav as $file => [$label, $icon]): ?>
+                <li>
+                    <a href="<?php echo SITE_URL; ?>/admin/<?php echo $file; ?>" class="admin-sidebar-link <?php echo $adminSection === $file ? 'is-active' : ''; ?>" <?php echo $adminSection === $file ? 'aria-current="page"' : ''; ?> aria-label="<?php echo e($label); ?>" title="<?php echo e($label); ?>">
+                        <?php echo $ico[$icon]; ?><span class="admin-sidebar-label"><?php echo e($label); ?></span>
+                    </a>
+                </li>
+            <?php endforeach; ?>
+        </ul>
+    </nav>
+    <div class="admin-sidebar-foot">
+        <a href="<?php echo SITE_URL; ?>/index.php" class="admin-sidebar-link" aria-label="View public site" title="View public site">
+            <?php echo $ico['external']; ?><span class="admin-sidebar-label">View public site</span>
+        </a>
+        <a href="<?php echo SITE_URL; ?>/logout.php" class="admin-sidebar-link" aria-label="Log out" title="Log out">
+            <?php echo $ico['logout']; ?><span class="admin-sidebar-label">Log out</span>
+        </a>
+    </div>
+</aside>
 <div class="admin-scrim" id="admin-scrim" hidden></div>
 
 <main class="admin-main" id="main">

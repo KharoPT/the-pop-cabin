@@ -62,6 +62,28 @@
     });
   }
 
+  // ---------- Admin sidebar (desktop) ----------
+  var sidebarToggle = $('#admin-sidebar-toggle');
+  var adminBody = $('.admin-body');
+  var SIDEBAR_KEY = 'popcabin-admin-sidebar-collapsed';
+  function setSidebarCollapsed(collapsed) {
+    if (!adminBody) return;
+    adminBody.classList.toggle('is-sidebar-collapsed', collapsed);
+    if (sidebarToggle) {
+      var label = collapsed ? 'Expand sidebar' : 'Collapse sidebar';
+      sidebarToggle.setAttribute('aria-expanded', collapsed ? 'false' : 'true');
+      sidebarToggle.setAttribute('aria-label', label);
+      sidebarToggle.setAttribute('title', label);
+    }
+    try { localStorage.setItem(SIDEBAR_KEY, collapsed ? '1' : '0'); } catch (e) { /* storage unavailable */ }
+  }
+  if (sidebarToggle && adminBody) {
+    setSidebarCollapsed(adminBody.classList.contains('is-sidebar-collapsed'));
+    sidebarToggle.addEventListener('click', function () {
+      setSidebarCollapsed(!adminBody.classList.contains('is-sidebar-collapsed'));
+    });
+  }
+
   // ---------- Dismissible admin banners ----------
   $$('[data-dismiss]').forEach(function (btn) {
     btn.addEventListener('click', function () {
