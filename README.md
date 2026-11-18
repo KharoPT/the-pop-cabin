@@ -1,371 +1,373 @@
-# The Pop Cabin
+# The Pop Cabin Catalog
 
-A Funko Pop collectibles shop website for the client **The Pop Cabin**, built in PHP (OOP) with a MySQL/MariaDB database. Customers browse the collection, reserve ("Dibs") pops through a cart, and send inquiries. An admin manages products and views users from a mobile-first admin panel.
+A mobile-first, server-rendered PHP/MySQL storefront that turns The Pop Cabin's Facebook-only Funko Pop feed into a searchable catalog with a cart, checkout, reviews, and an admin panel.
 
-This is a school project (Universidad de Dagupan, School of Information Technology Education) that doubles as a real client deliverable. It is graded as the **OOP final project** and shares its database with the **Information Management and Database final project**.
+> **OOP Final Project** · Section 21-ITEN-02 · November 18, 2026
 
-> **Who this README is for:** teammates, the frontend designer, AI coding agents, and the panel/instructor. Every statement below was checked against the code in this folder. Where something is a guess, it says so.
+## Overview
 
-### To collaborators
+The Pop Cabin is a Funko Pop collectibles shop that currently sells through a single Facebook page. Its merchandise sits in a disorganized feed, and product details and stock are buried under older posts. This project gives the shop a dedicated, searchable catalog for local collectors, with a cart, checkout, reviews, and an admin panel. It is the OOP final project for section 21-ITEN-02 and the storefront for The Pop Cabin.
 
-Use the correct SITE_URL always, check nyo rin lagi ung name ng folder and compare to site url value in config/config.php.
+## Objectives
 
-Don't forget to import the sql file in sql folder, and when working with databases dont forget to export and replace the sql file in the sql folder.
-- Alex
+The final deck states four objectives:
 
-### Background
+- Catalog each Pop by name, genre, price, rating, and stock.
+- Search by name; filter by genre and availability.
+- Sort by price, rating, or name.
+- Give admins add, edit, and stock controls.
 
-The Pop Cabin is a funko pop online selling business. It is run through Facebook via posts, where deals are made via private messages and comments on posts.
+The current code implements search, genre/price filtering, price/name sorting, stock display, and admin stock controls. Rating sorting and a public availability filter are not in the public UI; see [Notes for Review](#notes-for-review-source-discrepancies).
 
-This web system aims to create a promotional website for The Pop Cabin to eliminate the limitation on customers of difficulty in viewing products in a facebook page.
+## Features
 
-### Team
+### Storefront
 
-Abalos, Caburnay, De Guzman, Estrada
+- **Home:** hero with live product and review counts, collection tiles (Movies, Anime, Games), team cards, and social links.
+- **Catalog:** 16 products per page, out-of-stock ribbons, and shop cards showing photo, name, franchise, stock, and price.
+- **Search and filters:** header search and shop search match pop or franchise names; filters cover franchise, collection, and min/max price; sort by newest, price, or name.
+- **Product page:** photo zoom, stock, price, star rating summary, description, related pops, and a 404 state.
+- **Reviews:** signed-in customers can post one review per pop (optionally anonymous); the page shows the average and count, the latest three reviews, and a "see all" link.
+- **Favorites:** heart toggles persist in `localStorage` for that browser only; there is no account-level favorites list.
 
----
+### Cart, checkout, and accounts
 
-## 1. At a glance
+- **Cart:** database-backed for guests and users; a guest cart is claimed or merged at login; quantities are capped by stock; lines can be removed; the summary shows flat ₱15 shipping, free at ₱100 or more.
+- **Checkout:** login required; shipping fields prefilled from the profile; order summary.
+- **Orders:** `Order::create()` writes `orders` and `order_items`, decrements stock, and rolls back the whole order if any line is short; the cart is cleared and the customer sees the order detail.
+- **Accounts:** register (first/last name, email, password, terms), auto-generated username, auto-login, login with optional 30-day "remember me", logout, profile editing, and order history.
+- **Contact:** message form with an optional PNG/JPG/JPEG/DOCX/TXT/MD attachment up to 10 MB; saved to `inquiries` and `storage/inquiries/`.
+- **Content pages:** About (photo gallery, copy, map, and address from `config/content.php`); System Mechanics and Terms are placeholder shells.
 
-| Item | Value |
-| --- | --- |
-| Language | PHP 8+ (uses `match`, `str_contains`, union return types, typed properties) |
-| Database | MySQL / MariaDB, database name `popcabdb`, accessed with PDO |
-| Server | Apache via XAMPP (or the PHP built-in server for quick tests) |
-| Frontend | Server-rendered HTML + one stylesheet (`assets/css/style.css`) + one small script (`assets/js/main.js`) |
-| Fonts | Today: Cabin + Zilla Slab from Google Fonts (linked in two files). Planned: Fredoka + Nunito, self-hosted in `assets/fonts/` (folder not created yet) |
-| Frameworks | None (no Composer, no Bootstrap, no Tailwind) |
-| Size | about 4,450 lines of PHP/CSS/JS (78 files including 30 product photos and the SQL dump) |
-| Design target | Mobile-first (wireframes are 390 px wide); wider layouts start at 700 px and 1000 px |
+### Admin
 
----
+- **Dashboard:** product, user, order, and out-of-stock counts.
+- **Products:** list with search, franchise/stock filters, pagination, edit/delete, and low/out-of-stock pills; create/edit form covers image, name, franchise, edition, price, stock, collections, description, and a stored featured flag (edit only; not currently rendered on the home page).
+- **Delete safety:** confirmation screen; deletion is blocked when an existing order references the product, and the UI suggests setting stock to 0 instead.
+- **Orders:** list with customer, date, item count, total, and status updates (`pending`, `processing`, `shipped`, `delivered`, `cancelled`).
+- **Users:** read-only list with role pill and pagination.
+- **OOP demo:** `admin/oop_demo.php` calls `describe()` on four models; it is not linked in the admin menu.
 
-## 2. Quick start (XAMPP on Windows/Mac)
+### Platform and security
 
-1. **Install XAMPP**, start **Apache** and **MySQL**.
-2. **Copy the project folder** into `xampp/htdocs/` and keep the name `the-pop-cabin`. The folder name is part of the URL.
-3. **Check `config/config.php`:** `SITE_URL` must equal `http://localhost/<folder name>` (default now `http://localhost/the-pop-cabin`). `DB_USER` / `DB_PASS` default to XAMPP's `root` and an empty password.
-4. **Import `sql/popcabdb.sql`** (phpMyAdmin, Import tab). It is the full schema plus data: 30 products, 11 franchises, 3 collections, 30 product-collection links, 4 carts and one admin account. There are no migration files any more. Known problem: the dump contains `CREATE DATABASE popcabdb;` twice, which can stop the import (see 6.3).
-5. **Open** `http://localhost/the-pop-cabin/index.php`. Admin login: the `admin` user from the dump (ask the backend member for the password; never write it in a file).
-6. **Writable folders:** `uploads/products/` (exists, 30 photos). `storage/inquiries/` is created automatically by the first contact-form attachment.
-7. After any database change, **export and replace `sql/popcabdb.sql`** (team rule, see "To collaborators").
+- **No framework, no build step, no CDN:** server-rendered PHP, CSS custom properties, and vanilla JavaScript; fonts are self-hosted.
+- **Responsive:** mobile-first around 390 px, breakpoints at 700 and 1000 px, maximum content width 1200 px.
+- **Progressive enhancement:** pages and form submissions work without JavaScript; JavaScript adds the mobile menu, carousels, toasts, AJAX add-to-cart, image zoom, file previews, and client-side per-field checkout validation.
+- **Security:** PDO prepared statements, `e()` output escaping, CSRF tokens on POST forms, `password_hash`/`password_verify`, session hardening, `requireLogin()`/`requireAdmin()`, safe `next` redirects, and upload type/size checks.
+- **Accessibility:** skip link, labels, `aria-invalid`/`aria-describedby` field errors, focus-visible styles, Escape-to-close menus, and reduced-motion support.
 
-**Quick alternative:** `php -S localhost:8000` in the project folder, with `SITE_URL` = `http://localhost:8000` (testing only; `.htaccess` rules are ignored).
+## Tech Stack
 
----
+| Area | Technology | Notes |
+| --- | --- | --- |
+| Language | PHP 8.0+ | Uses `match`, union return types, typed properties, `str_contains`, and `str_starts_with`. Local XAMPP runs 8.2.12; the deck and SQL dump report 8.5.12. |
+| Database | MariaDB 10.4.32 / MySQL-compatible | InnoDB, `utf8mb4`; database `popcabdb`; dump in `sql/popcabdb.sql`. |
+| DB access | PDO | `Database` singleton in `config/database.php`; prepared statements in every model. |
+| Web server | Apache 2.4.58 (XAMPP) | The PHP built-in server also works for local testing. |
+| Frontend | Server-rendered HTML, CSS, vanilla JavaScript | No framework and no build step. |
+| Styling | CSS custom properties | `assets/css/tokens.css` (Figma tokens) plus shared and per-page CSS. |
+| Fonts | Fredoka + Nunito | Self-hosted `.ttf` files in `assets/fonts/`; `@font-face` in `assets/css/style.css`. |
+| Dependencies | None | No Composer, npm, CDN, Bootstrap, or Tailwind. |
+| Tooling | Git, phpMyAdmin, Figma/FigCraft | Figma-to-CSS rules in `docs/DESIGN.md`; mobile PNG references in `docs/figma/`. |
+| Tests | No automated suite | Manual cases are documented in the final deck; see [Testing](#testing). |
 
-## 3. Folder map
+## System Design
 
+The app is a server-rendered PHP application with a small model layer:
+
+1. `config/config.php` loads constants, starts the session, requires the PDO singleton, and loads helper functions.
+2. Each page or action instantiates the model classes it needs, reads `$_GET`/`$_POST`, and calls model methods. Pages do not write SQL directly.
+3. Public pages include `includes/header.php`, render their HTML, and include `includes/footer.php`. Admin pages use `admin/includes/admin_header.php` and `admin_footer.php`.
+4. Writes use POST, redirect, GET with a flash message. Orders and product deletes use database transactions.
+
+```mermaid
+flowchart LR
+    B["Browser"] -->|"HTTP"| P["PHP page or action"]
+    P --> C["config/config.php<br/>constants, session, helpers"]
+    P --> M["Model class<br/>Product, Cart, Order, User, Review, Inquiry"]
+    M --> D["Database singleton<br/>PDO"]
+    D --> DB[("MariaDB<br/>popcabdb")]
+    P --> H["includes/header.php<br/>+ page CSS"]
+    P --> V["Page HTML"]
+    V --> F["includes/footer.php<br/>+ main.js"]
+    A["admin/ pages<br/>requireAdmin()"] --> M
+    A --> AH["admin/includes/<br/>admin_header.php"]
 ```
+
+### OOP layer
+
+`Database` is a private-constructor singleton. `BaseModel` is abstract and owns the protected PDO connection; the six models extend it and implement `table()`. The deck's four concepts map to the code as follows:
+
+| Concept | Where it lives |
+| --- | --- |
+| Encapsulation | `BaseModel::$db` is `protected`; `Cart::$cartId` is `private` |
+| Inheritance | `Product`, `Cart`, `Order`, `User`, `Review`, and `Inquiry` extend `BaseModel` and inherit `$db`, the constructor, and `countAll()` |
+| Abstraction | `abstract class BaseModel` with `abstract protected function table()` |
+| Polymorphism | `describe()` is overridden by `Product`, `Order`, and `User`; `Product::countAll()` adds filters; `admin/oop_demo.php` calls `describe()` |
+| Singleton | `Database::getInstance()` with a private constructor |
+
+`Product::delete()` and `Order::create()` use transactions. Not used: interfaces, namespaces, or an autoloader; model files are loaded with `require_once`.
+
+### Data model
+
+| Area | Tables | Relationship |
+| --- | --- | --- |
+| Catalog | `categories` (franchises), `products`, `collections` (category pills), `product_collections` | A product has one franchise and many collections (M:N). |
+| Accounts | `users` | `user_role` is `customer` or `admin`. |
+| Cart | `carts`, `cart_items` | One cart per user or guest session; guest carts use `user_id = 0` plus a session token and are merged at login. |
+| Orders | `orders`, `order_items` | `order_items` snapshots product name and price; a product referenced by an order cannot be deleted. |
+| Reviews | `reviews` | Unique `(product_id, user_id)`: one review per customer per pop. |
+| Contact | `inquiries` | Optional `user_id`; attachments are stored under `storage/inquiries/`. |
+
+## Project Structure
+
+```text
 the-pop-cabin/
-├── index.php  shop.php  product.php         Public storefront pages
-├── cart.php  checkout.php                   Cart and checkout (UI word: Cart)
-├── login.php  register.php  logout.php      Authentication
-├── account.php  order_detail.php            Customer area
-├── contact.php  about.php                   Information pages
-├── mechanics.php  terms.php                 Shells ("not published yet")
-├── README.md  AGENTS.md                      This guide + rules for AI agents
-│
-├── actions/   add_to_cart  update_cart  remove_from_cart  place_order  submit_review   (.php)
-├── admin/     index  products  product_form  product_delete  users  (.php)
-│              oop_demo.php (OOP demo, not in the menu)   text.md (stray note)
-│              includes/ admin_header.php  admin_footer.php
-├── classes/   BaseModel.php (abstract parent) + Product Cart Order User Review Inquiry (.php), .htaccess
-├── config/    config.php  database.php  content.php
-├── includes/  header.php  footer.php  product_card.php  functions.php
-├── assets/    css/style.css (+ tokens.css, to be created)   js/main.js   img/logo.svg   (no fonts/ folder yet)
-├── docs/                                    SESSION.md  DESIGN.md  UNBOUND.md, agent outputs (COMPARISON.md, REPORT.md), figma/ PNG exports
-├── sql/       popcabdb.sql  (full schema + data; the only SQL file)
-├── uploads/products/                        30 product photos (tracked in git)
-└── storage/inquiries/                       created on first attachment; not in the repo
+├── index.php                  Home: hero, counts, collection tiles, team
+├── shop.php                   Catalog: search, filters, sort, pagination
+├── product.php                Product detail: cart, reviews, related
+├── cart.php                   Cart and shipping summary
+├── checkout.php               Shipping form and order summary
+├── order_detail.php           Customer/admin order view
+├── account.php                Profile and order history
+├── login.php                  Sign in
+├── register.php               Sign up
+├── logout.php                 Session teardown
+├── contact.php                Inquiry form with optional attachment
+├── about.php                  About, gallery, map, address
+├── mechanics.php              Placeholder page
+├── terms.php                  Placeholder page
+├── actions/                   POST handlers: cart, order, review
+├── admin/                     Dashboard, products, orders, users, OOP demo
+│   └── includes/              Admin header and footer
+├── classes/                   BaseModel plus six models
+├── config/                    Config, PDO singleton, editable content
+├── includes/                  Public header/footer, card partial, helpers
+├── assets/
+│   ├── css/                   Tokens, shared styles, per-page styles
+│   ├── fonts/                 Fredoka and Nunito (self-hosted)
+│   ├── img/                   Logo, backgrounds, team portraits, icons
+│   └── js/main.js             Progressive enhancement
+├── docs/
+│   ├── DESIGN.md              Design tokens and Figma-to-CSS rules
+│   ├── figma/                 Mobile reference exports
+│   └── presentation/          Exported deck screenshot
+├── ppt/                       Final OOP presentation (.pptx)
+├── sql/popcabdb.sql           Schema and seed data
+├── uploads/products/          Product photos (writable)
+├── storage/inquiries/         Contact attachments (created at runtime)
+├── AGENTS.md                  Design-to-code rules for agents
+└── README.md                  This file
 ```
 
----
+## Getting Started
 
-## 4. How a page request works (read this once)
+### Prerequisites
 
-Every page follows the same recipe. Understanding it makes the whole project easy to read.
+- PHP 8.0 or newer with the `pdo_mysql` extension.
+- MySQL 5.7+ or MariaDB 10.2+ (the dump was generated on MariaDB 10.4.32).
+- Apache 2.4 (XAMPP is the documented setup) or the PHP built-in server.
+- Write access to `uploads/products/` (exists) and to the project root so `storage/inquiries/` can be created.
+- A modern browser.
 
-```
-Browser asks for shop.php
-   │
-   ├─ 1. require config/config.php      → constants, session starts, database + helpers load
-   ├─ 2. require classes/Product.php    → pull in the class this page needs
-   ├─ 3. Read and clean the input       → $_GET / $_POST, trimmed, checked, typed
-   ├─ 4. Ask the class for data         → $productModel->getAll($filters, ...)
-   ├─ 5. Set $pageTitle, $bodyClass     → variables the header reads
-   ├─ 6. require includes/header.php    → prints <head>, nav, flash messages, opens <main>
-   ├─ 7. Print the page HTML            → PHP loops and ifs mixed with HTML
-   └─ 8. require includes/footer.php    → closes </main>, prints footer, loads main.js
-```
+### Installation
 
-**Pages that save data** (cart, login, register, contact, admin forms) use the *Post → Redirect → Get* pattern: handle the form, then `redirect()` so refreshing the page never re-submits it. The result is shown through a **flash message** (see glossary).
+1. **Put the project in the web root.** With XAMPP, the expected path is:
 
----
+   ```powershell
+   C:\xampp\htdocs\the-pop-cabin
+   ```
 
-## 5. Pages, who can see them, and what they do
+   Alternatively, clone it:
 
-### 5.1 Public and customer pages
+   ```powershell
+   git clone https://github.com/KharoPT/the-pop-cabin.git C:\xampp\htdocs\the-pop-cabin
+   ```
 
-| Page | File | Access | Main class | What it does |
-| --- | --- | --- | --- | --- |
-| Home | `index.php` | Everyone | `Product`, `Review` | Hero, "Exclusive Pops" carousel (products flagged *Show on home page*), category and franchise tile rows, "Words from buyers" (hidden until reviews exist), team section, call to action |
-| Shop | `shop.php` | Everyone | `Product` | Product grid (16 per page), filter by franchise / category / price, sort, search, pager |
-| Product | `product.php?slug=` | Everyone | `Product`, `Review` | Photo with zoom, price, rating, "Dibs!" button, details, reviews, "you may also like" |
-| Cart | `cart.php` | Everyone (guest or user) | `Cart` | Change quantities, remove items, shipping summary |
-| Checkout | `checkout.php` | Logged in | `Cart`, `User` | Shipping form prefilled from the profile |
-| Place order | `actions/place_order.php` | Logged in | `Order` | Creates the order inside a database transaction |
-| Order detail | `order_detail.php?order=` | Owner or admin | `Order` | Items, totals, shipping address, status |
-| Account | `account.php` | Logged in | `User`, `Order` | Edit profile, order history |
-| Login / Sign up | `login.php`, `register.php` | Guests | `User` | Auth forms, "remember me" (30 days), auto-login after sign-up |
-| Contact | `contact.php` | Everyone | `Inquiry` | Message form with optional file upload (PNG, JPG, JPEG, DOCX, TXT, MD up to 10 MB) |
-| About | `about.php` | Everyone | none | Text, photo gallery, map, address (all from `config/content.php`) |
-| Mechanics, Terms | `mechanics.php`, `terms.php` | Everyone | none | Empty shells saying "This page has not been published yet." |
+   The folder name must match `SITE_URL` in `config/config.php`.
 
-### 5.2 Admin pages (role must be `admin`)
+2. **Start Apache and MySQL** from the XAMPP Control Panel.
 
-| Page | File | CRUD role | What it does |
-| --- | --- | --- | --- |
-| Dashboard | `admin/index.php` | Read | Three stat cards (Products, Users, Out of stock) and two buttons (Add product, All products). No orders shown |
-| Products | `admin/products.php` | **R**ead | List with search, franchise filter, stock filter, pager (20 per page), Edit and Delete buttons |
-| Product form | `admin/product_form.php` | **C**reate / **U**pdate | Photo upload, name, franchise, edition, price, stock, categories (many-to-many), description, "Show on home page" (edit only) |
-| Delete product | `admin/product_delete.php` | **D**elete | Confirmation screen; blocked ("still referenced by existing records", hint: set stock to 0) when the database refuses the delete |
-| Users | `admin/users.php` | Read | List only; no edit, delete, or role change screens |
-| OOP demo | `admin/oop_demo.php` | Read | Lists User, Product, Review, Inquiry with parent class and `describe()` text; not linked in the menu |
+3. **Import the database.** In phpMyAdmin (`http://localhost/phpmyadmin`), open the **Import** tab at the server level, choose `sql/popcabdb.sql`, and run it. The dump creates `popcabdb` and switches to it. It seeds 30 products across 11 franchises, plus 3 collections, 2 accounts, 6 carts, and 1 review; there are no orders or inquiries.
 
-> **No admin orders screen.** Customers can still place orders (checkout, order detail, account history work), but no admin page lists or updates them: `Order::updateStatus()`, `getAllWithCounts()` and `getPending()` are unused. Confirm whether this is intended.
->
-> **Naming (Nov 16):** reservations are dropped (leader's decision). The record is an **order**; UI text says "Order" and "Cart". The product page keeps the four mechanic names (Dibs, Steal, Claim, Cabin Lock). Code comments in `Order.php` still say "reservation".
+   CLI alternative (run it through `cmd` so the `<` redirect works in PowerShell):
 
----
+   ```powershell
+   cmd /c "C:\xampp\mysql\bin\mysql.exe -u root < C:\xampp\htdocs\the-pop-cabin\sql\popcabdb.sql"
+   ```
 
-## 6. Database
+   If `popcabdb` already exists, the dump's `CREATE DATABASE popcabdb;` line fails. Back up the existing database first, then import into it with that line removed, or drop and recreate it.
 
-### 6.1 Tables (verified against the current dump)
+4. **Check the configuration** in `config/config.php` (see the table below). The defaults match a stock XAMPP install.
 
-The schema and seed data are in `sql/popcabdb.sql` (phpMyAdmin export generated Nov 16, 2026 at 18:32). Column names and declared nullability below are from that file; PK, unique keys and foreign keys are summarized in 6.2–6.3.
+5. **Open the site:**
 
-| Table | Purpose | Columns in `sql/popcabdb.sql` |
+   ```text
+   http://localhost/the-pop-cabin/
+   ```
+
+No `composer install`, `npm install`, or build step is required.
+
+### Configuration
+
+The app has no `.env` file. Settings are PHP constants in `config/config.php`:
+
+| Constant | Default | Purpose |
 | --- | --- | --- |
-| `users` | Accounts | `user_id`, `username`, `email`, `password_hash`, `full_name`, `phone`, `address`, `city`, `postal_code`, `country`, `user_role` (role defaults to `customer`; all columns are `NOT NULL`) |
-| `categories` | **Franchises** (Marvel, DC...). Named "categories" for historical reasons | `category_id`, `category_name`, `slug`, `description` (`NOT NULL`) |
-| `products` | The pops | `product_id`, `category_id`, `name`, `slug`, `description`, `price`, `stock_quantity`, `condition_grade` (nullable), `is_authenticated`, `is_featured`, `image_url`, `created_at` (nullable, defaults to current time), `updated_at`, `edition` (defaults to `Regular`; other columns are `NOT NULL`) |
-| `collections` | **Category pills** (Movies, Anime, Games) | `collection_id`, `collection_name`, `slug` |
-| `product_collections` | Junction: a product can be in several collections | `product_id`, `collection_id` |
-| `reviews` | Buyer reviews | `review_id`, `product_id`, `user_id`, `rating`, `comment`, `is_anonymous` (defaults to 0), `created_at` |
-| `inquiries` | Contact form messages | `inquiry_id`, `user_id` (nullable), `first_name`, `last_name`, `email`, `message`, `attachment_path` (nullable), `attachment_name` (nullable), `created_at` |
-| `carts` | One cart per browser or user | `cart_id`, `user_id`, `session_id`, `created_at` (`NOT NULL`; guest carts use `user_id = 0`) |
-| `cart_items` | Lines in a cart | `cart_item_id`, `cart_id`, `product_id`, `quantity`, `added_at` |
-| `orders` | Placed orders | `order_id`, `order_number`, `user_id`, `order_status` (nullable), `subtotal`, `shipping_fee`, `total_amount`, `shipping_name`, `shipping_address`, `shipping_city`, `shipping_postal_code`, `shipping_country`, `created_at` |
-| `order_items` | Lines in an order (a price snapshot) | `order_item_id`, `order_id`, `product_id`, `product_name`, `price`, `quantity` |
+| `SITE_URL` | `http://localhost/the-pop-cabin` | Base URL; must match the folder, with no trailing slash |
+| `DB_HOST` | `127.0.0.1` | Database host |
+| `DB_NAME` | `popcabdb` | Database name |
+| `DB_USER` | `root` | Database user |
+| `DB_PASS` | `''` | Database password (empty on a stock XAMPP) |
+| `SITE_CURRENCY_SYMBOL` | `₱` | Price symbol |
+| `FREE_SHIPPING_THRESHOLD` | `100` | Free shipping at or above this subtotal |
+| `FLAT_SHIPPING_FEE` | `15` | Flat shipping fee below the threshold |
+| `PRODUCTS_PER_PAGE` | `16` | Shop page size |
+| `ADMIN_PER_PAGE` | `20` | Admin page size |
+| `MAX_PRODUCT_IMAGE_MB` | `5` | Product image upload limit |
+| `MAX_CONTACT_FILE_MB` | `10` | Contact attachment limit |
 
-### 6.2 Relationships
+Other notes:
 
-These are the logical relationships used by the application. The dump only enforces the foreign keys listed in 6.3.
+- Timezone is `Asia/Manila` (`date_default_timezone_set`).
+- `display_errors` is `1` for development. Set it to `0` before a public demo or deployment.
+- `storage/inquiries/` is created automatically on the first contact attachment; ensure the parent directory is writable.
+- After schema or seed changes, export `popcabdb` and replace `sql/popcabdb.sql` so the dump stays current.
 
+### Run
+
+**XAMPP (Apache):**
+
+```text
+http://localhost/the-pop-cabin/
 ```
-categories (franchise) 1 ───< products >───< collections       (via product_collections, M:N)
-users      1 ───< orders 1 ───< order_items >─── 1 products
-users      1 ───< reviews >─── 1 products                      (UNIQUE: one review per user per product)
-users      1 ───< inquiries                                    (user_id optional)
-carts      1 ───< cart_items >─── 1 products
-users      1 ─── 0..1 carts   (guest carts use user_id = 0 plus a session token)
+
+Admin: `http://localhost/the-pop-cabin/admin/index.php` (requires an account with `user_role = 'admin'`).
+
+**PHP built-in server (testing only):**
+
+```powershell
+cd C:\xampp\htdocs\the-pop-cabin
+C:\xampp\php\php.exe -S localhost:8000
 ```
 
-Two design decisions worth knowing:
+Before starting it, set `SITE_URL` to `http://localhost:8000` in `config/config.php`. The built-in server does not read Apache `.htaccess`, but this app does not require URL rewriting.
 
-- **A product has exactly one franchise** (`products.category_id`) but **many categories** (junction table). The code comments call this out because the wireframes label the pills "Categories".
-- **`order_items` keeps its own copy of the product name and price**, so an old order stays correct even if the product later changes. Because `order_items` has a foreign key to `products`, a product that appears in any order **cannot be deleted** (the admin delete screen explains this).
+If the page says "Database connection failed", check `DB_HOST`, `DB_NAME`, `DB_USER`, and `DB_PASS`, and confirm `popcabdb` was imported. If CSS or links are missing, check `SITE_URL`.
 
+### Seeded accounts
 
-### 6.3 Dump findings (checked against `sql/popcabdb.sql`, generated Nov 16)
+The dump creates two accounts:
 
-- **Data:** 30 products (each with a photo in `uploads/products/`), 11 franchises in `categories` (ids 5-15), 3 collections (Movies, Anime, Games), 30 product-collection links, 1 user (the admin), 4 carts. No orders, reviews, or inquiries yet.
-- **Duplicate `CREATE DATABASE popcabdb;`** (lines 23 and 27, no `IF NOT EXISTS`): the import can fail at the second statement or when the database already exists. The dump itself still needs this corrected before it is a reliable repeatable import; this README records the issue and does not alter the SQL file.
-- **Foreign keys present:** `cart_items` (2), `orders` (1), `order_items` (2), `products` (1). **Missing:** `reviews`, `inquiries`, `product_collections`, `carts.user_id` (guests stored as 0).
-- **Naming in this dump:** `categories` holds franchises and `collections` holds category groups.
-- `order_items.product_name` / `price` are a deliberate price snapshot: be ready to explain it for 3NF.
-
----
-
-## 7. The OOP layer (`classes/`)
-
-Each class wraps one area of the database. Pages never write SQL directly; they call these methods. All six model classes extend the abstract `BaseModel`.
-
-| Class | Responsibility | Notable public methods |
+| Username | Email | Role |
 | --- | --- | --- |
-| `Database` (`config/database.php`) | One shared PDO connection (**Singleton**: constructor is private) | `getInstance()`, `getConnection()` |
-| `BaseModel` (`classes/BaseModel.php`) | **Abstract parent** of every model: holds the protected PDO connection, forces each child to name its table, shares two methods | abstract `table()`, `countAll()`, `describe()` |
-| `Product` | Listing, searching, filtering, sorting, pagination, featured and related items, create / update / delete, stock | `getAll()`, `countAll()`, `getBySlug()`, `getById()`, `getFeatured()`, `getRelated()`, `create()`, `update()`, `delete()` (transaction), `decrementStock()`, `setCollections()`, `uniqueSlug()` |
-| `Cart` | Guest and logged-in carts stored in the database; merges the guest cart into the user's cart at login | `addItem()`, `updateItem()`, `removeItem()`, `getItems()`, `getTotal()`, `getItemCount()`, `clear()` |
-| `Order` | Creates an order and its lines in **one transaction**, lowers stock, rolls everything back if any item is short | `create()`, `getByOrderNumber()`, `getItemsByOrderId()`, `getByUserId()`, `getAllWithCounts()`, `getPending()`, `countPending()`, `updateStatus()` |
-| `User` | Register, login, profile, username generation | `register()`, `login()`, `getById()`, `updateProfile()`, `generateUsername()`, `emailExists()`, `getAll()` |
-| `Review` | Reviews with anonymous display names and rating summary | `getByProduct()`, `summary()`, `getLatest()`, `create()`, `userHasReviewed()` |
-| `Inquiry` | Contact messages and safe attachment storage | `create()`, static `saveAttachment()`, constant `ALLOWED_EXTENSIONS` |
+| `admin` | `admin@gmail.com` | `admin` |
+| `customer` | `customer@gmail.com` | `customer` |
 
-### 7.1 OOP concepts: honest status (for the rubric)
+<!-- TODO: The dump stores only password hashes; no plaintext demo password is recorded in the repository. Add the demo password to the team handoff, or reset it locally before the presentation. -->
 
-The OOP rubric awards **7 pts (code) + 7 pts (documentation) + 6 pts (presentation)**. Since the Nov 17 commit "Biggest Changes" the code has a parent class, so inheritance, abstraction and polymorphism now exist.
+## Usage
 
-| Concept | Status | Evidence |
+1. **Browse the catalog.** Open `/shop.php`, type in the header search, or use **Filter & Sort** to choose a franchise, category, price range, and sort order. The grid shows 16 pops per page; out-of-stock cards keep their ribbon.
+2. **Open a pop.** Click a card to see the photo, stock, price, rating, description, and related pops. Use the zoom button for a larger image.
+3. **Add to cart.** On the product page, press **Add to Cart**. The AJAX call updates the cart badge and shows a toast; without JavaScript, the form posts normally. The cart caps quantities at available stock.
+4. **Check out.** Open `/cart.php`, adjust quantities, and press **Proceed to Checkout**. Checkout requires an account; shipping fields are prefilled from the profile. Press **Place Order** to create the order and decrement stock in one transaction.
+5. **Sign in or register.** `/login.php` and `/register.php`. Registration asks for first/last name, email, password, and terms agreement; the username is generated from the email. "Remember me" keeps the session cookie for 30 days.
+6. **Manage your account.** `/account.php` edits the profile and lists order history; `/order_detail.php?order=...` shows one order.
+7. **Send an inquiry.** `/contact.php` accepts a message and an optional attachment up to 10 MB; the file is stored in `storage/inquiries/` and the message in `inquiries`.
+8. **Admin.** Sign in with an admin account, open `/admin/index.php`, then use **Products** to add/edit/delete, **Orders** to change status, and **Users** to view accounts. `admin/oop_demo.php` shows the OOP demo (not in the menu).
+
+## Screenshots / Demo
+
+![Mobile catalog](docs/presentation/mobile-catalog.png)
+
+*Mobile catalog (Figure 6 in the final deck). The deck's only raster image is this screenshot; there are no diagrams or charts to export.*
+
+- [View the presentation](ppt/The-Pop-Cabin-OOP-Final.pptx) (10 slides, with speaker notes)
+- Design reference frames: [Home](docs/figma/Home-Mobile.png), [Collection](docs/figma/Collection-Mobile.png), [Product](docs/figma/Product-Profile-Mobile.png), [Basket](docs/figma/Basket-Mobile.png); full set in [`docs/figma/`](docs/figma/).
+
+<!-- TODO: Add a short demo video or animated GIF and screenshots of the admin dashboard, orders, and checkout flow; the deck only includes the mobile catalog. -->
+
+## Testing
+
+There is no automated test suite or test runner in the repository (`composer.json`, `package.json`, and `phpunit.xml` are absent). All PHP files pass a syntax check with XAMPP PHP 8.2.12:
+
+```powershell
+Get-ChildItem -Recurse -Filter *.php | ForEach-Object { C:\xampp\php\php.exe -l $_.FullName }
+```
+
+The final deck documents these manual acceptance cases, all reported as **Pass**:
+
+| Test | Expected result | Result |
 | --- | --- | --- |
-| Encapsulation | **Present** | `protected PDO $db` in `BaseModel` (only model classes reach the connection); `Cart` hides `$cartId` behind `getCartId()` |
-| Inheritance | **Present** | `User`, `Product`, `Cart`, `Order`, `Review`, `Inquiry` all `extends BaseModel` and inherit `$db`, the constructor, `countAll()`, `describe()` |
-| Abstraction | **Present** | `abstract class BaseModel`; `abstract protected function table()` forces each child to name its table |
-| Polymorphism | **Present** | `describe()` is overridden by `Order`, `Product`, `User`; `Cart`, `Review`, `Inquiry` inherit the default. `Product::countAll(array $filters = [])` overrides the parent with an optional filter. `admin/oop_demo.php` calls `$model->describe()` on four models |
-| Singleton | **Present** | `Database::getInstance()` |
-| Exceptions / transactions | **Present** | `Order::create()` throws `RuntimeException` and rolls back; `Product::delete()` rolls back on failure |
-| Interface / namespaces / autoload | **Not yet** | Classes are loaded with `require_once`; optional extras |
+| Admin login | Dashboard opens | Pass |
+| Add product | Appears on catalog | Pass |
+| Edit product | Changes on catalog | Pass |
+| Delete product | Disappears from catalog | Pass |
+| Invalid price | Error, nothing saved | Pass |
+| Sort products | Sorted by price or name | Pass |
+| Filter products | Filtered by franchise or category | Pass |
 
-Defense tip: be ready to say where `describe()` and `countAll()` are used on the real site (the dashboard uses `countAll()`), not only in the demo page.
+The deck notes that the paper reports nine tests and lists seven on the slide. The "Pass" results are the paper's reported results, not a re-run of an automated suite.
 
----
+## Future Improvements
 
-## 8. Security features already in place
+The deck's conclusion and speaker notes point to this roadmap:
 
-| Feature | Where | Why it matters |
-| --- | --- | --- |
-| **Prepared statements** (PDO) | All `classes/*.php` | Blocks SQL injection. `LIMIT` values are cast to integers first |
-| **Output escaping** `e()` | Every page | Blocks cross-site scripting (XSS) |
-| **CSRF tokens** | Every POST form, checked by `verifyCsrfToken()` | Stops other sites from submitting forms for a logged-in user |
-| **Password hashing** | `User::register/login` | `password_hash` / `password_verify`; passwords limited to 8-72 characters (bcrypt ignores the rest) |
-| **Session hardening** | `config.php`, `login.php` | `httponly`, strict mode, `session_regenerate_id` at login/logout |
-| **Role gate** | `requireAdmin()`, `requireLogin()` | Admin pages are unreachable for customers and guests |
-| **Safe redirects** | `safeNextPath()` | `?next=` only accepts paths inside this site |
-| **Upload checks** | `saveProductImage()`, `Inquiry::saveAttachment()` | Checks real file type (not just the name), size limits, random file names; `.htaccess` blocks scripts in `uploads/` and all web access to `storage/` |
-| **Stock safety** | `Cart`, `add_to_cart.php`, `Order::create()` | The cart can never hold more than the stock; the order is re-checked at purchase time |
+- **Payment gateway:** checkout currently records an order without collecting payment.
+- **Order dashboard with status updates:** already implemented in `admin/orders.php`; the deck still lists it as future work.
+- **Scheduled promotions:** the current `is_featured` flag is stored but not rendered as a promotion on the home page.
+- **Email notifications:** no mail is sent for orders, inquiries, or password resets.
+- **Password reset:** the "Forgot Password?" link on `/login.php` is inactive.
+- **Persistent favorites:** hearts live in `localStorage` and do not follow the account across devices.
+- **Shipping integration:** shipping is a flat fee (`FLAT_SHIPPING_FEE`) or free at or above `FREE_SHIPPING_THRESHOLD`; there is no carrier or live-rate integration.
 
-**Before the final demo:** in `config/config.php`, set `display_errors` to `0` (the file says so itself). Error text on screen is hard to explain in front of a panel.
+Also visible in the code: admin user management is read-only, and there is no admin screen for `inquiries` or `reviews`.
 
----
+## Team / Credits
 
-## 9. Frontend guide (for the designer and design-to-code work)
+**The Pop Cabin** is the shop behind this project. This is the OOP final project for section **21-ITEN-02** (November 18, 2026). Course instructor: **Sir Roberth Lloren** (per the deck's speaker notes).
 
-### 9.1 Stylesheet structure (`assets/css/style.css`, 763 lines)
-
-One file, mobile-first, in this order:
-
-1. `:root` design tokens (colors, fonts, wrap width, radius, wood textures)
-2. Reset and base elements
-3. Buttons, "wooden signs" (the dark label bars), tags, chips, image placeholder
-4. Header, flash messages and toast, footer
-5. Home page sections
-6. Shop, product, contact, about, auth pages (the newer, wireframe-based pages)
-7. Form fields (shared)
-8. **"Pages kept from the original build":** cart, checkout, account, order detail, status pills
-9. Admin
-10. Wider screens: `min-width: 700px` and `1000px`, one `max-width: 520px` tweak, and a `prefers-reduced-motion` rule
-
-### 9.2 Tokens that exist today (`:root`)
-
-| Group | Tokens |
+| Name | Role |
 | --- | --- |
-| Palette | Old wireframe-pass tokens (`--birch`, `--walnut #3b2a1f`, `--ember`...), being replaced by the Figma palette. See `docs/DESIGN.md` section 3 and `tokens.css` |
-| Fonts | `--font-body` and `--font-display`, still Cabin and Zilla Slab (to become Nunito and Fredoka) |
-| Layout | `--wrap: 1100px`, `--radius: 6px` |
-| Textures | `--grain`, `--planks`, `--plank-dark`, `--log-wall` |
+| Abalos, Jamon Ray T. | Database Developer |
+| Caburnay, Rey Alexis R. | Leader, Full Stack |
+| DeGuzman, Chryswynne C. | Frontend Developer |
+| Estrada, Gian Ernest D. | Backend Developer |
 
-**Not tokenized yet** (hard-coded values scattered in the CSS): status-pill colors (blue, purple, green, red tints), the danger red `#9b2f1d`, the placeholder gray `#8d7a68`, shadows, all spacing, font sizes, border widths, and z-index values. There is no spacing or type scale.
+The deck's title slide lists the names; the roles come from the team cards in `index.php`.
 
-### 9.3 Two generations of markup (important)
+## Notes for Review: Source Discrepancies
 
-The site was built in two passes, so two class vocabularies coexist:
+The deck and the code disagree in these places, or the deck's claim is not backed by files in the repository. The code is treated as the source of truth for behavior; the deck remains the source for purpose, audience, and roadmap.
 
-| Generation | Pages | Typical classes |
+| # | Final deck | Current code |
 | --- | --- | --- |
-| **Newer** (follows the wireframes) | home, shop, product, contact, about, login, register, all admin pages | `.wrap`, `.sign`, `.btn-dark`, `.btn-outline`, `.pop-card`, `.field`, `.admin-*` |
-| **Legacy** (original build, restyled lightly) | cart, checkout, account, order detail | `.container`, `.page-header`, `.section`, `.btn-primary`, `.btn-ghost`, `.cart-*`, `.form-row` |
+| 1 | "No ... admin order screen yet" (slide 9) | `admin/orders.php` lists orders and updates status; it is linked in the admin menu. |
+| 2 | Admins "manage users" (slide 4) | `admin/users.php` is read-only (list, role pill, pagination). |
+| 3 | Sort by rating (slide 3) | `Product::getAll()` supports newest, price ascending/descending, and name; no rating sort. |
+| 4 | Filter by availability (slide 3) | Public `shop.php` has franchise, category, price, search, and sort; no stock filter. `admin/products.php` has one, and `Product` supports a `stock` filter internally. |
+| 5 | Visitors "view promotions" (slide 4) | Only the `is_featured` flag and admin toggle exist; `Product::getFeatured()` is not called by any page, so no promotion or featured section renders. |
+| 6 | "No payment, shipping ... yet" (slide 9) | No payment is collected, but cart, checkout, and order calculation use a flat ₱15 shipping fee, free at ₱100 or more. There is no carrier integration. |
+| 7 | Order dashboard with status updates is future work (slide 9 notes) | Already implemented in `admin/orders.php`. |
+| 8 | "Every test ... passed" (slide 8) | No automated tests or result artifacts are checked in; this README reports the deck's manual cases as reported, not re-run. |
 
-`.btn-primary` and `.btn-ghost` are aliases of `.btn-dark` and `.btn-outline` in the CSS, and `.container` shares a rule with `.wrap`. The legacy pages are the first candidates for redesign.
+Other code-level notes for the demo:
 
-### 9.4 JavaScript (`assets/js/main.js`, optional enhancement)
+- `mechanics.php` and `terms.php` are placeholders ("This page has not been published yet"); "Forgot Password?" and "Privacy Policy" are inactive links.
+- `product.php` shows Dibs, Steal, Claim, and Cabin Lock tabs, but they only relabel or disable the Add to Cart button; no reservation flow exists.
+- `inquiries` and `reviews` are saved but have no admin moderation or read screens.
+- Contact attachments are written to `storage/inquiries/`; no `.htaccess` deny rule exists for `storage/` or `uploads/` in this checkout (only `classes/.htaccess`). Add one before deploying to a public host.
+- At the time of writing, the deck is untracked in git (`ppt/`), so the presentation link will not exist in a fresh clone until it is added.
+- At the time of writing, the exported screenshot `docs/presentation/mobile-catalog.png` is also new; add it to git with this README.
+- No `LICENSE` file is present.
 
-Every feature is progressive: pages still work without JavaScript.
+### Assumptions
 
-- Hamburger menu (public) and admin menu, with Escape key and scrim
-- Dismissible admin banners
-- Carousels with dot pagers (home)
-- Favorites hearts, stored in the browser's `localStorage` only (**not** in the database)
-- "Dibs / Steal / Claim / Cabin Lock" tabs on the product page (only **Dibs** is live; the others are disabled)
-- Image zoom lightbox, contact-form dropzone label, admin photo preview
-- AJAX add-to-cart with a toast and live cart badge
+- The setup target is XAMPP on Windows at `C:\xampp\htdocs\the-pop-cabin`, with the default `root` / empty-password database account.
+- Seed counts come from `sql/popcabdb.sql`, not the live database; the live database can differ.
+- Team roles come from `index.php`; the deck's title slide lists the names only.
+- The deck reports PHP 8.5.12; the local XAMPP runtime is 8.2.12. The code only requires the PHP 8.0 features listed above.
 
-### 9.5 Which UI states exist today
-
-This table is the design checklist for the CRUD and operations pages. **Empty / invalid / success** are the states the designer asked about.
-
-| Screen | Empty | Invalid / error | Success | Other states |
-| --- | --- | --- | --- | --- |
-| Admin products | "No products yet. Add your first one above." / "No products match your search." | n/a | Green banner "X was added / updated / deleted." | Stock pill: normal, low (2 or fewer), out (0) |
-| Admin product form | n/a | Red banner list: name, franchise, price above 0, description length, photo type/size, "photo larger than server allows", expired session, "no franchises yet" | Redirect to list with banner | Add vs Edit titles; "Show on home page" switch only on Edit |
-| Admin delete | n/a | Expired-session banner | Redirect to list with banner | **Confirm** state and **Blocked** state ("was not deleted: still referenced by existing records", hint: set stock to 0) |
-| Admin users | "No users yet." | n/a | n/a | Read-only list, role pill |
-| Admin dashboard | None (three stat cards always shown) | n/a | n/a | Products, Users, Out of stock |
-| Shop | "No pops match your search or filters." + reset button | n/a | n/a | Out-of-stock ribbon, disabled prev/next, filter panel open/closed |
-| Product | "No reviews yet" / "No details have been added" / no-photo placeholder | Review form reopens with a banner; **404 "Pop not found"** | "Thanks! Your review has been posted." Toast "added to your cart" | Out of stock (disabled button + note), "You reviewed this", login required |
-| Cart | "Your cart is empty." + Start Shopping | "Only N available", "Sold out", quantities capped banner | "Item removed", "Cart updated" | Checkout button disabled while quantities are invalid; free-shipping hint |
-| Checkout | Redirects to cart if empty | "Please complete all shipping fields", stock rollback message | Redirect to order detail | Requires login |
-| Order detail | n/a | **404 "Order not found"** | "Thank you! Your order ... has been placed." | Five status pills |
-| Account | "You haven't placed any orders yet." | "Full name cannot be empty." | "Your profile has been updated." | |
-| Login / Sign up | n/a | Banner list (credentials, email format, password length/match, terms) | Welcome flash | |
-| Contact | n/a | Banner list (missing fields, bad email, bad file type, file too large) | "Thank you! Your message has been sent." | Dropzone with file name |
-
-**Gap to design for:** invalid input is only shown as a **banner at the top**. There is **no per-field error styling** (no red border, no message under the field, no `aria-invalid`), and `contact.php` uses `novalidate`, so the browser's own tooltips are off. Forms do keep what the user typed (sticky values), except passwords.
-
----
-
-## 10. Known gaps and loose ends (re-checked Nov 17)
-
-Nothing here is broken unless marked; these are things to decide or finish.
-
-| # | Item | Why it matters |
-| --- | --- | --- |
-| 1 | **Import risk:** the dump has `CREATE DATABASE` twice; foreign keys are absent on `reviews`, `inquiries`, `product_collections`, and `carts.user_id` | Repeatable import and DB project's logical/physical consistency |
-| 2 | Orders are numbered `RR-...` (`Order.php` line 26), shown on customer screens; **no admin orders screen** | Leftover prefix; orders cannot be seen or updated by an admin |
-| 3 | `display_errors` is on (`config/config.php`) | Turn off before the demo |
-| 4 | Shipping: free over 100, flat fee 15 (in ₱) | Placeholder numbers; confirm with the client or remove |
-| 5 | Inquiries are saved but **no admin screen reads them**; Admin Users is read-only; no review moderation | Contact feature is a dead end for the admin |
-| 6 | Checkout, account and order detail still use the legacy look (the cart page is redesigned) | Rest of the customer area not redesigned yet |
-| 7 | `mechanics.php`, `terms.php` are shells; "Forgot Password" and "Privacy Policy" inactive (`.is-pending`); the Steal / Claim / Cabin Lock pills only grey the Add to Cart button | Visible links or controls that do nothing yet |
-| 8 | Favorites live in `localStorage` only | Lost on another device or after clearing the browser |
-| 9 | OOP: no interface or namespaces (optional); `describe()` is mostly shown in `admin/oop_demo.php` | See 7.1 |
-| 10 | Fonts come from Google Fonts (needs internet, two files); no `assets/fonts/`, `tokens.css`, or `docs/` yet | Demo must not depend on Wi-Fi |
-| 11 | Leftovers: `admin/text.md`, code comments saying "reservation" (`Order.php`, `main.js`); from the old list and not re-checked: `conditionOptions()` in `functions.php`, `Order::getAll()`, `condition_grade` / `is_authenticated` columns | Cleanup for the audit |
-| 12 | Placeholders in `config/content.php`: 4 team cards ("Team member"), social URLs, About text/images/map, footer trademark line | Replace with real content |
-| 13 | `categories` holds franchises and `collections` holds categories | Confusing names; rename planned after Wednesday |
-
----
-
-## 11. Conventions for contributing
-
-- **Never write SQL in a page.** Add a method to the matching class in `classes/`.
-- **Always escape output** with `e()` and **always prepare statements**.
-- **Every POST form** needs `<input type="hidden" name="csrf_token" ...>` and a `verifyCsrfToken()` check.
-- **After saving, redirect** and show the result with `setFlash('success' | 'error', '...')`.
-- **Site-editable text** goes in `config/content.php`, not in templates.
-- **Colors and sizes** should come from `:root` variables, not new hex codes.
-- **Commit small and often** with the command line; one change per commit; do not commit real passwords or uploaded customer files.
-
----
-
-## 12. Glossary (plain-English)
-
-| Term | Meaning |
-| --- | --- |
-| **OOP** | Object-Oriented Programming: organizing code into *classes* (blueprints) and *objects* (things made from them) |
-| **CRUD** | **C**reate, **R**ead, **U**pdate, **D**elete: the four basic things you do with stored records |
-| **PDO** | PHP's standard, safe way to talk to a database |
-| **Prepared statement** | A SQL query where values are sent separately (`?`), so user input can never change the query itself |
-| **Singleton** | A class designed so only one object of it ever exists (here: one database connection) |
-| **Session** | Server-side memory about one visitor (who is logged in, their cart token), tied to a cookie |
-| **CSRF** | A trick where another website makes your browser submit a form to this site; the hidden token stops it |
-| **XSS** | Injecting script through text shown on a page; escaping output stops it |
-| **Flash message** | A one-time message saved before a redirect and shown on the next page (success or error banner) |
-| **Slug** | A URL-friendly name, like `cosmic-hulk` |
-| **Transaction** | A group of database changes that all succeed or all get undone |
-| **Junction table** | A middle table that links two tables in a many-to-many relationship (`product_collections`) |
-| **Migration** | A SQL file that changes an existing database step by step |
-| **Progressive enhancement** | The page works without JavaScript; JavaScript only makes it nicer |
-| **Design tokens** | Named values (colors, spacing, fonts) defined once and reused everywhere |
-
-
+<!-- TODO: Add a LICENSE file and confirm the license with the client and team. -->
+<!-- TODO: Add the demo password or a password-reset step to the team handoff; the SQL dump stores only hashes. -->
