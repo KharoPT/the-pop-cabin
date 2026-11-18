@@ -186,6 +186,67 @@
 .page-home .dev-name { margin: 0; color: var(--color-text-on-dark); font: 700 10px/12px var(--font-family-body); }
 .page-home .dev-role { margin: 0; color: rgba(251, 247, 238, .5); font: 300 8px/16px var(--font-family-body); }
 
+/* Call to action (between Meet the Devs and the footer) */
+.home-cta-card {
+  position: relative;
+  display: grid; gap: 28px; padding: 32px 24px;
+  border-radius: var(--radius-xl); color: var(--color-text-on-dark);
+  background:
+    radial-gradient(120% 130% at 100% 0%, rgba(217, 164, 65, .2), transparent 62%),
+    var(--color-bg-inverse);
+  box-shadow: 0 18px 40px -14px rgba(36, 24, 18, .55);
+}
+/* Ticket notches, matching the rounded card language of the rest of the page. */
+.home-cta-card::before, .home-cta-card::after {
+  content: ""; position: absolute; top: 50%; width: 22px; height: 22px;
+  border-radius: 50%; background: var(--color-bg-page); transform: translateY(-50%);
+  pointer-events: none;
+}
+.home-cta-card::before { left: -11px; }
+.home-cta-card::after { right: -11px; }
+.home-cta-kicker {
+  display: flex; align-items: center; gap: 10px; margin: 0 0 12px;
+  color: var(--color-text-highlight-on-dark);
+  font: 700 11px/16px var(--font-family-body); letter-spacing: .14em; text-transform: uppercase;
+}
+.home-cta-kicker::before { content: ""; width: 18px; height: 2px; border-radius: 2px; background: currentColor; }
+.home-cta-title {
+  margin: 0; max-width: 18ch; color: var(--color-text-on-dark);
+  font: 600 32px/36px var(--font-family-heading); letter-spacing: -.01em;
+  text-wrap: balance;
+}
+.home-cta-text {
+  margin: 16px 0 0; max-width: 46ch; color: rgba(251, 247, 238, .82);
+  font: 400 14px/22px var(--font-family-body);
+}
+.home-cta-actions { display: flex; flex-direction: column; align-items: stretch; gap: 14px; margin-top: 24px; }
+.home-cta-btn {
+  display: inline-flex; align-items: center; justify-content: center;
+  min-height: 54px; padding: 0 28px; border-radius: var(--radius-pill);
+  background: var(--color-highlight-default); color: var(--color-text-on-highlight);
+  font: 600 17px/24px var(--font-family-heading); text-decoration: none;
+  box-shadow: 0 10px 22px -8px rgba(191, 138, 43, .55);
+  transition: background .15s, transform .1s;
+}
+.home-cta-btn:hover { background: var(--color-highlight-hover); color: var(--color-text-on-highlight); }
+.home-cta-btn:active { transform: translateY(1px); }
+.home-cta-btn:focus-visible { outline: 3px solid var(--color-text-on-dark); outline-offset: 3px; }
+.home-cta-alt {
+  color: rgba(251, 247, 238, .85); font: 600 13px/18px var(--font-family-body);
+  text-align: center; text-decoration: underline; text-underline-offset: .2em;
+}
+.home-cta-alt:hover { color: var(--color-text-highlight-on-dark); }
+.home-cta-alt:focus-visible { outline: 2px solid var(--color-text-on-dark); outline-offset: 3px; border-radius: 4px; }
+.home-cta-perks {
+  list-style: none; margin: 0; padding: 24px 0 0;
+  display: grid; gap: 14px; border-top: 1px dashed rgba(251, 247, 238, .28);
+}
+.home-cta-perk {
+  display: flex; align-items: center; gap: 12px;
+  color: rgba(251, 247, 238, .86); font: 600 13px/18px var(--font-family-body);
+}
+.home-cta-perk svg { flex: none; color: var(--color-text-highlight-on-dark); }
+
 @media (min-width: 700px) {
   .page-home main { max-width: 1200px; margin: calc(-1 * var(--site-header-h, 80px)) auto 0; padding: 24px 32px 0; gap: 64px; }
 
@@ -233,6 +294,18 @@
   .page-home .dev-avatar { width: 52px; height: 52px; }
   .page-home .dev-name { font-size: 12px; line-height: 15px; }
   .page-home .dev-role { font-size: 10px; line-height: 16px; }
+
+  /* CTA: copy left, benefits right */
+  .home-cta-card { grid-template-columns: minmax(0, 1fr) 210px; align-items: center; gap: 36px; padding: 40px; }
+  .home-cta-title { font-size: 40px; line-height: 44px; }
+  .home-cta-text { font-size: 16px; line-height: 26px; }
+  .home-cta-actions { flex-direction: row; flex-wrap: wrap; align-items: center; gap: 20px; }
+  .home-cta-alt { text-align: left; }
+  .home-cta-perks {
+    padding: 4px 0 4px 40px; border-top: 0;
+    border-left: 1px dashed rgba(251, 247, 238, .28); align-content: center;
+  }
+  .home-cta-perk { font-size: 14px; line-height: 20px; }
 }
 
 @media (min-width: 1000px) {
@@ -253,6 +326,11 @@
   .page-home .dev-avatar { width: 56px; height: 56px; }
   .page-home .dev-name { font-size: 13px; line-height: 16px; }
   .page-home .dev-role { font-size: 11px; line-height: 16px; }
+
+  /* CTA: wider card, bigger headline */
+  .home-cta-card { grid-template-columns: minmax(0, 1fr) 280px; gap: 64px; padding: 56px 64px; }
+  .home-cta-title { font-size: 52px; line-height: 56px; }
+  .home-cta-text { font-size: 17px; line-height: 28px; }
 }
 
 @media (min-width: 1200px) {

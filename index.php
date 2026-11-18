@@ -105,4 +105,41 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
+<?php $isMember = isLoggedIn(); ?>
+<!-- Call to action: the last nudge before the footer -->
+<section class="home-cta" aria-labelledby="cta-title">
+    <div class="home-cta-card">
+        <div class="home-cta-copy">
+            <p class="home-cta-kicker"><?php echo $isMember ? 'Welcome back' : 'Join the cabin'; ?></p>
+            <h2 class="home-cta-title" id="cta-title"><?php echo $isMember ? 'Ready for Your Next Pop?' : 'Ready to Order Your Pop?'; ?></h2>
+            <p class="home-cta-text"><?php echo $isMember
+                ? 'Your cabin is open. Pick up where you left off, or check on an order.'
+                : 'Create an account to check out faster, follow your orders, and keep your details ready for the next drop.'; ?></p>
+            <div class="home-cta-actions">
+                <?php if ($isMember): ?>
+                    <a class="home-cta-btn" href="<?php echo SITE_URL; ?>/account.php">Go to My Account</a>
+                    <a class="home-cta-alt" href="<?php echo SITE_URL; ?>/shop.php">Browse the collection</a>
+                <?php else: ?>
+                    <a class="home-cta-btn" href="<?php echo SITE_URL; ?>/register.php">Create an Account</a>
+                    <a class="home-cta-alt" href="<?php echo SITE_URL; ?>/login.php">Already have an account? Sign in</a>
+                <?php endif; ?>
+            </div>
+        </div>
+        <ul class="home-cta-perks" aria-label="Account benefits">
+            <li class="home-cta-perk">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.4 2.6 2.6L16.4 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Checkout faster
+            </li>
+            <li class="home-cta-perk">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.4 2.6 2.6L16.4 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Track every order
+            </li>
+            <li class="home-cta-perk">
+                <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="m8 12.4 2.6 2.6L16.4 9" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                Keep details ready
+            </li>
+        </ul>
+    </div>
+</section>
+
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
