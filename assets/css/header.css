@@ -135,7 +135,7 @@
 .site-menu li a:hover { background: var(--color-bg-surface-alt); color: var(--color-text-primary); }
 .site-menu li a[aria-current="page"] { background: var(--color-highlight-subtle); border-left: 0; }
 
-/* Cart count shown next to the Cart link in the menu sheet. */
+/* Cart count shown on the header cart button. */
 .cart-badge {
   display: inline-grid; place-items: center; min-width: 22px; height: 22px; padding: 0 6px; border-radius: 999px;
   background: var(--ember); color: #fff; font-size: .78rem; font-weight: 700;
