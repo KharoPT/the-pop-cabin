@@ -30,11 +30,15 @@
   }
 
   // ---------- Shop filter panel: dismiss from outside ----------
-  document.addEventListener('click', function (e) {
+  // pointerdown in the capture phase closes even when a target stops the click
+  // event; click is kept as a fallback for browsers without pointer events.
+  function closeFilterPanels(target) {
     $$('details.filter-panel[open]').forEach(function (panel) {
-      if (!panel.contains(e.target)) panel.open = false;
+      if (!panel.contains(target)) panel.open = false;
     });
-  });
+  }
+  document.addEventListener('pointerdown', function (e) { closeFilterPanels(e.target); }, true);
+  document.addEventListener('click', function (e) { closeFilterPanels(e.target); });
   document.addEventListener('keydown', function (e) {
     if (e.key !== 'Escape') return;
     $$('details.filter-panel[open]').forEach(function (panel) { panel.open = false; });
