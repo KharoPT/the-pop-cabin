@@ -44,7 +44,7 @@ a.social-link:hover { color: var(--color-text-highlight-on-dark); }
 .ph-flag { display: none; }
 
 @media (min-width: 700px) {
-  .site-footer { width: calc(100% - 64px); padding: 67px 48px 40px; }
+  .site-footer { width: calc(100% - 32px); padding: 67px 48px 40px; }
   .footer-wordmark span { font-size: 14px; line-height: 14px; }
   .footer-wordmark strong { font-size: 24px; }
   .footer-logo img { width: 44px; height: 44px; }
@@ -56,7 +56,7 @@ a.social-link:hover { color: var(--color-text-highlight-on-dark); }
 }
 
 @media (min-width: 1000px) {
-  .site-footer { width: calc(100% - 80px); max-width: 1120px; padding: 80px 64px 48px; border-radius: 16px 16px 0 0; }
+  .site-footer { width: calc(100% - 48px); max-width: 1152px; padding: 80px 64px 48px; border-radius: 16px 16px 0 0; }
   .footer-inner { display: grid; grid-template-columns: 1fr 2.4fr; grid-template-areas: "brand cols" "legal legal"; column-gap: 3rem; }
   .footer-brand { grid-area: brand; }
   .footer-cols { grid-area: cols; flex-direction: row; gap: 32px; margin-top: 0; }
