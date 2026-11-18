@@ -5,6 +5,9 @@
    171x54 / 172x48 buttons, 290x309 category cards, 167x137 dev cards,
    82 gap into the 358x617 footer.
    ========================================================================== */
+/* The full-bleed team art is 100vw wide; clip the tiny scrollbar-width overshoot
+   on the root so the page never scrolls sideways. */
+html { overflow-x: hidden; }
 .page-home { background: var(--color-bg-page); }
 .page-home main {
   display: flex; flex-direction: column; gap: 48px;
@@ -42,12 +45,16 @@
   font: 600 26px/32px var(--font-family-heading);
 }
 .page-home .hero-title {
-  margin: 4px 0 0; padding: 0; border: 0; box-shadow: none; text-align: left;
+  margin: 4px 0 0; padding: 0 0 .18em; border: 0; box-shadow: none; text-align: left;
   font: 600 min(64px, 16.4vw)/min(44px, 11.3vw) var(--font-family-heading); letter-spacing: -0.01em;
   background: linear-gradient(180deg, #FBF7EE 26%, #96684D 82%);
   -webkit-background-clip: text; background-clip: text;
   -webkit-text-fill-color: transparent; color: transparent;
   text-shadow: none;
+  /* The line box is shorter than the type on purpose; this padding gives the
+     gradient-clipped glyphs room at the bottom and the negative margin keeps
+     the hero spacing unchanged. */
+  margin-bottom: -.18em;
 }
 .page-home .hero-desc {
   max-width: none; margin: 40px 0 0; color: #fff;
@@ -98,6 +105,7 @@
 .page-home .btn-team:hover { background: var(--color-bg-surface-alt); color: var(--color-text-primary); }
 .page-home .overview-art {
   display: block; width: 100%; height: auto; max-width: 358px; margin-top: 32px;
+  padding: 8px; border-radius: 12px; background: var(--color-bg-surface);
   box-shadow: 0 4px 10px rgba(0, 0, 0, .4); mix-blend-mode: darken;
 }
 
@@ -156,9 +164,9 @@
 /* Meet the Devs */
 .page-home .team-band { position: relative; margin: 0; padding: 0; overflow: visible; background: none; }
 .page-home .team-bg {
-  position: absolute; top: -21px; left: -16px; z-index: 0;
-  width: calc(100% + 32px); height: calc(100% + 47px);
-  max-width: none; object-fit: cover;
+  position: absolute; top: -21px; left: 50%; z-index: 0;
+  width: 100vw; height: calc(100% + 47px);
+  max-width: none; object-fit: cover; transform: translateX(-50%);
 }
 .page-home .team-title {
   position: relative; z-index: 1; margin: 0 0 24px; text-align: center;
@@ -285,7 +293,7 @@
 
   /* Devs */
   .page-home .team-title { font-size: 32px; line-height: 40px; margin-bottom: 28px; }
-  .page-home .team-bg { top: -28px; bottom: -32px; left: -32px; width: calc(100% + 64px); height: calc(100% + 60px); }
+  .page-home .team-bg { top: -28px; left: 50%; width: 100vw; height: calc(100% + 60px); }
   .page-home .dev-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 24px; }
   .page-home .dev-card { height: auto; min-height: 170px; padding: 22px 16px; }
   .page-home .dev-quote { font-size: 13px; line-height: 18px; }
