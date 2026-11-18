@@ -56,11 +56,6 @@ $menuLinks = [
                 <?php foreach ($menuLinks as [$file, $label]): ?>
                     <li><a href="<?php echo SITE_URL . '/' . $file; ?>" <?php echo $currentPage === $file ? 'aria-current="page"' : ''; ?>><?php echo e($label); ?></a></li>
                 <?php endforeach; ?>
-                <li>
-                    <a href="<?php echo SITE_URL; ?>/cart.php" <?php echo $currentPage === 'cart.php' ? 'aria-current="page"' : ''; ?>>Cart
-                        <span class="cart-badge" style="<?php echo $cartCountForHeader > 0 ? '' : 'display:none;'; ?>"><?php echo (int) $cartCountForHeader; ?></span>
-                    </a>
-                </li>
             </ul>
         </nav>
 
@@ -70,11 +65,33 @@ $menuLinks = [
             <button type="submit" class="sr-only">Search</button>
         </form>
 
-        <?php if (isLoggedIn()): ?>
-            <a href="<?php echo SITE_URL; ?>/account.php" class="login-btn">Account</a>
-        <?php else: ?>
-            <a href="<?php echo SITE_URL; ?>/login.php" class="login-btn">Sign In</a>
-        <?php endif; ?>
+        <div class="header-actions">
+            <a class="header-cart" href="<?php echo SITE_URL; ?>/cart.php" <?php echo $currentPage === 'cart.php' ? 'aria-current="page"' : ''; ?>>
+                <img src="<?php echo assetUrl('img/icon-cart.svg'); ?>" alt="" width="20" height="20">
+                <span class="header-cart-label">Cart</span>
+                <span class="cart-badge" style="<?php echo $cartCountForHeader > 0 ? '' : 'display:none;'; ?>"><?php echo (int) $cartCountForHeader; ?></span>
+            </a>
+
+            <?php if (isLoggedIn()): ?>
+                <details class="account-menu">
+                    <summary class="login-btn account-trigger">
+                        <span>Account</span>
+                        <svg class="account-chevron" width="10" height="7" viewBox="0 0 10 7" fill="none" aria-hidden="true" focusable="false">
+                            <path d="M1 1.5 5 5.5l4-4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                    </summary>
+                    <div class="account-menu-panel">
+                        <a href="<?php echo SITE_URL; ?>/account.php" <?php echo $currentPage === 'account.php' ? 'aria-current="page"' : ''; ?>>Account Details</a>
+                        <?php if (isAdmin()): ?>
+                            <a href="<?php echo SITE_URL; ?>/admin/index.php">Admin Panel</a>
+                        <?php endif; ?>
+                        <a class="account-menu-signout" href="<?php echo SITE_URL; ?>/logout.php">Sign Out</a>
+                    </div>
+                </details>
+            <?php else: ?>
+                <a href="<?php echo SITE_URL; ?>/login.php" class="login-btn">Sign In</a>
+            <?php endif; ?>
+        </div>
     </div>
 
     <nav class="site-menu" id="site-menu" aria-label="Main menu" hidden>
@@ -90,11 +107,11 @@ $menuLinks = [
                 </a>
             </li>
             <?php if (isLoggedIn()): ?>
-                <li><a href="<?php echo SITE_URL; ?>/account.php">My Account</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/account.php">Account Details</a></li>
                 <?php if (isAdmin()): ?>
                     <li><a href="<?php echo SITE_URL; ?>/admin/index.php">Admin Panel</a></li>
                 <?php endif; ?>
-                <li><a href="<?php echo SITE_URL; ?>/logout.php">Log out</a></li>
+                <li><a href="<?php echo SITE_URL; ?>/logout.php">Sign Out</a></li>
             <?php else: ?>
                 <li><a href="<?php echo SITE_URL; ?>/login.php">Login</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/register.php">Sign Up</a></li>

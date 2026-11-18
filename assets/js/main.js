@@ -29,6 +29,59 @@
     });
   }
 
+  // ---------- Account dropdown ----------
+  // The markup is a <details>, so click and keyboard work without JS. Pointer
+  // devices also get hover open/close, which is the primary desktop affordance.
+  var accountMenu = $('.account-menu');
+  if (accountMenu) {
+    var accountTrigger = $('summary', accountMenu);
+    var accountHoverOpened = false;
+    var accountCloseTimer = null;
+    var pointerHovers = window.matchMedia && window.matchMedia('(hover: hover)').matches;
+
+    function closeAccountMenu() {
+      clearTimeout(accountCloseTimer);
+      accountHoverOpened = false;
+      accountMenu.open = false;
+    }
+
+    if (pointerHovers) {
+      accountMenu.addEventListener('mouseenter', function () {
+        clearTimeout(accountCloseTimer);
+        if (!accountMenu.open) {
+          accountMenu.open = true;
+          accountHoverOpened = true;
+        }
+      });
+      accountMenu.addEventListener('mouseleave', function () {
+        clearTimeout(accountCloseTimer);
+        accountCloseTimer = setTimeout(function () {
+          if (!accountMenu.contains(document.activeElement)) closeAccountMenu();
+        }, 140);
+      });
+      // A click that follows hover-open should leave the menu open, not toggle it shut.
+      accountTrigger.addEventListener('click', function (e) {
+        if (accountHoverOpened && accountMenu.open) {
+          e.preventDefault();
+          accountHoverOpened = false;
+        }
+      });
+    }
+
+    accountMenu.addEventListener('focusout', function (e) {
+      if (!accountMenu.contains(e.relatedTarget)) closeAccountMenu();
+    });
+    document.addEventListener('click', function (e) {
+      if (accountMenu.open && !accountMenu.contains(e.target)) closeAccountMenu();
+    });
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape' && accountMenu.open) {
+        closeAccountMenu();
+        accountTrigger.focus();
+      }
+    });
+  }
+
   // ---------- Shop filter panel: dismiss from outside ----------
   // pointerdown in the capture phase closes even when a target stops the click
   // event; click is kept as a fallback for browsers without pointer events.
