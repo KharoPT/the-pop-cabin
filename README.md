@@ -59,7 +59,7 @@ Abalos, Caburnay, De Guzman, Estrada
 ```
 the-pop-cabin/
 ├── index.php  shop.php  product.php         Public storefront pages
-├── cart.php  checkout.php                   Cart and checkout (UI word: Basket)
+├── cart.php  checkout.php                   Cart and checkout (UI word: Cart)
 ├── login.php  register.php  logout.php      Authentication
 ├── account.php  order_detail.php            Customer area
 ├── contact.php  about.php                   Information pages
@@ -135,7 +135,7 @@ Browser asks for shop.php
 
 > **No admin orders screen.** Customers can still place orders (checkout, order detail, account history work), but no admin page lists or updates them: `Order::updateStatus()`, `getAllWithCounts()` and `getPending()` are unused. Confirm whether this is intended.
 >
-> **Naming (Nov 16):** reservations are dropped (leader's decision). The record is an **order**; UI text says "Order" and "Basket". The "Dibs!" label stays. Code comments in `Order.php` and `main.js` still say "reservation".
+> **Naming (Nov 16):** reservations are dropped (leader's decision). The record is an **order**; UI text says "Order" and "Cart". The product page keeps the four mechanic names (Dibs, Steal, Claim, Cabin Lock). Code comments in `Order.php` still say "reservation".
 
 ---
 
@@ -325,8 +325,8 @@ Nothing here is broken unless marked; these are things to decide or finish.
 | 3 | `display_errors` is on (`config/config.php`) | Turn off before the demo |
 | 4 | Shipping: free over 100, flat fee 15 (in ₱) | Placeholder numbers; confirm with the client or remove |
 | 5 | Inquiries are saved but **no admin screen reads them**; Admin Users is read-only; no review moderation | Contact feature is a dead end for the admin |
-| 6 | Cart, checkout, account, order detail use the legacy look; UI still says "Cart" (`includes/header.php`, `cart.php`) | Inconsistent with the redesign; wording should be "Basket" |
-| 7 | `mechanics.php`, `terms.php` are shells; "Forgot Password" and "Privacy Policy" inactive (`.is-pending`); "Steal / Claim / Cabin Lock" tabs disabled | Visible links or tabs that do nothing |
+| 6 | Checkout, account and order detail still use the legacy look (the cart page is redesigned) | Rest of the customer area not redesigned yet |
+| 7 | `mechanics.php`, `terms.php` are shells; "Forgot Password" and "Privacy Policy" inactive (`.is-pending`); the Steal / Claim / Cabin Lock pills only grey the Add to Cart button | Visible links or controls that do nothing yet |
 | 8 | Favorites live in `localStorage` only | Lost on another device or after clearing the browser |
 | 9 | OOP: no interface or namespaces (optional); `describe()` is mostly shown in `admin/oop_demo.php` | See 7.1 |
 | 10 | Fonts come from Google Fonts (needs internet, two files); no `assets/fonts/`, `tokens.css`, or `docs/` yet | Demo must not depend on Wi-Fi |
