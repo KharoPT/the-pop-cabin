@@ -105,4 +105,17 @@ require_once __DIR__ . '/includes/header.php';
     </div>
 </section>
 
+<!-- Call to action: the last nudge before the footer -->
+<section class="home-cta" aria-labelledby="cta-title">
+    <div class="home-cta-card">
+        <p class="home-cta-status"><span class="home-cta-status-dot" aria-hidden="true"></span>Online 24/7</p>
+        <h2 class="home-cta-title" id="cta-title">Ready to Order Your Pop?</h2>
+        <p class="home-cta-text">Create an account to check out faster, follow your orders, and keep your details ready for the next drop.</p>
+        <div class="home-cta-actions">
+            <a class="home-cta-btn" href="<?php echo SITE_URL; ?>/register.php">Create an Account</a>
+            <a class="home-cta-alt" href="<?php echo SITE_URL; ?>/shop.php">Browse the collection</a>
+        </div>
+    </div>
+</section>
+
 <?php require_once __DIR__ . '/includes/footer.php'; ?>
