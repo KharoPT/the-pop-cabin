@@ -31,16 +31,17 @@
 .logo-link img { width: 32px; height: 32px; border-radius: 0; box-shadow: none; }
 /* Inline navigation, desktop only; the mobile/tablet menu button drives .site-menu. */
 .header-nav { display: none; }
-.search-form { flex: 1 1 auto; min-width: 0; margin-left: 32px; }
+.search-form { flex: 1 1 auto; min-width: 0; margin-left: 12px; }
 .search-form input {
-  width: 100%; min-width: 0; height: 24px; padding: 0 24px 0 30px;
+  width: 100%; min-width: 0; height: 24px; padding: 0 12px 0 30px;
   font: 600 10px/16px var(--font-family-body); color: #fff;
   background-color: rgba(247, 240, 225, .2); border: 0; border-radius: 100px;
   background-image: url("../img/icon-search.svg"); background-repeat: no-repeat;
   background-position: 8px center; background-size: 12px;
+  text-overflow: ellipsis;
   box-shadow: 0 1px 0 rgba(255, 255, 255, .25), inset 0 1px 2px rgba(0, 0, 0, .15);
 }
-.search-form input::placeholder { color: rgba(251, 247, 238, .78); }
+.search-form input::placeholder { color: rgba(251, 247, 238, .78); text-overflow: ellipsis; }
 .login-btn {
   flex: none; min-width: 56px; height: 32px; margin-left: 0; padding: 0 12px;
   display: inline-flex; align-items: center; justify-content: center; gap: 5px;
@@ -57,7 +58,7 @@
   flex: none; display: flex; align-items: center; gap: 6px; margin-left: 12px;
 }
 .header-cart {
-  display: none; align-items: center; gap: 6px; height: 32px; padding: 0 9px;
+  display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 9px;
   border-radius: 999px; color: var(--color-text-on-dark); text-decoration: none;
   font: 600 13px/20px var(--font-family-body); white-space: nowrap;
 }
@@ -65,6 +66,25 @@
 .header-cart[aria-current="page"] { background: rgba(255, 255, 255, .16); color: var(--color-text-highlight-on-dark); }
 .header-cart img { width: 20px; height: 20px; flex: none; }
 .header-cart .cart-badge { margin-left: 2px; }
+
+/* Phones: the cart becomes a 32px icon button so the search keeps its room;
+   the "Cart" label stays in the markup for screen readers. */
+@media (max-width: 699px) {
+  .header-cart {
+    position: relative; justify-content: center;
+    width: 32px; height: 32px; padding: 0; gap: 0;
+  }
+  .header-cart-label {
+    position: absolute; width: 1px; height: 1px; overflow: hidden;
+    clip: rect(0 0 0 0); clip-path: inset(50%); white-space: nowrap;
+    margin: -1px; padding: 0; border: 0;
+  }
+  .header-cart .cart-badge {
+    position: absolute; top: -4px; right: -4px;
+    min-width: 16px; height: 16px; padding: 0 4px;
+    font-size: 10px; line-height: 16px;
+  }
+}
 
 /* Account disclosure. Hover opens it on pointer devices (main.js); click,
    keyboard and touch use the native details behaviour. */
