@@ -66,7 +66,7 @@ The current code implements search, genre/price filtering, price/name sorting, s
 | Web server | Apache 2.4.58 (XAMPP) | The PHP built-in server also works for local testing. |
 | Frontend | Server-rendered HTML, CSS, vanilla JavaScript | No framework and no build step. |
 | Styling | CSS custom properties | `assets/css/tokens.css` (Figma tokens) plus shared and per-page CSS. |
-| Fonts | Fredoka + Nunito | Self-hosted `.ttf` files in `assets/fonts/`; `@font-face` in `assets/css/style.css`. |
+| Fonts | Fredoka + Nunito | Self-hosted `.ttf` files in `assets/fonts/`; `@font-face` in `assets/css/base.css`. |
 | Dependencies | None | No Composer, npm, CDN, Bootstrap, or Tailwind. |
 | Tooling | Git, phpMyAdmin, Figma/FigCraft | Figma-to-CSS rules in `docs/DESIGN.md`; mobile PNG references in `docs/figma/`. |
 | Tests | No automated suite | Manual cases are documented in the final deck; see [Testing](#testing). |

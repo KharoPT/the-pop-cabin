@@ -47,7 +47,6 @@ foreach ($adminErrors as $message) { $banners[] = ['error', $message]; }
 <link rel="icon" type="image/svg+xml" href="<?php echo assetUrl('img/favicon.svg'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/tokens.css'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/base.css'); ?>">
-<link rel="stylesheet" href="<?php echo assetUrl('css/style.css'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/admin.css'); ?>">
 </head>
 <body class="admin-body">

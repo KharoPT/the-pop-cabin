@@ -253,3 +253,8 @@ input[type="checkbox"].is-invalid, .check-line.is-invalid input,
 .status-shipped { color: #5a4373; border-color: #9b84b8; background: #efe9f5; }
 .status-delivered { color: #3f5426; border-color: var(--moss); background: #e8eedb; }
 .status-cancelled { color: #8a2f1f; border-color: #c0705f; background: #f6e3de; }
+
+@media (prefers-reduced-motion: reduce) {
+  html { scroll-behavior: auto; }
+  *, *::before, *::after { transition: none !important; }
+}

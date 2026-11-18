@@ -45,12 +45,15 @@ The agent reads the design and builds; the user reviews the branch and merges.
   supplies — read their values, rewrite their names.
 - One file per page group: `assets/css/auth.css`, `assets/css/shop.css`, … Loaded by
   the page with `$pageStyles = ['css/auth.css'];` before `includes/header.php`.
-  `style.css` keeps the shared/base rules; `header.css` and `footer.css` are components.
+  `base.css` holds the shared foundations (fonts, aliases, reset, buttons, forms,
+  page chrome); `header.css`, `footer.css` and `product-card.css` are components.
 
 ## Components (used by every public page, admin has its own)
 - Header: `includes/header.php` + `assets/css/header.css`.
 - Footer: `includes/footer.php` + `assets/css/footer.css`.
 - Page sections: `assets/css/<page>.css`, loaded through `$pageStyles`.
+- Pop card: `includes/product_card.php` + `assets/css/product-card.css`, loaded by
+  `shop.php` and `product.php` before their own page stylesheet.
 - Shared scripts: `assets/js/main.js` (small vanilla JS, commented).
 Changing the header or footer means changing the component files once — never
 override them per page.

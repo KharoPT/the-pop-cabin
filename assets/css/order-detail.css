@@ -9,6 +9,7 @@
 .cart-row { display: grid; grid-template-columns: 70px minmax(0, 1fr) 76px; align-items: center; gap: .8rem; padding: .8rem; background: var(--cream); border: 2px solid var(--bark); border-radius: 6px; }
 .cart-row-static { grid-template-columns: minmax(0, 1fr) auto; }
 .cart-item-name { font-weight: 700; color: var(--ink); text-decoration: none; }
+.cart-item-name:hover { color: var(--ember); }
 .cart-item-price { color: var(--muted); font-size: .9rem; margin: .1rem 0 0; }
 .cart-row-total { margin: 0; font-weight: 700; }
 .cart-summary { background: var(--cream); border: 3px solid var(--bark); border-radius: 8px; padding: 1.3rem; }

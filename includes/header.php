@@ -29,7 +29,6 @@ $menuLinks = [
 <link rel="icon" type="image/svg+xml" href="<?php echo assetUrl('img/favicon.svg'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/tokens.css'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/base.css'); ?>">
-<link rel="stylesheet" href="<?php echo assetUrl('css/style.css'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/header.css'); ?>">
 <link rel="stylesheet" href="<?php echo assetUrl('css/footer.css'); ?>">
 <?php foreach (($pageStyles ?? []) as $style): ?>
