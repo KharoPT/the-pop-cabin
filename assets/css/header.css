@@ -91,7 +91,7 @@
 @media (min-width: 1000px) {
   :root { --site-header-h: 88px; }
   .site-header { padding: 28px 40px 0; }
-  .header-bar { height: 60px; border-radius: 30px; max-width: 1120px; }
+  .header-bar { height: 60px; border-radius: 30px; max-width: calc(var(--container-max) - 80px); }
   .search-form { max-width: 320px; margin-left: auto; }
   .site-menu { left: 40px; right: 40px; }
 
@@ -113,4 +113,8 @@
 @media (min-width: 1200px) {
   .header-nav a { font-size: 14px; padding: 0 11px; }
   .search-form { max-width: 380px; }
+}
+
+@media (min-width: 1400px) {
+  .search-form { max-width: 520px; }
 }
