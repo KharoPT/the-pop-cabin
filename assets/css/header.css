@@ -49,8 +49,13 @@
 }
 .login-btn:hover { background: var(--color-highlight-hover); color: var(--color-text-on-highlight); }
 
+/* The menu is a dropdown: anchored to the sticky header, out of flow, so opening
+   it never changes the header height or pushes the page below it (at the top of
+   the page or mid-scroll). */
 .site-menu {
-  max-width: var(--container-max); margin: 8px auto 0; padding: 8px; border-radius: 16px;
+  position: absolute; top: 100%; left: 20px; right: 20px; z-index: 1;
+  max-width: var(--container-max); max-height: calc(100vh - var(--site-header-h, 72px) - 16px);
+  overflow-y: auto; margin: 8px auto 0; padding: 8px; border-radius: 16px;
   background: var(--color-bg-surface); border: 0; box-shadow: 0 16px 34px rgba(36, 24, 18, .3);
 }
 .site-menu ul { list-style: none; margin: 0; padding: 0; }
@@ -78,7 +83,7 @@
   .search-form { margin-left: 32px; }
   .search-form input { height: 32px; padding: 0 28px 0 36px; font-size: 12px; background-size: 14px; background-position: 12px center; }
   .login-btn { width: 76px; height: 36px; font-size: 14px; }
-  .site-menu { max-width: 640px; }
+  .site-menu { left: 32px; right: 32px; max-width: 640px; }
 }
 
 @media (min-width: 1000px) {
@@ -86,4 +91,5 @@
   .site-header { padding: 28px 40px 0; }
   .header-bar { height: 60px; border-radius: 30px; max-width: 1120px; }
   .search-form { max-width: 520px; margin-left: auto; }
+  .site-menu { left: 40px; right: 40px; }
 }
