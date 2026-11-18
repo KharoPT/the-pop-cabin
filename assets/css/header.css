@@ -42,14 +42,61 @@
 }
 .search-form input::placeholder { color: rgba(251, 247, 238, .78); }
 .login-btn {
-  flex: none; width: 56px; height: 32px; margin-left: 12px; padding: 0;
-  display: inline-flex; align-items: center; justify-content: center;
+  flex: none; min-width: 56px; height: 32px; margin-left: 0; padding: 0 12px;
+  display: inline-flex; align-items: center; justify-content: center; gap: 5px;
   background: var(--color-highlight-default); color: var(--color-text-on-highlight);
   border: 0; border-radius: 21px;
   font: 600 12px/20px var(--font-family-heading); text-decoration: none;
   box-shadow: 0 1px 1px rgba(0, 0, 0, .06), inset 0 -1px 1px rgba(31, 85, 96, .25);
 }
 .login-btn:hover { background: var(--color-highlight-hover); color: var(--color-text-on-highlight); }
+
+/* Cart + account, pinned to the right of the search field. The cart moves out
+   of the inline nav so the nav stays for browsing and the actions stay together. */
+.header-actions {
+  flex: none; display: flex; align-items: center; gap: 6px; margin-left: 12px;
+}
+.header-cart {
+  display: none; align-items: center; gap: 6px; height: 32px; padding: 0 9px;
+  border-radius: 999px; color: var(--color-text-on-dark); text-decoration: none;
+  font: 600 13px/20px var(--font-family-body); white-space: nowrap;
+}
+.header-cart:hover { background: rgba(255, 255, 255, .12); color: var(--color-text-on-dark); }
+.header-cart[aria-current="page"] { background: rgba(255, 255, 255, .16); color: var(--color-text-highlight-on-dark); }
+.header-cart img { width: 20px; height: 20px; flex: none; }
+.header-cart .cart-badge { margin-left: 2px; }
+
+/* Account disclosure. Hover opens it on pointer devices (main.js); click,
+   keyboard and touch use the native details behaviour. */
+.account-menu { position: relative; flex: none; }
+.account-menu > summary { list-style: none; cursor: pointer; user-select: none; }
+.account-menu > summary::-webkit-details-marker { display: none; }
+.account-menu > summary::marker { content: none; }
+.account-menu[open] > summary { background: var(--color-highlight-hover); color: var(--color-text-on-highlight); }
+.account-chevron { width: 10px; height: 6px; flex: none; transition: transform var(--motion-duration-fast) var(--motion-ease-out); }
+.account-menu[open] .account-chevron { transform: rotate(180deg); }
+.account-menu-panel {
+  position: absolute; top: calc(100% + 12px); right: 0; z-index: var(--z-dropdown);
+  min-width: 216px; padding: 8px; border-radius: 16px;
+  background: var(--color-bg-surface); border: 1px solid var(--color-border-subtle);
+  box-shadow: 0 16px 34px rgba(36, 24, 18, .3);
+}
+/* Bridge the 12px gap so moving the pointer from the trigger to the panel
+   does not leave the dropdown. */
+.account-menu-panel::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -12px; height: 12px;
+}
+.account-menu-panel a {
+  display: flex; align-items: center; min-height: 44px; padding: 0 14px; border-radius: 10px;
+  color: var(--color-text-primary); font: 600 14px/20px var(--font-family-body); text-decoration: none;
+}
+.account-menu-panel a:hover { background: var(--color-highlight-subtle); color: var(--color-text-primary); }
+.account-menu-panel a[aria-current="page"] { background: var(--color-highlight-subtle); color: var(--color-text-primary); }
+.account-menu-signout { position: relative; margin-top: 6px; }
+.account-menu-signout::before {
+  content: ""; position: absolute; left: 0; right: 0; top: -4px; height: 1px;
+  background: var(--color-border-subtle);
+}
 
 /* The menu is a dropdown: anchored to the sticky header, out of flow, so opening
    it never changes the header height or pushes the page below it (at the top of
@@ -84,7 +131,9 @@
   .logo-link { margin-left: 14px; }
   .search-form { margin-left: 32px; }
   .search-form input { height: 32px; padding: 0 28px 0 36px; font-size: 12px; background-size: 14px; background-position: 12px center; }
-  .login-btn { width: 76px; height: 36px; margin-left: 16px; font-size: 14px; }
+  .header-actions { margin-left: 16px; gap: 8px; }
+  .header-cart { display: inline-flex; height: 36px; padding: 0 10px; font-size: 14px; }
+  .login-btn { min-width: 76px; height: 36px; padding: 0 14px; font-size: 14px; }
   .site-menu { left: 32px; right: 32px; max-width: 640px; }
 }
 
@@ -106,8 +155,6 @@
   }
   .header-nav a:hover { background: rgba(255, 255, 255, .12); color: var(--color-text-on-dark); }
   .header-nav a[aria-current="page"] { background: rgba(255, 255, 255, .16); color: var(--color-text-highlight-on-dark); }
-  .header-nav .cart-badge { margin-left: 2px; }
-  .login-btn { margin-left: 18px; }
 }
 
 @media (min-width: 1200px) {
