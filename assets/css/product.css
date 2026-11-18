@@ -6,8 +6,10 @@
    ========================================================================== */
 .page-product { background: var(--color-bg-page); background-image: none; }
 
+/* No position:relative here on purpose: the band below is anchored to the page
+   top, so a flash banner (which pushes this block down) can never leave a gap
+   above the photo or show its top corners. */
 .page-product main {
-  position: relative;
   margin-top: calc(-1 * var(--site-header-h, 72px));
   padding: 96px 0 64px;
 }
