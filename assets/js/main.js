@@ -206,6 +206,20 @@
     });
   });
 
+  // ---------- Admin product form: reveal the new-franchise field ----------
+  // Without JS the disclosure can still be opened by hand; the server accepts a
+  // typed name even when the dropdown is left on "Choose...".
+  var franchiseSelect = $('#category_id');
+  var newFranchisePanel = $('#new-franchise-field');
+  if (franchiseSelect && newFranchisePanel) {
+    franchiseSelect.addEventListener('change', function () {
+      if (franchiseSelect.value !== 'new' || newFranchisePanel.open) return;
+      newFranchisePanel.open = true;
+      var input = $('#new_franchise');
+      if (input) input.focus();
+    });
+  }
+
   // ---------- Cart quantity steppers ----------
   // The number input is what the form posts; the pill buttons only step it, so
   // "Update Cart" stays the one place that saves the cart.
