@@ -466,6 +466,12 @@
 .order-line-total { color: var(--color-text-primary); font: 600 14px/22px var(--font-family-heading); white-space: nowrap; }
 .order-lines-empty { margin: 0; color: var(--color-text-muted-aa); font: 400 13px/20px var(--font-family-body); }
 .order-detail-side { padding-top: 16px; border-top: 1px solid var(--color-border-subtle); }
+.order-detail-side > .order-detail-label {
+  margin-bottom: 10px; padding-bottom: 6px;
+  border-bottom: 1px solid var(--color-border-subtle);
+  color: var(--color-text-primary);
+  font: 600 14px/20px var(--font-family-heading);
+}
 .order-detail-side > .order-detail-label:not(:first-child) { margin-top: 20px; }
 .order-totals { margin: 0; }
 .order-total-row { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; padding: 3px 0; }
