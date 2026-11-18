@@ -124,14 +124,37 @@
     });
   });
 
-  // ---------- Locked mechanic pills (Dibs / Steal / Claim / Cabin Lock) ----------
-  // Only "Add to Cart" is available for now. A pill greys itself when pressed and
-  // leaves the Add to Cart button alone, so the page never dead-ends.
-  $$('[data-locked-mechanic]').forEach(function (pill) {
+  // ---------- Mechanic pills (Dibs / Steal / Claim / Cabin Lock) ----------
+  // None of these has a server flow yet, so picking one greys the Add to Cart button
+  // and shows the mechanic's name; picking the same pill again clears it, which puts
+  // the enabled "Add to Cart" back.
+  $$('[data-mech]').forEach(function (pill) {
+    var group = pill.closest('.mech-tabs');
+    var form = pill.closest('form');
+    var action = form ? form.querySelector('.mech-action') : null;
+    if (!group || !action) return;
+    var defaultLabel = action.getAttribute('data-default-label') || 'Add to Cart';
+
+    function paint() {
+      var chosen = group.querySelector('[data-mech][aria-pressed="true"]');
+      action.textContent = chosen ? chosen.getAttribute('data-mech') : defaultLabel;
+      action.disabled = !!chosen || action.getAttribute('data-in-stock') === '0';
+    }
+
     pill.addEventListener('click', function () {
-      pill.classList.add('is-locked');
-      pill.setAttribute('aria-disabled', 'true');
+      var on = pill.getAttribute('aria-pressed') === 'true';
+      $$('[data-mech]', group).forEach(function (other) {
+        other.setAttribute('aria-pressed', 'false');
+        other.classList.remove('is-active');
+      });
+      if (!on) {
+        pill.setAttribute('aria-pressed', 'true');
+        pill.classList.add('is-active');
+      }
+      paint();
     });
+
+    paint();
   });
 
   // ---------- Zoom lightbox ----------
@@ -237,7 +260,8 @@
         .catch(function () { form.submit(); })   // network/parsing problem: let the browser post normally
         .then(function () {
           if (!button) return;
-          button.disabled = button.getAttribute('data-in-stock') === '0';
+          button.disabled = !!form.querySelector('[data-mech][aria-pressed="true"]')
+            || button.getAttribute('data-in-stock') === '0';
         });
     });
   });

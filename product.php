@@ -102,14 +102,14 @@ require_once __DIR__ . '/includes/header.php';
                 <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
                 <input type="hidden" name="quantity" value="1">
 
-                <div class="mech-tabs" role="group" aria-label="Pop Cabin mechanics (not available yet)">
-                    <button type="button" class="mech-tab" data-locked-mechanic title="Dibs is not available yet"><?php echo $lockIcon; ?>Dibs</button>
-                    <button type="button" class="mech-tab" data-locked-mechanic title="Steal is not available yet"><?php echo $lockIcon; ?>Steal</button>
-                    <button type="button" class="mech-tab" data-locked-mechanic title="Claim is not available yet"><?php echo $lockIcon; ?>Claim</button>
-                    <button type="button" class="mech-tab" data-locked-mechanic title="Cabin Lock is not available yet"><?php echo $lockIcon; ?>Cabin Lock</button>
+                <div class="mech-tabs" role="group" aria-label="How to get this pop">
+                    <button type="button" class="mech-tab" aria-pressed="false" data-mech="Dibs!" title="Dibs is not available yet"><?php echo $lockIcon; ?>Dibs</button>
+                    <button type="button" class="mech-tab" aria-pressed="false" data-mech="Steal!" title="Steal is not available yet"><?php echo $lockIcon; ?>Steal</button>
+                    <button type="button" class="mech-tab" aria-pressed="false" data-mech="Claim!" title="Claim is not available yet"><?php echo $lockIcon; ?>Claim</button>
+                    <button type="button" class="mech-tab" aria-pressed="false" data-mech="Yours Na!" title="Cabin Lock is not available yet"><?php echo $lockIcon; ?>Cabin Lock</button>
                 </div>
 
-                <button type="submit" class="mech-action" data-in-stock="<?php echo $inStock ? '1' : '0'; ?>" <?php echo $inStock ? '' : 'disabled'; ?>>Add to Cart</button>
+                <button type="submit" class="mech-action" data-in-stock="<?php echo $inStock ? '1' : '0'; ?>" data-default-label="Add to Cart" <?php echo $inStock ? '' : 'disabled'; ?>>Add to Cart</button>
                 <?php if (!$inStock): ?><p class="mech-note">Out of stock right now.</p><?php endif; ?>
 
                 <a class="mech-learn" href="<?php echo SITE_URL; ?>/mechanics.php">
