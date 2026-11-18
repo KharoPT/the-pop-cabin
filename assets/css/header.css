@@ -6,7 +6,7 @@
    ========================================================================== */
 :root { --site-header-h: 68px; }
 .site-header {
-  position: sticky; top: -8px; z-index: 60; padding: 20px 20px 0;
+  position: sticky; top: -16px; z-index: 60; padding: 20px 20px 0;
   background: transparent;
 }
 .header-bar {
