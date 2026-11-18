@@ -105,6 +105,7 @@ html { overflow-x: hidden; }
 .page-home .btn-team:hover { background: var(--color-bg-surface-alt); color: var(--color-text-primary); }
 .page-home .overview-art {
   display: block; width: 100%; height: auto; max-width: 358px; margin-top: 32px;
+  align-self: flex-end;
   padding: 8px; border-radius: 12px; background: var(--color-bg-surface);
   box-shadow: 0 4px 10px rgba(0, 0, 0, .4); mix-blend-mode: darken;
 }
@@ -262,7 +263,9 @@ html { overflow-x: hidden; }
     height: auto; min-height: 560px; padding: 96px 48px 48px; border-radius: 24px;
   }
   .page-home .hero-bg { top: 0; left: 0; width: 100%; height: 100%; border-radius: 24px; }
-  .page-home .hero-notch { display: block; bottom: -12px; }
+  /* The notch art bleeds off a square mobile edge; on the rounded card it cuts
+     the bottom corners, so it stays out of the tablet/desktop layout. */
+  .page-home .hero-notch { display: none; }
   .page-home .hero-inner {
     height: auto; display: grid; grid-template-columns: minmax(0, 1fr) auto;
     column-gap: 48px; align-items: start;
@@ -271,7 +274,7 @@ html { overflow-x: hidden; }
   .page-home .hero-title { grid-column: 1; font-size: 64px; line-height: 58px; }
   .page-home .hero-desc { grid-column: 1; max-width: 46ch; margin-top: 28px; font-size: 16px; line-height: 24px; }
   .page-home .hero-stats { grid-column: 2; grid-row: 1 / span 3; margin-top: 8px; }
-  .page-home .hero-shop { width: 220px; }
+  .page-home .hero-shop { width: 220px; bottom: 20px; }
 
   /* Overview: copy left, sign right */
   .page-home .overview {
@@ -283,7 +286,7 @@ html { overflow-x: hidden; }
   .page-home .overview-sub { grid-area: sub; font-size: 28px; line-height: 32px; }
   .page-home .overview-body { grid-area: body; margin-top: 20px; padding-right: 0; max-width: 54ch; font-size: 16px; line-height: 26px; }
   .page-home .btn-team { grid-area: btn; justify-self: start; margin-top: 28px; }
-  .page-home .overview-art { grid-area: art; align-self: center; max-width: none; margin-top: 0; }
+  .page-home .overview-art { grid-area: art; align-self: center; justify-self: end; max-width: none; margin-top: 0; }
 
   /* Discover: all categories in one row, no arrows */
   .page-home .discover-title { font-size: 48px; line-height: 54px; }
