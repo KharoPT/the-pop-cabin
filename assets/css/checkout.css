@@ -1,5 +1,5 @@
-/* ==========================================================================
-   Checkout — FigCraft "Mobile/Checkout"
+﻿/* ==========================================================================
+   Checkout â€” FigCraft "Mobile/Checkout"
    Shipping form + the order receipt. The receipt card itself is shared with
    the cart in css/receipt.css; this file is the page around it.
    ========================================================================== */
@@ -17,8 +17,8 @@
 
 /* Same photo band as the cart page (the frame reuses that image) */
 .checkout-bg {
-  position: absolute; top: -69px; left: 24px; z-index: 0;
-  width: calc(100% - 48px); height: 152px; max-width: none;
+  position: absolute; top: -69px; left: 16px; z-index: 0;
+  width: calc(100% - 32px); height: 152px; max-width: none;
   border-radius: 12px; object-fit: cover;
 }
 
@@ -63,21 +63,22 @@
    ========================================================================== */
 @media (min-width: 700px) {
   .page-checkout main { padding: 176px 0 80px; }
-  .checkout-bg { top: -24px; left: 50%; width: calc(100% - 80px); height: 180px; border-radius: 16px; transform: translateX(-50%); }
+  .checkout-bg { top: -24px; left: 50%; width: calc(100% - 56px); height: 180px; border-radius: 16px; transform: translateX(-50%); }
   .page-checkout .wrap { padding-inline: 32px; }
   .page-checkout .flash-wrap { padding-inline: 32px; }
   .checkout-title { font-size: 30px; line-height: 36px; }
 }
 
 /* ==========================================================================
-   Desktop — form on the left, receipt beside it
+   Desktop â€” form on the left, receipt beside it
    ========================================================================== */
 @media (min-width: 1000px) {
   .page-checkout main { padding: 216px 0 96px; }
-  .checkout-bg { width: calc(100% - 96px); max-width: calc(var(--container-max) - 96px); height: 220px; }
+  .checkout-bg { width: calc(100% - 72px); max-width: calc(var(--container-max) - 72px); height: 220px; }
   .page-checkout .wrap { padding-inline: 40px; }
   .page-checkout .flash-wrap { padding-inline: 40px; }
   .checkout-title { font-size: 32px; line-height: 38px; }
   .checkout-body { grid-template-columns: minmax(0, 1fr) 380px; gap: 40px; align-items: start; }
   .receipt-card { position: sticky; top: calc(var(--site-header-h, 72px) + 24px); }
 }
+

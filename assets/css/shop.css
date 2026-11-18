@@ -1,5 +1,5 @@
 /* ==========================================================================
-   Shop collections — FigCraft "Mobile/Collection"
+   Shop collections â€” FigCraft "Mobile/Collection"
    Real products come from the DB; this file is presentation only.
    ========================================================================== */
 
@@ -49,8 +49,8 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
   padding: 96px 0 0;
 }
 .shop-bg {
-  position: absolute; top: -69px; left: 24px; z-index: 0;
-  width: calc(100% - 48px); height: 152px; max-width: none;
+  position: absolute; top: -69px; left: 16px; z-index: 0;
+  width: calc(100% - 32px); height: 152px; max-width: none;
   border-radius: 12px; object-fit: cover;
 }
 .page-shop .wrap { position: relative; z-index: 0; }
@@ -101,11 +101,21 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
 }
 .page-shop .pop-card-media img { width: 100%; height: 100%; object-fit: cover; }
 .page-shop .fav-btn {
-  top: 8px; left: 8px; width: 28px; height: 28px; border-radius: 999px;
-  background: rgba(251, 247, 238, .9); color: var(--color-text-primary);
+  top: 8px; left: 8px; width: 32px; height: 32px; padding: 0;
+  display: grid; place-items: center; cursor: pointer;
+  border: 1px solid rgba(255, 255, 255, .34); border-radius: 999px;
+  background: rgba(255, 255, 255, .14); color: var(--primitive-cream-100);
+  -webkit-backdrop-filter: blur(6px); backdrop-filter: blur(6px);
+  box-shadow: 0 8px 20px rgba(36, 24, 18, .28);
+  transition: background .15s;
 }
-.page-shop .fav-btn svg { width: 16px; height: 16px; }
-.page-shop .fav-btn:hover { background: var(--color-bg-surface); }
+.page-shop .fav-btn svg {
+  display: block; width: 16px; height: 16px;
+  fill: none; stroke: currentColor; stroke-width: 2; stroke-linecap: round; stroke-linejoin: round;
+}
+.page-shop .fav-btn:hover { background: rgba(255, 255, 255, .3); }
+.page-shop .fav-btn:active { transform: scale(.96); }
+.page-shop .fav-btn[aria-pressed="true"] svg { fill: var(--color-highlight-default); stroke: var(--color-highlight-default); }
 .page-shop .pop-card-ribbon {
   right: 8px; bottom: 8px; padding: 3px 8px; border-radius: 999px;
   background: var(--color-bg-inverse); color: var(--color-text-on-dark);
@@ -157,7 +167,7 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
 /* Tablet / desktop */
 @media (min-width: 700px) {
   .page-shop main { padding: 176px 0 0; }
-  .shop-bg { left: 50%; width: calc(100% - 80px); top: -24px; height: 180px; border-radius: 16px; transform: translateX(-50%); }
+  .shop-bg { left: 50%; width: calc(100% - 56px); top: -24px; height: 180px; border-radius: 16px; transform: translateX(-50%); }
   .page-shop .shop-top { padding: 0 32px; }
   .page-shop .shop-results { padding: 20px 32px 0; }
   .page-shop .pop-grid { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 20px; }
@@ -166,7 +176,7 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
 }
 @media (min-width: 1000px) {
   .page-shop main { padding: 216px 0 0; }
-  .shop-bg { width: calc(100% - 96px); max-width: calc(var(--container-max) - 96px); height: 220px; }
+  .shop-bg { width: calc(100% - 72px); max-width: calc(var(--container-max) - 72px); height: 220px; }
   .page-shop .shop-top { padding: 0 40px; }
   .page-shop .shop-results { padding: 24px 40px 0; }
   .page-shop .pop-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 24px; }
@@ -175,3 +185,4 @@ a.pager-num:hover { border-color: var(--ember); color: var(--ink); }
   .page-shop .pop-stock { font-size: 13px; line-height: 18px; }
   .page-shop .pop-price { font-size: 24px; line-height: 28px; }
 }
+
