@@ -229,6 +229,21 @@
 .form-row-split > div > label { display: block; margin-bottom: 6px; color: var(--color-text-muted-aa); font: 600 12px/16px var(--font-family-heading); }
 .admin-main .is-invalid { border-color: var(--color-feedback-error); box-shadow: 0 0 0 2px rgba(179, 38, 30, .25); }
 .admin-main .field-error { margin: 6px 0 0; color: var(--color-feedback-error); font: 600 12px/16px var(--font-family-body); }
+.field-hint { margin: 6px 0 0; color: var(--color-text-muted-aa); font: 400 12px/18px var(--font-family-body); }
+
+/* New franchise disclosure (admin/product_form.php) */
+.new-franchise {
+  margin: 0 0 14px; border: 1px dashed var(--color-border-strong); border-radius: 12px;
+  background: var(--color-bg-surface);
+}
+.new-franchise summary {
+  padding: 12px 14px; cursor: pointer; color: var(--primitive-teal-700);
+  font: 600 14px/20px var(--font-family-heading);
+}
+.new-franchise summary:hover { color: var(--primitive-teal-800); }
+.new-franchise summary:focus-visible { outline: 2px solid var(--color-focus-ring); outline-offset: 2px; }
+.new-franchise[open] summary { border-bottom: 1px solid var(--color-border-subtle); }
+.new-franchise .form-row { margin: 12px 14px 14px; }
 
 /* Photo picker */
 .photo-drop {
