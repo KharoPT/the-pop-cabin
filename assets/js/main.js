@@ -124,31 +124,37 @@
     });
   });
 
-  // ---------- Dibs / Steal / Claim / Cabin Lock tabs ----------
-  $$('[data-mechanics]').forEach(function (form) {
-    var tabs = $$('.mech-tab', form);
-    var action = $('.mech-action', form);
-    if (!action) return;
-    var inStock = action.getAttribute('data-in-stock') === '1';
-    function select(tab) {
-      tabs.forEach(function (t) {
-        var on = t === tab;
-        t.classList.toggle('is-active', on);
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-      });
-      action.textContent = tab.getAttribute('data-label');
-      // Only "Dibs" is wired to the reservation flow; the other states are shown but not active yet.
-      action.disabled = !(tab.getAttribute('data-live') === '1' && inStock);
+  // ---------- Mechanic pills (Dibs / Steal / Claim / Cabin Lock) ----------
+  // None of these has a server flow yet, so picking one greys the Add to Cart button
+  // and shows the mechanic's name; picking the same pill again clears it, which puts
+  // the enabled "Add to Cart" back.
+  $$('[data-mech]').forEach(function (pill) {
+    var group = pill.closest('.mech-tabs');
+    var form = pill.closest('form');
+    var action = form ? form.querySelector('.mech-action') : null;
+    if (!group || !action) return;
+    var defaultLabel = action.getAttribute('data-default-label') || 'Add to Cart';
+
+    function paint() {
+      var chosen = group.querySelector('[data-mech][aria-pressed="true"]');
+      action.textContent = chosen ? chosen.getAttribute('data-mech') : defaultLabel;
+      action.disabled = !!chosen || action.getAttribute('data-in-stock') === '0';
     }
-    tabs.forEach(function (t, i) {
-      t.addEventListener('click', function () { select(t); });
-      t.addEventListener('keydown', function (e) {
-        var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
-        if (n === null) return;
-        n = (n + tabs.length) % tabs.length;
-        tabs[n].focus(); select(tabs[n]); e.preventDefault();
+
+    pill.addEventListener('click', function () {
+      var on = pill.getAttribute('aria-pressed') === 'true';
+      $$('[data-mech]', group).forEach(function (other) {
+        other.setAttribute('aria-pressed', 'false');
+        other.classList.remove('is-active');
       });
+      if (!on) {
+        pill.setAttribute('aria-pressed', 'true');
+        pill.classList.add('is-active');
+      }
+      paint();
     });
+
+    paint();
   });
 
   // ---------- Zoom lightbox ----------
@@ -254,10 +260,8 @@
         .catch(function () { form.submit(); })   // network/parsing problem: let the browser post normally
         .then(function () {
           if (!button) return;
-          var active = form.querySelector('.mech-tab.is-active');
-          var live = active ? active.getAttribute('data-live') === '1' : true;
-          var inStock = button.getAttribute('data-in-stock') !== '0';
-          button.disabled = !(live && inStock);
+          button.disabled = !!form.querySelector('[data-mech][aria-pressed="true"]')
+            || button.getAttribute('data-in-stock') === '0';
         });
     });
   });
