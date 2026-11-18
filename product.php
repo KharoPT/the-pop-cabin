@@ -7,7 +7,7 @@ $productModel = new Product();
 $slug    = is_string($_GET['slug'] ?? null) ? $_GET['slug'] : '';
 $product = $slug !== '' ? $productModel->getBySlug($slug) : false;
 
-$pageStyles = ['css/product.css'];
+$pageStyles = ['css/product-card.css', 'css/product.css'];
 
 if (!$product) {
     http_response_code(404);
