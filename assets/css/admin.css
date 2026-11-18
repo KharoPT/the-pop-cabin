@@ -3,7 +3,7 @@
    One stylesheet for the whole admin app: the shared header bar, the menu
    sheet, the footer pops, and the blocks every admin page reuses (cards,
    lists, forms, pills, pager). Loaded by admin/includes/admin_header.php
-   after style.css, so it overrides the legacy admin rules there.
+   after base.css, and is the only admin stylesheet.
    ========================================================================== */
 
 /* ---------- Page ---------- */

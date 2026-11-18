@@ -37,7 +37,7 @@
 }
 
 /* Flash banner ("item removed", stock capped) — the card look is shared in
-   style.css, only the page padding has to follow this page's grid. */
+   base.css, only the page padding has to follow this page's grid. */
 .page-cart .flash-wrap { padding-inline: 16px; }
 
 /* ---------- Line items ---------- */
