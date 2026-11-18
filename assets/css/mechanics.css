@@ -1,0 +1,148 @@
+/* ==========================================================================
+   System Mechanics — the four bidding moves, the four-day clock and the
+   one-move-per-account rule. This page is reading material only: nothing
+   here changes how the shop, cart or bidding behaves.
+   ========================================================================== */
+
+/* Hero */
+.mechanics-hero { padding-top: 2rem; }
+.mechanics-title {
+  width: min(80%, 360px); padding-block: 1rem;
+  font-size: clamp(1.5rem, 6.2vw, 1.9rem);
+}
+.mechanics-lede {
+  max-width: 54ch; margin: 1.7rem auto 0;
+  text-align: center; font-size: 1.03rem; color: var(--color-text-secondary);
+}
+
+/* Section rhythm: 48 / 64 / 80 px */
+.mechanics-moves { margin-top: 3rem; }
+.mechanics-head { margin-bottom: 1.6rem; }
+.mechanics-head .sign { font-size: 1.2rem; }
+.mechanics-head-note {
+  max-width: 46ch; margin: .9rem 0 0;
+  font-size: .95rem; color: var(--color-text-muted-aa);
+}
+
+/* The four moves */
+.move-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+.move-card {
+  display: flex; flex-direction: column; gap: .55rem;
+  padding: 20px 18px 22px;
+  background: var(--cream); border: 2px solid var(--pine-300); border-radius: 8px;
+  box-shadow: 0 4px 0 rgba(30, 20, 12, .1);
+}
+.move-flag {
+  margin: 0; font: 700 .68rem/1.3 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--color-text-muted-aa);
+}
+.move-name { align-self: flex-start; margin: .1rem 0 .2rem; padding: .6rem 1.55rem; font-size: 1.22rem; }
+.move-tagline { margin: 0; font: 600 .95rem/1.4 var(--font-display); color: var(--walnut); }
+.move-price {
+  display: flex; flex-wrap: wrap; align-items: baseline; align-self: flex-start; gap: .2rem .55rem;
+  margin: .2rem 0 .35rem; padding: .55rem .8rem;
+  background: var(--color-highlight-subtle); border: 1px solid var(--color-highlight-border); border-radius: 4px;
+}
+.move-price-label {
+  font: 700 .64rem/1 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
+  color: var(--color-text-muted-aa);
+}
+.move-price-value { font: 700 .98rem/1.35 var(--font-body); color: var(--ink); }
+.move-copy { margin: .1rem 0 0; font-size: .95rem; line-height: 1.55; color: var(--color-text-secondary); }
+
+/* Cabin Lock lists the three prices it can close on. */
+.move-ledger {
+  list-style: none; margin: .3rem 0 0; padding: 0;
+  border-top: 1px dashed var(--color-border-strong);
+}
+.move-ledger li {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
+  padding: .42rem 0; border-bottom: 1px dashed var(--color-border-default); font-size: .85rem;
+}
+.move-ledger li:last-child { border-bottom: 0; padding-bottom: 0; }
+.move-ledger li span:first-child { color: var(--color-text-muted-aa); }
+.move-ledger li span:last-child { font-weight: 700; color: var(--ink); white-space: nowrap; }
+
+.mechanics-currency { margin: 1rem 0 0; text-align: center; font-size: .8rem; color: var(--color-text-muted-aa); }
+
+/* Four-day clock */
+.mechanics-clock { margin-top: 3rem; }
+.clock-band {
+  padding: 30px 20px 28px; text-align: center; border-radius: 16px; color: var(--cream);
+  background-color: var(--walnut); background-image: var(--plank-dark);
+  box-shadow: 0 10px 24px rgba(36, 24, 18, .22), inset 0 0 0 1px rgba(255, 255, 255, .06);
+}
+.clock-eyebrow {
+  margin: 0 0 .6rem; font: 700 .68rem/1 var(--font-body); letter-spacing: .18em; text-transform: uppercase;
+  color: var(--color-text-highlight-on-dark);
+}
+.clock-title { margin: 0; font-size: 1.45rem; line-height: 1.2; color: var(--cream); }
+.clock-figure { display: flex; align-items: baseline; justify-content: center; gap: .5rem; margin: 1.1rem 0 .9rem; }
+.clock-number { font: 700 3.4rem/1 var(--font-display); color: var(--color-highlight-default); }
+.clock-unit { font: 600 1.1rem/1 var(--font-display); color: var(--color-text-highlight-on-dark); }
+.clock-copy { max-width: 40ch; margin: 0 auto; font-size: .95rem; line-height: 1.6; color: var(--cream); }
+
+/* One move per account */
+.mechanics-account { margin-top: 3rem; }
+.account-panel {
+  padding: 26px 22px; border-radius: 12px;
+  background: var(--color-highlight-subtle); border: 2px solid var(--color-highlight-border);
+}
+.account-head { display: flex; align-items: center; gap: .9rem; margin-bottom: .9rem; }
+.account-badge {
+  display: grid; place-items: center; flex: none; width: 44px; height: 44px;
+  border-radius: 50%; color: var(--cream); font: 700 1.35rem/1 var(--font-display);
+  background-color: var(--walnut); background-image: var(--plank-dark);
+  box-shadow: 0 3px 0 rgba(30, 20, 12, .3), inset 0 0 0 2px rgba(255, 255, 255, .08);
+}
+.account-title { margin: 0; font-size: 1.35rem; }
+.account-copy { max-width: 52ch; margin: 0; font-size: 1rem; color: var(--ink); }
+.account-note { max-width: 52ch; margin: .7rem 0 0; font-size: .9rem; color: var(--color-text-muted-aa); }
+
+/* Closing call to action */
+.mechanics-end { margin-top: 3rem; padding-top: .5rem; text-align: center; }
+.mechanics-end .sign { font-size: 1.25rem; margin-bottom: 1rem; }
+.mechanics-end-note { margin: 0 0 1.2rem; color: var(--color-text-muted-aa); }
+.mechanics-fineprint { margin: 1.1rem 0 0; font-size: .85rem; color: var(--color-text-muted-aa); }
+.mechanics-fineprint a { font-weight: 600; color: var(--color-text-link); }
+.mechanics-fineprint a:hover { color: var(--color-text-link-hover); }
+
+@media (min-width: 700px) {
+  .mechanics-hero { padding-top: 2.4rem; }
+  .mechanics-lede { font-size: 1.1rem; }
+  .mechanics-moves,
+  .mechanics-clock,
+  .mechanics-account,
+  .mechanics-end { margin-top: 4rem; }
+  .move-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 20px; }
+  .move-card { padding: 24px 24px 26px; }
+  .clock-band { padding: 44px 40px; }
+  .clock-title { font-size: 1.7rem; }
+  .clock-figure { margin: 1.4rem 0 1.2rem; }
+  .clock-number { font-size: 4.4rem; }
+  .account-panel { padding: 32px 36px; }
+}
+
+@media (min-width: 1000px) {
+  .mechanics-title { font-size: 2rem; }
+  .mechanics-moves,
+  .mechanics-clock,
+  .mechanics-account,
+  .mechanics-end { margin-top: 5rem; }
+  .move-grid { gap: 24px; }
+  .move-card { padding: 26px 28px 30px; }
+  .move-copy { font-size: 1rem; }
+  .clock-band { padding: 56px 48px; }
+  .clock-title { font-size: 2rem; }
+  .clock-figure { margin: 1.6rem 0 1.3rem; }
+  .clock-number { font-size: 5.2rem; }
+  .clock-copy { font-size: 1rem; }
+  .account-panel {
+    display: grid; grid-template-columns: minmax(0, .85fr) minmax(0, 1.15fr);
+    grid-template-areas: "head copy" "head note";
+    column-gap: 3rem; padding: 40px 44px; align-items: start;
+  }
+  .account-head { grid-area: head; align-self: center; margin: 0; }
+  .account-copy { grid-area: copy; max-width: none; }
+  .account-note { grid-area: note; max-width: none; }
+}
