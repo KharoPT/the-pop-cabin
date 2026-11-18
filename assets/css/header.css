@@ -29,6 +29,8 @@
 .menu-btn:hover { transform: scale(1.04); }
 .logo-link { flex: none; width: 32px; height: 32px; margin-left: 13px; }
 .logo-link img { width: 32px; height: 32px; border-radius: 0; box-shadow: none; }
+/* Inline navigation, desktop only; the mobile/tablet menu button drives .site-menu. */
+.header-nav { display: none; }
 .search-form { flex: 1 1 auto; min-width: 0; margin-left: 32px; }
 .search-form input {
   width: 100%; min-width: 0; height: 24px; padding: 0 24px 0 30px;
@@ -90,6 +92,24 @@
   :root { --site-header-h: 88px; }
   .site-header { padding: 28px 40px 0; }
   .header-bar { height: 60px; border-radius: 30px; max-width: 1120px; }
-  .search-form { max-width: 520px; margin-left: auto; }
+  .search-form { max-width: 320px; margin-left: auto; }
   .site-menu { left: 40px; right: 40px; }
+
+  /* Desktop: inline links replace the burger. */
+  .menu-btn { display: none; }
+  .header-nav { display: block; margin-left: 16px; min-width: 0; }
+  .header-nav ul { display: flex; align-items: center; gap: 2px; margin: 0; padding: 0; list-style: none; }
+  .header-nav a {
+    display: inline-flex; align-items: center; gap: 6px; height: 32px; padding: 0 9px;
+    border-radius: 999px; color: var(--color-text-on-dark);
+    font: 600 13px/20px var(--font-family-body); text-decoration: none; white-space: nowrap;
+  }
+  .header-nav a:hover { background: rgba(255, 255, 255, .12); color: var(--color-text-on-dark); }
+  .header-nav a[aria-current="page"] { background: rgba(255, 255, 255, .16); color: var(--color-text-highlight-on-dark); }
+  .header-nav .cart-badge { margin-left: 2px; }
+}
+
+@media (min-width: 1200px) {
+  .header-nav a { font-size: 14px; padding: 0 11px; }
+  .search-form { max-width: 380px; }
 }

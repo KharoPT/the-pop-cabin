@@ -52,6 +52,19 @@ $menuLinks = [
             <img src="<?php echo assetUrl('img/logo-mark.svg'); ?>" alt="" width="32" height="32">
         </a>
 
+        <nav class="header-nav" aria-label="Main menu">
+            <ul>
+                <?php foreach ($menuLinks as [$file, $label]): ?>
+                    <li><a href="<?php echo SITE_URL . '/' . $file; ?>" <?php echo $currentPage === $file ? 'aria-current="page"' : ''; ?>><?php echo e($label); ?></a></li>
+                <?php endforeach; ?>
+                <li>
+                    <a href="<?php echo SITE_URL; ?>/cart.php" <?php echo $currentPage === 'cart.php' ? 'aria-current="page"' : ''; ?>>Cart
+                        <span class="cart-badge" style="<?php echo $cartCountForHeader > 0 ? '' : 'display:none;'; ?>"><?php echo (int) $cartCountForHeader; ?></span>
+                    </a>
+                </li>
+            </ul>
+        </nav>
+
         <form class="search-form" role="search" action="<?php echo SITE_URL; ?>/shop.php" method="get">
             <label class="sr-only" for="site-search">Search pops</label>
             <input type="search" id="site-search" name="search" placeholder="Search a Pop..." value="<?php echo e(is_string($_GET['search'] ?? null) ? $_GET['search'] : ''); ?>">
