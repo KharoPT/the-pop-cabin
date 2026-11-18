@@ -126,6 +126,20 @@ class Order extends BaseModel
         )->fetchAll();
     }
 
+    /** Admin orders list: every order with the customer name and its item count, newest first. */
+    public function getAllWithCustomer(int $limit = 50, int $offset = 0): array
+    {
+        $limit  = max(1, $limit);
+        $offset = max(0, $offset);
+        return $this->db->query(
+            "SELECT o.*, u.full_name AS customer_name, COALESCE(SUM(oi.quantity), 0) AS item_count
+             FROM orders o
+             LEFT JOIN users u ON u.user_id = o.user_id
+             LEFT JOIN order_items oi ON oi.order_id = o.order_id
+             GROUP BY o.order_id ORDER BY o.order_id DESC LIMIT $limit OFFSET $offset"
+        )->fetchAll();
+    }
+
     public function updateStatus(int $orderId, string $status): bool
     {
         $allowed = ['pending', 'processing', 'shipped', 'delivered', 'cancelled'];
