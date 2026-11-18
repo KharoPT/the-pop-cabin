@@ -18,6 +18,8 @@ $collections = $productModel->getCollections();
 $errors      = [];
 $fieldErrors = [];
 $posted      = null;
+$franchiseChoice = '';
+$newFranchiseValue = '';
 
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     if (empty($_POST) && empty($_FILES) && (int) ($_SERVER['CONTENT_LENGTH'] ?? 0) > 0) {
@@ -26,9 +28,11 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         $errors[] = 'Your session expired. Please try again.';
     } else {
         $edition = $_POST['edition'] ?? 'Regular';
+        $franchiseChoice = trim((string) ($_POST['category_id'] ?? ''));
+        $newFranchiseValue = sanitizeInput($_POST['new_franchise'] ?? '');
         $posted = [
             'name'           => sanitizeInput($_POST['name'] ?? ''),
-            'category_id'    => (int) ($_POST['category_id'] ?? 0),
+            'category_id'    => ctype_digit($franchiseChoice) ? (int) $franchiseChoice : 0,
             'edition'        => in_array($edition, editionOptions(), true) ? $edition : 'Regular',
             'price'          => is_numeric($_POST['price'] ?? '') ? round((float) $_POST['price'], 2) : 0.0,
             'stock_quantity' => max(0, (int) ($_POST['stock_quantity'] ?? 0)),
@@ -37,14 +41,62 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             'collection_ids' => array_map('intval', (array) ($_POST['collection_ids'] ?? [])),
         ];
 
+        // A typed franchise name wins over the dropdown: it is matched to an existing
+        // franchise or added to the categories table, then used for this product.
+        if ($franchiseChoice === 'new' || $newFranchiseValue !== '') {
+            $newFranchiseLength = function_exists('mb_strlen') ? mb_strlen($newFranchiseValue, 'UTF-8') : strlen($newFranchiseValue);
+            if ($newFranchiseValue === '') {
+                $message = 'Please enter a name for the new franchise.';
+                $errors[] = $message;
+                $fieldErrors['new_franchise'] = $message;
+            } elseif ($newFranchiseLength > 50) {
+                $message = 'The franchise name is too long (50 characters at most).';
+                $errors[] = $message;
+                $fieldErrors['new_franchise'] = $message;
+            } else {
+                try {
+                    $franchiseDb = Database::getInstance()->getConnection();
+                    $findFranchise = $franchiseDb->prepare('SELECT category_id FROM categories WHERE category_name = ? LIMIT 1');
+                    $findFranchise->execute([$newFranchiseValue]);
+                    $newFranchiseId = (int) $findFranchise->fetchColumn();
+
+                    if ($newFranchiseId === 0) {
+                        $baseSlug  = slugify($newFranchiseValue);
+                        $slug      = $baseSlug;
+                        $suffix    = 2;
+                        $slugTaken = $franchiseDb->prepare('SELECT 1 FROM categories WHERE slug = ? LIMIT 1');
+                        while (true) {
+                            $slugTaken->execute([$slug]);
+                            if (!$slugTaken->fetchColumn()) {
+                                break;
+                            }
+                            $slug = $baseSlug . '-' . $suffix++;
+                        }
+
+                        $insertFranchise = $franchiseDb->prepare("INSERT INTO categories (category_name, slug, description) VALUES (?, ?, '')");
+                        $insertFranchise->execute([$newFranchiseValue, $slug]);
+                        $newFranchiseId = (int) $franchiseDb->lastInsertId();
+                    }
+
+                    $posted['category_id'] = $newFranchiseId;
+                    $franchiseChoice = (string) $newFranchiseId;
+                    $franchises = getAllCategories();   // keep the dropdown in alphabetical order
+                } catch (PDOException $e) {
+                    $message = 'The new franchise could not be added. Please try again.';
+                    $errors[] = $message;
+                    $fieldErrors['new_franchise'] = $message;
+                }
+            }
+        }
+
         $validFranchiseIds = array_map('intval', array_column($franchises, 'category_id'));
         if ($posted['name'] === '' || strlen($posted['name']) > 255) {
             $errors[] = 'Please enter a name for the pop.';
             $fieldErrors['name'] = 'Please enter a name for the pop.';
         }
-        if (!in_array($posted['category_id'], $validFranchiseIds, true)) {
-            $errors[] = 'Please choose a franchise.';
-            $fieldErrors['category_id'] = 'Please choose a franchise.';
+        if (!in_array($posted['category_id'], $validFranchiseIds, true) && !isset($fieldErrors['new_franchise'])) {
+            $errors[] = 'Please choose a franchise, or type a new one below.';
+            $fieldErrors['category_id'] = 'Please choose a franchise, or type a new one below.';
         }
         if ($posted['price'] <= 0 || $posted['price'] > 99999999) {
             $errors[] = 'Please enter a price greater than zero.';
@@ -104,6 +156,7 @@ if ($posted !== null) {
     $selectedCollections = $posted['collection_ids'];
 }
 $currentImage = imgSrc($product['image_url'] ?? '');
+$newFranchiseOpen = $franchiseChoice === 'new' || $newFranchiseValue !== '';
 
 $pageTitle   = ($product ? 'Edit' : 'Add') . ' product — ' . SITE_NAME . ' Admin';
 $adminCrumbs = [['Products', 'admin/products.php'], [$product ? 'Edit' : 'Add', null]];
@@ -116,7 +169,7 @@ require_once __DIR__ . '/includes/admin_header.php';
 <?php if (empty($franchises)): ?>
     <div class="admin-banner admin-banner-error" role="alert">
         <?php echo $bannerIcon['error']; ?>
-        <p>There are no franchises yet. Add at least one row to the categories table (for example in phpMyAdmin) before adding products.</p>
+        <p>There are no franchises yet. Open &ldquo;Add a new franchise&rdquo; below and type the first one.</p>
     </div>
 <?php endif; ?>
 
@@ -148,8 +201,9 @@ require_once __DIR__ . '/includes/admin_header.php';
             <select id="category_id" name="category_id" required<?php echo $err ? ' class="is-invalid" aria-invalid="true" aria-describedby="category_id-error"' : ''; ?>>
                 <option value="">Choose...</option>
                 <?php foreach ($franchises as $c): ?>
-                    <option value="<?php echo (int) $c['category_id']; ?>" <?php echo (int) $values['category_id'] === (int) $c['category_id'] ? 'selected' : ''; ?>><?php echo e($c['category_name']); ?></option>
+                    <option value="<?php echo (int) $c['category_id']; ?>" <?php echo $franchiseChoice !== 'new' && (int) $values['category_id'] === (int) $c['category_id'] ? 'selected' : ''; ?>><?php echo e($c['category_name']); ?></option>
                 <?php endforeach; ?>
+                <option value="new" <?php echo $franchiseChoice === 'new' ? 'selected' : ''; ?>>+ New franchise</option>
             </select>
             <?php if ($err): ?><p class="field-error" id="category_id-error"><?php echo e($err); ?></p><?php endif; ?>
         </div>
@@ -162,6 +216,20 @@ require_once __DIR__ . '/includes/admin_header.php';
             </select>
         </div>
     </div>
+
+    <details class="new-franchise" id="new-franchise-field" <?php echo $newFranchiseOpen ? 'open' : ''; ?>>
+        <summary>Add a new franchise</summary>
+        <div class="form-row">
+            <label for="new_franchise">New franchise name</label>
+            <?php
+                $err = $fieldErrors['new_franchise'] ?? null;
+                $describedBy = 'new_franchise-hint' . ($err ? ' new_franchise-error' : '');
+            ?>
+            <input type="text" id="new_franchise" name="new_franchise" maxlength="50" placeholder="e.g. One Piece" aria-describedby="<?php echo e($describedBy); ?>" value="<?php echo e($newFranchiseValue); ?>"<?php echo $err ? ' class="is-invalid" aria-invalid="true"' : ''; ?>>
+            <p class="field-hint" id="new_franchise-hint">This adds the franchise to the list and uses it for this pop. If the name already exists, the existing franchise is used.</p>
+            <?php if ($err): ?><p class="field-error" id="new_franchise-error"><?php echo e($err); ?></p><?php endif; ?>
+        </div>
+    </details>
 
     <div class="form-row form-row-split">
         <div>
