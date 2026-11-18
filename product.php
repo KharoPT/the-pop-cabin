@@ -97,16 +97,16 @@ require_once __DIR__ . '/includes/header.php';
                 </div>
             </div>
 
-            <form class="product-buy add-to-cart-form" method="post" action="<?php echo SITE_URL; ?>/actions/add_to_cart.php" data-mechanics>
+            <form class="product-buy add-to-cart-form" method="post" action="<?php echo SITE_URL; ?>/actions/add_to_cart.php">
                 <input type="hidden" name="csrf_token" value="<?php echo e(generateCsrfToken()); ?>">
                 <input type="hidden" name="product_id" value="<?php echo $productId; ?>">
                 <input type="hidden" name="quantity" value="1">
 
-                <div class="mech-tabs" role="tablist" aria-label="How to get this pop">
-                    <button type="button" role="tab" class="mech-tab is-active" aria-selected="true"  data-label="Add to Cart" data-live="1"><?php echo $lockIcon; ?>Add to Cart</button>
-                    <button type="button" role="tab" class="mech-tab" aria-selected="false" data-label="Steal!" data-live="0"><?php echo $lockIcon; ?>Steal</button>
-                    <button type="button" role="tab" class="mech-tab" aria-selected="false" data-label="Claim!" data-live="0"><?php echo $lockIcon; ?>Claim</button>
-                    <button type="button" role="tab" class="mech-tab" aria-selected="false" data-label="Yours Na!" data-live="0"><?php echo $lockIcon; ?>Cabin Lock</button>
+                <div class="mech-tabs" role="group" aria-label="Pop Cabin mechanics (not available yet)">
+                    <button type="button" class="mech-tab" data-locked-mechanic title="Dibs is not available yet"><?php echo $lockIcon; ?>Dibs</button>
+                    <button type="button" class="mech-tab" data-locked-mechanic title="Steal is not available yet"><?php echo $lockIcon; ?>Steal</button>
+                    <button type="button" class="mech-tab" data-locked-mechanic title="Claim is not available yet"><?php echo $lockIcon; ?>Claim</button>
+                    <button type="button" class="mech-tab" data-locked-mechanic title="Cabin Lock is not available yet"><?php echo $lockIcon; ?>Cabin Lock</button>
                 </div>
 
                 <button type="submit" class="mech-action" data-in-stock="<?php echo $inStock ? '1' : '0'; ?>" <?php echo $inStock ? '' : 'disabled'; ?>>Add to Cart</button>

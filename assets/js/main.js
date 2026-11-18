@@ -124,30 +124,13 @@
     });
   });
 
-  // ---------- Dibs / Steal / Claim / Cabin Lock tabs ----------
-  $$('[data-mechanics]').forEach(function (form) {
-    var tabs = $$('.mech-tab', form);
-    var action = $('.mech-action', form);
-    if (!action) return;
-    var inStock = action.getAttribute('data-in-stock') === '1';
-    function select(tab) {
-      tabs.forEach(function (t) {
-        var on = t === tab;
-        t.classList.toggle('is-active', on);
-        t.setAttribute('aria-selected', on ? 'true' : 'false');
-      });
-      action.textContent = tab.getAttribute('data-label');
-      // Only "Dibs" is wired to the reservation flow; the other states are shown but not active yet.
-      action.disabled = !(tab.getAttribute('data-live') === '1' && inStock);
-    }
-    tabs.forEach(function (t, i) {
-      t.addEventListener('click', function () { select(t); });
-      t.addEventListener('keydown', function (e) {
-        var n = e.key === 'ArrowRight' ? i + 1 : e.key === 'ArrowLeft' ? i - 1 : null;
-        if (n === null) return;
-        n = (n + tabs.length) % tabs.length;
-        tabs[n].focus(); select(tabs[n]); e.preventDefault();
-      });
+  // ---------- Locked mechanic pills (Dibs / Steal / Claim / Cabin Lock) ----------
+  // Only "Add to Cart" is available for now. A pill greys itself when pressed and
+  // leaves the Add to Cart button alone, so the page never dead-ends.
+  $$('[data-locked-mechanic]').forEach(function (pill) {
+    pill.addEventListener('click', function () {
+      pill.classList.add('is-locked');
+      pill.setAttribute('aria-disabled', 'true');
     });
   });
 
@@ -254,10 +237,7 @@
         .catch(function () { form.submit(); })   // network/parsing problem: let the browser post normally
         .then(function () {
           if (!button) return;
-          var active = form.querySelector('.mech-tab.is-active');
-          var live = active ? active.getAttribute('data-live') === '1' : true;
-          var inStock = button.getAttribute('data-in-stock') !== '0';
-          button.disabled = !(live && inStock);
+          button.disabled = button.getAttribute('data-in-stock') === '0';
         });
     });
   });

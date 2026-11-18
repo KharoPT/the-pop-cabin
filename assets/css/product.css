@@ -94,10 +94,15 @@
   border: 1px solid var(--primitive-teal-500); border-radius: 999px;
   background: var(--color-bg-surface); color: var(--primitive-teal-500);
   font: 400 12px/20px var(--font-family-heading);
-  transition: background .15s;
+  transition: background .15s, border-color .15s, color .15s;
 }
 .mech-tab:hover { background: var(--primitive-teal-50); }
-.mech-tab.is-active { box-shadow: inset 0 0 0 1px var(--primitive-teal-500); }
+/* Pressed: the mechanic is locked, so it greys out and stays that way */
+.mech-tab.is-locked,
+.mech-tab.is-locked:hover {
+  cursor: default; border-color: var(--color-border-strong);
+  background: var(--color-bg-disabled); color: var(--color-text-disabled);
+}
 .mech-tab .lock { flex: none; }
 .mech-action {
   display: block; width: 100%; min-height: 58px; padding: 0 24px; cursor: pointer; border: 0;
