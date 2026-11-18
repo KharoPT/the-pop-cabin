@@ -19,10 +19,6 @@
 .mechanics-moves { margin-top: 3rem; }
 .mechanics-head { margin-bottom: 1.6rem; }
 .mechanics-head .sign { font-size: 1.2rem; }
-.mechanics-head-note {
-  max-width: 46ch; margin: .9rem 0 0;
-  font-size: .95rem; color: var(--color-text-muted-aa);
-}
 
 /* The four moves */
 .move-grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
@@ -31,10 +27,6 @@
   padding: 20px 18px 22px;
   background: var(--cream); border: 2px solid var(--pine-300); border-radius: 8px;
   box-shadow: 0 4px 0 rgba(30, 20, 12, .1);
-}
-.move-flag {
-  margin: 0; font: 700 .68rem/1.3 var(--font-body); letter-spacing: .14em; text-transform: uppercase;
-  color: var(--color-text-muted-aa);
 }
 .move-name { align-self: flex-start; margin: .1rem 0 .2rem; padding: .6rem 1.55rem; font-size: 1.22rem; }
 .move-tagline { margin: 0; font: 600 .95rem/1.4 var(--font-display); color: var(--walnut); }
@@ -49,19 +41,6 @@
 }
 .move-price-value { font: 700 .98rem/1.35 var(--font-body); color: var(--ink); }
 .move-copy { margin: .1rem 0 0; font-size: .95rem; line-height: 1.55; color: var(--color-text-secondary); }
-
-/* Cabin Lock lists the three prices it can close on. */
-.move-ledger {
-  list-style: none; margin: .3rem 0 0; padding: 0;
-  border-top: 1px dashed var(--color-border-strong);
-}
-.move-ledger li {
-  display: flex; align-items: baseline; justify-content: space-between; gap: 1rem;
-  padding: .42rem 0; border-bottom: 1px dashed var(--color-border-default); font-size: .85rem;
-}
-.move-ledger li:last-child { border-bottom: 0; padding-bottom: 0; }
-.move-ledger li span:first-child { color: var(--color-text-muted-aa); }
-.move-ledger li span:last-child { font-weight: 700; color: var(--ink); white-space: nowrap; }
 
 .mechanics-currency { margin: 1rem 0 0; text-align: center; font-size: .8rem; color: var(--color-text-muted-aa); }
 
@@ -129,6 +108,7 @@
   .mechanics-clock,
   .mechanics-account,
   .mechanics-end { margin-top: 5rem; }
+  .mechanics-head .sign { margin-inline: auto; }
   .move-grid { gap: 24px; }
   .move-card { padding: 26px 28px 30px; }
   .move-copy { font-size: 1rem; }

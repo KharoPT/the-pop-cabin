@@ -21,35 +21,30 @@ require_once __DIR__ . '/includes/header.php';
 <section class="wrap mechanics-moves" aria-labelledby="moves-title">
     <div class="mechanics-head">
         <h2 class="sign sign-left" id="moves-title">The Four Moves</h2>
-        <p class="mechanics-head-note">Dibs opens the bidding. Steal raises it.  </p>
-        <p class="mechanics-head-note">Claim answers. Cabin Lock closes it.</p>
     </div>
 
     <div class="move-grid">
         <article class="move-card" aria-labelledby="move-dibs">
-            <p class="move-flag">Opening move</p>
             <h3 class="move-name sign" id="move-dibs">Dibs</h3>
             <p class="move-tagline">Call it at the tag price.</p>
             <p class="move-price">
                 <span class="move-price-label">Price</span>
                 <span class="move-price-value">Posted original price</span>
             </p>
-            <p class="move-copy">Dibs is where every auction begins. You take the Pop at the price it was posted for — no markup, no extras — and the four-day clock starts running.</p>
+            <p class="move-copy">You take the Pop at the price it was posted for — no markup, no extras — and the four-day clock starts running.</p>
         </article>
 
         <article class="move-card" aria-labelledby="move-steal">
-            <p class="move-flag">One use only</p>
             <h3 class="move-name sign" id="move-steal">Steal</h3>
             <p class="move-tagline">Take it with a small raise.</p>
             <p class="move-price">
                 <span class="move-price-label">Price</span>
                 <span class="move-price-value">Posted price + <?php echo e($addSteal); ?></span>
             </p>
-            <p class="move-copy">A Steal is the first raise. You pay <?php echo e($addSteal); ?> over the posted price and take the Pop at that higher bid. It is a single-use move — after one Steal, it is spent.</p>
+            <p class="move-copy">A Steal is the first raise. You pay <?php echo e($addSteal); ?> over the posted price and take the Pop at that higher bid.</p>
         </article>
 
         <article class="move-card" aria-labelledby="move-claim">
-            <p class="move-flag">Multi-use · needs a Steal</p>
             <h3 class="move-name sign" id="move-claim">Claim</h3>
             <p class="move-tagline">Answer a Steal for more.</p>
             <p class="move-price">
@@ -60,7 +55,6 @@ require_once __DIR__ . '/includes/header.php';
         </article>
 
         <article class="move-card" aria-labelledby="move-lock">
-            <p class="move-flag">One use only · locks the auction</p>
             <h3 class="move-name sign" id="move-lock">Cabin Lock</h3>
             <p class="move-tagline">Close the auction for good.</p>
             <p class="move-price">
@@ -68,11 +62,6 @@ require_once __DIR__ . '/includes/header.php';
                 <span class="move-price-value">Current price + <?php echo e($addLock); ?></span>
             </p>
             <p class="move-copy">A Cabin Lock ends the auction on the spot. You pay <?php echo e($addLock); ?> over whatever the bidding has reached, and the Pop is locked to you. It can be used only once.</p>
-            <ul class="move-ledger">
-                <li><span>Posted original</span><span>+ <?php echo e($addLock); ?></span></li>
-                <li><span>Steal price</span><span>+ <?php echo e($addLock); ?></span></li>
-                <li><span>Claim price</span><span>+ <?php echo e($addLock); ?></span></li>
-            </ul>
         </article>
     </div>
 
