@@ -4,9 +4,9 @@
    includes/header.php; this file is its only styling. The glass pill floats
    over a dark top gradient so it reads on both the hero and plain pages.
    ========================================================================== */
-:root { --site-header-h: 72px; }
+:root { --site-header-h: 68px; }
 .site-header {
-  position: sticky; top: 0; z-index: 60; padding: 24px 20px 0;
+  position: sticky; top: 0; z-index: 60; padding: 20px 20px 0;
   background: transparent;
 }
 .header-bar {
@@ -76,8 +76,8 @@
 }
 
 @media (min-width: 700px) {
-  :root { --site-header-h: 80px; }
-  .site-header { padding: 24px 32px 0; }
+  :root { --site-header-h: 76px; }
+  .site-header { padding: 20px 32px 0; }
   .header-bar { height: 56px; padding: 10px 20px 10px 10px; border-radius: 28px; }
   .menu-btn, .menu-btn img { width: 36px; height: 36px; }
   .logo-link, .logo-link img { width: 36px; height: 36px; }
@@ -89,8 +89,8 @@
 }
 
 @media (min-width: 1000px) {
-  :root { --site-header-h: 88px; }
-  .site-header { padding: 28px 40px 0; }
+  :root { --site-header-h: 84px; }
+  .site-header { padding: 24px 40px 0; }
   .header-bar { height: 60px; border-radius: 30px; max-width: calc(var(--container-max) - 80px); }
   .search-form { max-width: 320px; margin-left: auto; }
   .site-menu { left: 40px; right: 40px; }
