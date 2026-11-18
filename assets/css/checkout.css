@@ -17,8 +17,8 @@
 
 /* Same photo band as the cart page (the frame reuses that image) */
 .checkout-bg {
-  position: absolute; top: -69px; left: 16px; z-index: 0;
-  width: calc(100% - 32px); height: 152px; max-width: none;
+  position: absolute; top: -69px; left: 24px; z-index: 0;
+  width: calc(100% - 48px); height: 152px; max-width: none;
   border-radius: 12px; object-fit: cover;
 }
 
@@ -63,7 +63,7 @@
    ========================================================================== */
 @media (min-width: 700px) {
   .page-checkout main { padding: 176px 0 80px; }
-  .checkout-bg { top: -24px; left: 0; width: 100%; height: 180px; border-radius: 0; }
+  .checkout-bg { top: -24px; left: 50%; width: calc(100% - 80px); height: 180px; border-radius: 16px; transform: translateX(-50%); }
   .page-checkout .wrap { padding-inline: 32px; }
   .page-checkout .flash-wrap { padding-inline: 32px; }
   .checkout-title { font-size: 30px; line-height: 36px; }
@@ -74,7 +74,7 @@
    ========================================================================== */
 @media (min-width: 1000px) {
   .page-checkout main { padding: 216px 0 96px; }
-  .checkout-bg { height: 220px; }
+  .checkout-bg { width: calc(100% - 96px); max-width: calc(var(--container-max) - 96px); height: 220px; }
   .page-checkout .wrap { padding-inline: 40px; }
   .page-checkout .flash-wrap { padding-inline: 40px; }
   .checkout-title { font-size: 32px; line-height: 38px; }

@@ -18,8 +18,8 @@
 .page-auth.has-flash main { margin-top: 0; padding-top: 32px; }
 .page-auth.has-flash .auth-bg { top: 0; }
 .auth-bg {
-  position: absolute; top: -22px; left: 16px; z-index: 0;
-  width: calc(100% - 32px); height: 204px; max-width: none;
+  position: absolute; top: -22px; left: 24px; z-index: 0;
+  width: calc(100% - 48px); height: 204px; max-width: none;
   border-radius: 12px; object-fit: cover;
 }
 
@@ -130,7 +130,7 @@
 /* Tablet / desktop: full-bleed photo band, card stays centred */
 @media (min-width: 700px) {
   .page-auth main { max-width: none; padding: 160px 32px 0; }
-  .auth-bg { left: 0; width: 100%; top: -24px; height: 280px; border-radius: 0; }
+  .auth-bg { left: 50%; width: calc(100% - 80px); top: -24px; height: 280px; border-radius: 16px; transform: translateX(-50%); }
   .auth-card { max-width: 456px; padding: 24px; }
   .auth-card h1 { font-size: 30px; line-height: 36px; }
   .auth-card .field input { height: 48px; }
@@ -138,6 +138,6 @@
 }
 @media (min-width: 1000px) {
   .page-auth main { padding-top: 180px; }
-  .auth-bg { height: 320px; }
+  .auth-bg { width: calc(100% - 96px); max-width: calc(var(--container-max) - 96px); height: 320px; }
   .auth-card { max-width: 480px; padding: 28px; }
 }
