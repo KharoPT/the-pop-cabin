@@ -21,7 +21,8 @@ require_once __DIR__ . '/includes/header.php';
 <section class="wrap mechanics-moves" aria-labelledby="moves-title">
     <div class="mechanics-head">
         <h2 class="sign sign-left" id="moves-title">The Four Moves</h2>
-        <p class="mechanics-head-note">Dibs opens the bidding. Steal raises it. Claim answers. Cabin Lock closes it.</p>
+        <p class="mechanics-head-note">Dibs opens the bidding. Steal raises it.  </p>
+        <p class="mechanics-head-note">Claim answers. Cabin Lock closes it.</p>
     </div>
 
     <div class="move-grid">
