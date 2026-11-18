@@ -171,7 +171,7 @@
 .admin-header-links svg { flex: none; opacity: .75; }
 .admin-header-links a.admin-logout-link svg { opacity: .9; }
 .admin-sidebar-toggle {
-  flex: none; width: 36px; height: 36px; margin-left: 18px; padding: 0;
+  flex: none; width: 36px; height: 36px; margin-left: 0; margin-right: 20px; padding: 0;
   align-items: center; justify-content: center; cursor: pointer;
   border: 1px solid rgba(255, 255, 255, .28); border-radius: 12px;
   background: rgba(255, 255, 255, .08); color: var(--primitive-cream-50);
