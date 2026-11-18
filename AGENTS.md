@@ -62,8 +62,8 @@ override them per page.
 - Mobile-first at **390 px** (the hi-fi width), then **700 px** and **1000 px**; fluid
   between. The desktop layout is an extrapolation of the mobile frame: same order,
   same components, wider containers and scaled type.
-- Page padding 16 px mobile, 32 px at 700, 40 px at 1000; content max 1200 px.
-- Section gap: 48 px mobile, 64 px at 700, 80 px at 1000.
+- Page padding 16 px mobile, 32 px at 700, 40 px at 1000; content max 1520 px.
+- Section gap: 48 px mobile, 80 px at 700, 96 px at 1000, 112 px at 1400.
 - Every screen covers default, empty, invalid and success. Invalid = per-field error:
   red border, message under the field, `aria-invalid="true"`, `aria-describedby`, plus
   the existing top banner. Every input has a `<label>`.
