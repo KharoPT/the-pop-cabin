@@ -106,13 +106,7 @@ $menuLinks = [
                     <span class="cart-badge" style="<?php echo $cartCountForHeader > 0 ? '' : 'display:none;'; ?>"><?php echo (int) $cartCountForHeader; ?></span>
                 </a>
             </li>
-            <?php if (isLoggedIn()): ?>
-                <li><a href="<?php echo SITE_URL; ?>/account.php">Account Details</a></li>
-                <?php if (isAdmin()): ?>
-                    <li><a href="<?php echo SITE_URL; ?>/admin/index.php">Admin Panel</a></li>
-                <?php endif; ?>
-                <li><a href="<?php echo SITE_URL; ?>/logout.php">Sign Out</a></li>
-            <?php else: ?>
+            <?php if (!isLoggedIn()): ?>
                 <li><a href="<?php echo SITE_URL; ?>/login.php">Login</a></li>
                 <li><a href="<?php echo SITE_URL; ?>/register.php">Sign Up</a></li>
             <?php endif; ?>
