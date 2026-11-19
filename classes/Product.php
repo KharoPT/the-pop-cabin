@@ -5,6 +5,10 @@ require_once __DIR__ . '/BaseModel.php';
  * Naming note: in the database, `categories` holds the FRANCHISE of a product (Marvel, DC, ...).
  * The wireframe's "Categories" pills (Movies, Anime, Exclusives, Games) live in `collections`,
  * and a product can belong to several of them through `product_collections`.
+ *
+ * This model is the SQL/CRUD layer used by the admin and the home page. The public shop
+ * listing is built by ProductCatalog, which loads these rows into a DynamicArray and applies
+ * LinearSearch and QuickSort in PHP.
  */
 class Product extends BaseModel
 {

@@ -6,6 +6,8 @@
 $cardUrl   = SITE_URL . '/product.php?slug=' . urlencode($card['slug']);
 $cardImg   = imgSrc($card['image_url'] ?? '');
 $cardSold  = (int) $card['stock_quantity'] <= 0;
+$cardHasStock  = !empty($cardShowStock);
+$cardHasRating = !empty($cardShowRating) && (int) ($card['review_count'] ?? 0) > 0;
 ?>
 <article class="pop-card" data-product-id="<?php echo (int) $card['product_id']; ?>">
     <div class="pop-card-media">
@@ -25,7 +27,18 @@ $cardSold  = (int) $card['stock_quantity'] <= 0;
     <div class="pop-card-body">
         <h3 class="pop-name"><a href="<?php echo e($cardUrl); ?>"><?php echo e($card['name']); ?></a></h3>
         <?php if (!empty($card['category_name'])): ?><p class="pop-cat"><?php echo e($card['category_name']); ?></p><?php endif; ?>
-        <?php if (!empty($cardShowStock)): ?><p class="pop-stock">Stock: <?php echo (int) $card['stock_quantity']; ?></p><?php endif; ?>
+        <?php if ($cardHasStock || $cardHasRating): ?>
+            <p class="pop-stock">
+                <?php if ($cardHasStock): ?>Stock: <?php echo (int) $card['stock_quantity']; ?><?php endif; ?>
+                <?php if ($cardHasRating): ?>
+                    <?php echo $cardHasStock ? ' &middot; ' : ''; ?>
+                    <span class="pop-rating" aria-label="Rated <?php echo e(number_format((float) ($card['average_rating'] ?? 0), 1)); ?> out of 5 from <?php echo (int) $card['review_count']; ?> <?php echo (int) $card['review_count'] === 1 ? 'review' : 'reviews'; ?>">
+                        <span aria-hidden="true">&#9733;</span> <?php echo e(number_format((float) ($card['average_rating'] ?? 0), 1)); ?>
+                        <span class="pop-rating-count">(<?php echo (int) $card['review_count']; ?>)</span>
+                    </span>
+                <?php endif; ?>
+            </p>
+        <?php endif; ?>
         <p class="pop-price"><?php echo formatPrice($card['price']); ?></p>
     </div>
 </article>

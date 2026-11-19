@@ -13,7 +13,7 @@ It is a student project built without a framework, a package manager, or a build
 ### Storefront
 
 - **Home (`/index.php`):** hero with live product and review counts, category tiles from the `collections` table, a "Meet the Devs" team band, social links, and a CTA that changes for signed-in customers.
-- **Catalog (`/shop.php`):** search by pop or franchise name, filter by franchise and collection, min/max price, sort by newest, price, or name. 16 pops per page, out-of-stock ribbon, empty state, and pagination.
+- **Catalog (`/shop.php`):** search by pop or franchise name, filter by franchise, collection, availability and price range, and sort by newest, price (both directions), rating (both directions), or name (A-Z/Z-A). 16 pops per page, out-of-stock ribbon, rating on reviewed cards, empty state, and pagination. The customer search/filter/sort run on an in-memory dynamic array with a hand-written linear search and quicksort (`classes/ProductCatalog.php`).
 - **Product (`/product.php?slug=...`):** photo, stock, price, star summary, description, related pops, a zoom dialog, and a 404 state for unknown slugs.
 - **Reviews:** signed-in customers can post one review per pop (enforced by a unique key on `reviews(product_id, user_id)`), optionally anonymous. The page shows the average, the count, and the latest three, with a "see all" view.
 - **Favorites:** the heart toggles are stored in `localStorage` for that browser only; there is no account-level favorites list.
@@ -231,6 +231,9 @@ the-pop-cabin/
 │   ├── DESIGN.md              Design tokens and Figma-to-CSS rules
 │   ├── figma/                 Mobile reference exports
 │   └── presentation/          Catalog screenshot
+├── tests/                     DSA test suite and hardcoded demo
+│   ├── catalog_algorithms_test.php
+│   └── dsa_demo.php
 ├── sql/popcabdb.sql           Schema and seed data
 ├── uploads/products/          Product photos (seeded images are committed)
 ├── storage/inquiries/         Contact attachments (created at runtime, not in git)
@@ -249,7 +252,14 @@ There is no task runner, Makefile, Composer, or npm. These are the commands the 
 
 ## Testing
 
-There is no automated test suite and no test configuration in the repository (`phpunit.xml`, `composer.json`, and `package.json` are all absent). All 42 PHP files pass a syntax check on PHP 8.5.12; the loop below prints one `No syntax errors detected` line per file:
+There is no PHPUnit/Composer test setup, but the catalog DSA layer has a standalone CLI suite and a hardcoded demo. Run them from the project root:
+
+```powershell
+C:\xampp\php\php.exe tests\catalog_algorithms_test.php
+C:\xampp\php\php.exe tests\dsa_demo.php
+```
+
+`catalog_algorithms_test.php` covers 58 normal, empty, unmatched and invalid-input cases, the three algorithms, and the SQLite-backed `ProductCatalog` (it needs the `pdo_sqlite` extension, which XAMPP ships). `dsa_demo.php` runs the same DynamicArray/LinearSearch/QuickSort on a typed-in product list, so it needs no database. Every PHP file passes a syntax check; the loop below prints one `No syntax errors detected` line per file:
 
 ```powershell
 Get-ChildItem -Recurse -Filter *.php | ForEach-Object { C:\xampp\php\php.exe -l $_.FullName }
@@ -283,6 +293,7 @@ The app is a server-rendered PHP application with a small model layer:
 2. Each page or action instantiates the models it needs, reads `$_GET`/`$_POST`, and calls model methods. Pages do not write SQL directly.
 3. Public pages include `includes/header.php`, render HTML, and include `includes/footer.php`. Admin pages use `admin/includes/admin_header.php` and `admin_footer.php`.
 4. Writes use POST, then redirect, then GET with a flash message. Orders and product deletes use database transactions.
+5. The public catalog (`shop.php`) reads all products once into `ProductCatalog`, stores them in a hand-written `DynamicArray`, applies `LinearSearch` for the one-pass filter/search, and uses `QuickSort` for price, rating and name ordering. Admin writes stay in the models/DB; the next catalog load picks them up.
 
 ```mermaid
 flowchart LR

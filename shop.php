@@ -1,8 +1,10 @@
 <?php
 require_once __DIR__ . '/config/config.php';
 require_once __DIR__ . '/classes/Product.php';
+require_once __DIR__ . '/classes/ProductCatalog.php';
 
 $productModel = new Product();
+$catalog      = new ProductCatalog();
 
 // Read query-string values as plain strings only (array values like ?search[]=x are ignored).
 $param = fn(string $key): string => is_string($_GET[$key] ?? null) ? trim($_GET[$key]) : '';
@@ -13,16 +15,20 @@ $filters = [
     'search'     => sanitizeInput($param('search')),
     'min_price'  => $param('min_price'),
     'max_price'  => $param('max_price'),
+    'stock'      => in_array($param('stock'), ['in', 'out'], true) ? $param('stock') : '',
     'sort'       => $param('sort'),
 ];
 $activeFilters = array_filter($filters, fn($v, $k) => $v !== '' && $k !== 'sort', ARRAY_FILTER_USE_BOTH);
 $filtersOpen   = (bool) array_diff_key($activeFilters, ['search' => 1]) || $filters['sort'] !== '';
 
-$total      = $productModel->countAll($filters);
+// The catalog is loaded from the database once, then search/filter/sort run on
+// the in-memory dynamic array (classes/ProductCatalog.php).
+$results    = $catalog->results($filters);
+$total      = count($results);
 $perPage    = PRODUCTS_PER_PAGE;
 $totalPages = max(1, (int) ceil($total / $perPage));
 $page       = min($totalPages, max(1, (int) $param('page')));
-$products   = $productModel->getAll($filters, $perPage, ($page - 1) * $perPage);
+$products   = ProductCatalog::page($results, $page, $perPage);
 $from       = $total ? ($page - 1) * $perPage + 1 : 0;
 $to         = $total ? $from + count($products) - 1 : 0;
 
@@ -69,6 +75,14 @@ require_once __DIR__ . '/includes/header.php';
                         <?php endforeach; ?>
                     </select>
                 </div>
+                <div class="form-row">
+                    <label for="f-stock">Availability</label>
+                    <select id="f-stock" name="stock">
+                        <option value="">All</option>
+                        <option value="in" <?php echo $filters['stock'] === 'in' ? 'selected' : ''; ?>>In stock</option>
+                        <option value="out" <?php echo $filters['stock'] === 'out' ? 'selected' : ''; ?>>Out of stock</option>
+                    </select>
+                </div>
                 <div class="form-row form-row-split">
                     <div>
                         <label for="f-min">Min price (<?php echo e(SITE_CURRENCY_SYMBOL); ?>)</label>
@@ -82,7 +96,15 @@ require_once __DIR__ . '/includes/header.php';
                 <div class="form-row">
                     <label for="f-sort">Sort by</label>
                     <select id="f-sort" name="sort">
-                        <?php foreach (['' => 'Newest', 'price_asc' => 'Price: low to high', 'price_desc' => 'Price: high to low', 'name' => 'Name: A to Z'] as $val => $label): ?>
+                        <?php foreach ([
+                            ''            => 'Newest',
+                            'price_asc'   => 'Price: low to high',
+                            'price_desc'  => 'Price: high to low',
+                            'rating_desc' => 'Rating: high to low',
+                            'rating_asc'  => 'Rating: low to high',
+                            'name'        => 'Name: A to Z',
+                            'name_desc'   => 'Name: Z to A',
+                        ] as $val => $label): ?>
                             <option value="<?php echo e($val); ?>" <?php echo $filters['sort'] === $val ? 'selected' : ''; ?>><?php echo e($label); ?></option>
                         <?php endforeach; ?>
                     </select>
@@ -102,6 +124,7 @@ require_once __DIR__ . '/includes/header.php';
     <?php if ($products): ?>
         <div class="pop-grid">
             <?php $cardShowStock = true; ?>
+            <?php $cardShowRating = true; ?>
             <?php foreach ($products as $card): ?>
                 <?php include __DIR__ . '/includes/product_card.php'; ?>
             <?php endforeach; ?>
